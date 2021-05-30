@@ -43,3 +43,11 @@ npm install classnames
 ```
 
 [classnames](https://github.com/JedWatson/classnames#readme)
+
+### node-sass
+
+scss 라이브러리
+
+```
+npm install node-sass
+```
