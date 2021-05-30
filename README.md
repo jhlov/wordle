@@ -25,3 +25,11 @@ npm install gh-pages
 ```
 npm install react-router-dom
 ```
+
+### React Bootstrap
+
+```
+npm install react-bootstrap bootstrap@4.6.0
+```
+
+[React Bootstrap](https://react-bootstrap.github.io/)
