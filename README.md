@@ -33,3 +33,13 @@ npm install react-bootstrap bootstrap@4.6.0
 ```
 
 [React Bootstrap](https://react-bootstrap.github.io/)
+
+### classnames
+
+`vue.js`처럼 클래스 바인딩을 할 수 있는 라이브러리
+
+```
+npm install classnames
+```
+
+[classnames](https://github.com/JedWatson/classnames#readme)
