@@ -51,3 +51,11 @@ scss 라이브러리
 ```
 npm install node-sass
 ```
+
+### axios
+
+api 통신
+
+```
+npm install axios
+```
