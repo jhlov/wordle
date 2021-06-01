@@ -1,3 +1,16 @@
+@import "~bootstrap/scss/bootstrap";
+
 .App {
   text-align: center;
+
+  .mobile-container {
+    padding: 0 15px;
+
+    @include media-breakpoint-up(sm) {
+      width: 500px;
+      min-height: 100vh;
+      margin: 0 auto;
+      border: 1px solid lightgrey;
+    }
+  }
 }
