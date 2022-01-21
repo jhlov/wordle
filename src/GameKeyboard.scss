@@ -1,0 +1,27 @@
+.game-keyboard {
+  padding: 10px;
+
+  .game-keyboard-row {
+    display: flex;
+    justify-content: center;
+
+    .item {
+      margin: 3px;
+      background-color: rgb(211, 214, 218);
+      border-radius: 4px;
+      font-weight: bold;
+      padding: 14px 10px;
+      cursor: pointer;
+
+      @media (max-width: 500px) {
+        font-size: 13px;
+        padding: 12px 8px;
+      }
+
+      @media (max-width: 400px) {
+        font-size: 12px;
+        padding: 10px 6px;
+      }
+    }
+  }
+}
