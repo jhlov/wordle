@@ -7,11 +7,17 @@ import "./GameHeader.scss";
 const GameHeader = () => {
   return (
     <div className="game-header align-items-center justify-content-between py-1 border-bottom">
-      <HelpOutlineIcon />
+      <button>
+        <HelpOutlineIcon />
+      </button>
       <h1 className="m-0 p-0">워들</h1>
       <div>
-        <LeaderboardOutlinedIcon />
-        <SettingsIcon />
+        <button>
+          <LeaderboardOutlinedIcon />
+        </button>
+        <button>
+          <SettingsIcon />
+        </button>
       </div>
     </div>
   );

@@ -1,51 +1,33 @@
+import className from "classnames";
 import React from "react";
+import { ROW_COUNT, WORD_COUNT } from "./const";
 import "./GameBody.scss";
 
-const GameBody = () => {
+interface Props {
+  words: string[][];
+}
+
+const GameBody = (props: Props) => {
   return (
     <div className="game-body">
-      <div className="game-body-row">
-        {Array(5)
-          .fill(0)
-          .map((_, i) => (
-            <div className="item">{i}</div>
-          ))}
-      </div>
-      <div className="game-body-row">
-        {Array(5)
-          .fill(0)
-          .map((_, i) => (
-            <div className="item">{i}</div>
-          ))}
-      </div>
-      <div className="game-body-row">
-        {Array(5)
-          .fill(0)
-          .map((_, i) => (
-            <div className="item">{i}</div>
-          ))}
-      </div>
-      <div className="game-body-row">
-        {Array(5)
-          .fill(0)
-          .map((_, i) => (
-            <div className="item">{i}</div>
-          ))}
-      </div>
-      <div className="game-body-row">
-        {Array(5)
-          .fill(0)
-          .map((_, i) => (
-            <div className="item">{i}</div>
-          ))}
-      </div>
-      <div className="game-body-row">
-        {Array(5)
-          .fill(0)
-          .map((_, i) => (
-            <div className="item">{i}</div>
-          ))}
-      </div>
+      {Array(ROW_COUNT)
+        .fill(0)
+        .map((_, i) => (
+          <div key={i} className="game-body-row">
+            {Array(WORD_COUNT)
+              .fill(0)
+              .map((_, j) => (
+                <div
+                  key={`${i}_${j}`}
+                  className={className("item", [
+                    props.words[i][j] ? "letter" : "empty"
+                  ])}
+                >
+                  {props.words[i][j]}
+                </div>
+              ))}
+          </div>
+        ))}
     </div>
   );
 };
