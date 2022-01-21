@@ -19,12 +19,15 @@
       &.letter {
         border: 2px solid #878a8c;
         animation: ani 0.2s;
-        -webkit-animation: ani 0.2s;
       }
 
       &.empty {
         border: 2px solid #d3d6da;
       }
+    }
+
+    &.shake {
+      animation: shake 0.2s;
     }
   }
 }
@@ -38,11 +41,23 @@
   }
 }
 
-@-webkit-keyframes ani {
+@keyframes shake {
   0% {
-    transform: scale(1.1);
+    transform: translateX(-5px);
+  }
+  20% {
+    transform: translateX(5px);
+  }
+  40% {
+    transform: translateX(-5px);
+  }
+  60% {
+    transform: translateX(5px);
+  }
+  80% {
+    transform: translateX(-5px);
   }
   100% {
-    transform: scale(1);
+    transform: translateX(0);
   }
 }

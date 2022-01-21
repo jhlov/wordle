@@ -4,7 +4,9 @@ import { ROW_COUNT, WORD_COUNT } from "./const";
 import "./GameBody.scss";
 
 interface Props {
+  curRow: number;
   words: string[][];
+  shake: boolean;
 }
 
 const GameBody = (props: Props) => {
@@ -13,7 +15,12 @@ const GameBody = (props: Props) => {
       {Array(ROW_COUNT)
         .fill(0)
         .map((_, i) => (
-          <div key={i} className="game-body-row">
+          <div
+            key={i}
+            className={className("game-body-row", {
+              shake: i === props.curRow && props.shake
+            })}
+          >
             {Array(WORD_COUNT)
               .fill(0)
               .map((_, j) => (
