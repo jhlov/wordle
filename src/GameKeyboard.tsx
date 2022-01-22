@@ -1,4 +1,5 @@
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
+import classNames from "classnames";
 import React from "react";
 import { WORD_COUNT } from "./const";
 import "./GameKeyboard.scss";
@@ -8,6 +9,7 @@ interface Props {
   onClickKeyboard: (letter: string) => void;
   onClickEner: () => void;
   onClickBack: () => void;
+  keyMap: { [key: string]: string };
 }
 
 const GameKeyboard = (props: Props) => {
@@ -21,7 +23,9 @@ const GameKeyboard = (props: Props) => {
         {row1.map(letter => (
           <div
             key={letter}
-            className="item"
+            className={classNames("item", {
+              [props.keyMap[letter]]: props.keyMap[letter]
+            })}
             onClick={() => props.onClickKeyboard(letter)}
           >
             {letter}
@@ -32,7 +36,9 @@ const GameKeyboard = (props: Props) => {
         {row2.map(letter => (
           <div
             key={letter}
-            className="item"
+            className={classNames("item", {
+              [props.keyMap[letter]]: props.keyMap[letter]
+            })}
             onClick={() => props.onClickKeyboard(letter)}
           >
             {letter}
@@ -50,7 +56,9 @@ const GameKeyboard = (props: Props) => {
         {row3.map(letter => (
           <div
             key={letter}
-            className="item"
+            className={classNames("item", {
+              [props.keyMap[letter]]: props.keyMap[letter]
+            })}
             onClick={() => props.onClickKeyboard(letter)}
           >
             {letter}

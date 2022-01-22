@@ -10,7 +10,7 @@
       width: 60px;
       height: 60px;
       margin: 3px;
-      font-weight: bold;
+      font-weight: 900;
       font-size: 32px;
       display: flex;
       justify-content: center;
@@ -23,6 +23,26 @@
 
       &.empty {
         border: 2px solid #d3d6da;
+      }
+
+      &.s,
+      &.b,
+      &.o {
+        color: white;
+        border: 0;
+        animation: rotate 0.3s;
+      }
+
+      &.s {
+        background-color: #6aaa64;
+      }
+
+      &.b {
+        background-color: #c9b458;
+      }
+
+      &.o {
+        background-color: #787c7e;
       }
     }
 
@@ -59,5 +79,17 @@
   }
   100% {
     transform: translateX(0);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
   }
 }

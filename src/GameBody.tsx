@@ -6,6 +6,7 @@ import "./GameBody.scss";
 interface Props {
   curRow: number;
   words: string[][];
+  checks: string[][];
   shake: boolean;
 }
 
@@ -26,9 +27,12 @@ const GameBody = (props: Props) => {
               .map((_, j) => (
                 <div
                   key={`${i}_${j}`}
-                  className={className("item", [
-                    props.words[i][j] ? "letter" : "empty"
-                  ])}
+                  className={className(
+                    "item",
+                    `item-${j + 1}`,
+                    [props.words[i][j] ? "letter" : "empty"],
+                    { [props.checks[i][j]]: props.checks[i][j] }
+                  )}
                 >
                   {props.words[i][j]}
                 </div>
