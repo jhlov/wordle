@@ -2,6 +2,7 @@ import axios from "axios";
 import Hangul from "hangul-js";
 import _ from "lodash";
 import React, { useState } from "react";
+import { Spinner } from "react-bootstrap";
 import Notification, { notify } from "react-notify-bootstrap";
 import { ROW_COUNT, WORD_COUNT } from "./const";
 import "./Game.scss";
@@ -23,6 +24,7 @@ const Game = () => {
   const [checks, setChecks] = useState<string[][]>([[], [], [], [], [], []]);
   const [keyMap, setKeyMap] = useState<{ [key: string]: string }>({});
   const [shake, setShake] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const onClickKeyboard = (letter: string) => {
     if (words[curRow].length < WORD_COUNT) {
@@ -43,11 +45,15 @@ const Game = () => {
         .every(letter => Hangul.isComplete(letter));
 
       if (isCompleteWord) {
+        setIsLoading(true);
+
         const r = await axios.get<Response>(
           `https://ukntcifwza.execute-api.ap-northeast-2.amazonaws.com/default/wordle?word=${word}&letters=${words[
             curRow
           ].join("")}`
         );
+
+        setIsLoading(false);
 
         // 에러 체크
         if (r.data.error) {
@@ -128,6 +134,11 @@ const Game = () => {
       />
 
       <Notification options={{ position: "top", delay: 1000 }} />
+      {isLoading && (
+        <div className="loading">
+          <Spinner animation="border" />
+        </div>
+      )}
     </div>
   );
 };
