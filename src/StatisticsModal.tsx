@@ -39,7 +39,7 @@ const StatisticsModal = (props: Props) => {
           const now = moment();
           let nextTime = moment();
           if (now.get("h") < 12) {
-            nextTime = now.hour(12).minute(0).second(0);
+            nextTime = moment().hour(12).startOf("h");
           } else {
             nextTime = moment().add("d", 1).startOf("d");
           }
@@ -142,7 +142,7 @@ const StatisticsModal = (props: Props) => {
             <div className="bottom">
               <div className="border-right">
                 <h2>다음 워들까지</h2>
-                <div className="next-time">{nextTime}</div>
+                <div className="next-time">&nbsp;{nextTime}&nbsp;</div>
               </div>
               <div className="d-flex align-items-center justify-content-center">
                 <Button
