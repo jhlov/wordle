@@ -89,7 +89,7 @@ const Game = () => {
   };
 
   const syncGameData = (gameData: GameData) => {
-    setCurRow(gameData.curRow);
+    setCurRow(Math.min(ROW_COUNT - 1, gameData.curRow));
     setLettersList([...gameData.letters]);
     setCheckList([...gameData.checks]);
     setKeyMap({ ...gameData.keyMap });
@@ -202,6 +202,7 @@ const Game = () => {
             (statisticsData.success[curRow] ?? 0) + 1;
           saveStatisticsData(statisticsData);
 
+          gameData.curRow = curRow;
           gameData.state = "FINISH";
           saveGameData(gameData);
         } else if (curRow === ROW_COUNT - 1) {
@@ -211,6 +212,7 @@ const Game = () => {
           statisticsData.fail += 1;
           saveStatisticsData(statisticsData);
 
+          gameData.curRow = curRow;
           gameData.state = "FINISH";
           saveGameData(gameData);
         }
