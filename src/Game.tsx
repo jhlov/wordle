@@ -304,11 +304,11 @@ const Game = () => {
 
   const onClickShare = () => {
     const gameData = getGameData();
-    let str = `워들 ${gameData.id} ${
+    let copyText = `워들 ${gameData.id} ${
       gameData.checks.filter(row => row).length
     }/${gameData.checks.length}\n\n`;
 
-    str += gameData.checks
+    copyText += gameData.checks
       .filter(row => row !== "")
       .map(row =>
         row
@@ -319,12 +319,19 @@ const Game = () => {
           )
       )
       .join("\n");
-    navigator.clipboard.writeText(str);
 
-    notify({
-      text: "게임 결과를 클립보드에 복사했습니다.",
-      variant: "dark"
-    });
+    if (navigator.share) {
+      navigator.share({
+        text: copyText
+      });
+    } else {
+      navigator.clipboard.writeText(copyText);
+
+      notify({
+        text: "게임 결과를 클립보드에 복사했습니다.",
+        variant: "dark"
+      });
+    }
   };
 
   return (
