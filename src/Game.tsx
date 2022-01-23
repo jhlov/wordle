@@ -10,6 +10,7 @@ import { GameBody } from "./GameBody";
 import { GameData, getGameData, initGameData, saveGameData } from "./GameData";
 import { GameHeader } from "./GameHeader";
 import { GameKeyboard } from "./GameKeyboard";
+import { HelpModal } from "./HelpModal";
 import { getStatisticsData, saveStatisticsData } from "./StatisticsData";
 import { StatisticsModal } from "./StatisticsModal";
 
@@ -44,6 +45,7 @@ const Game = () => {
   const [isEnabledInput, setIsEnabledInput] = useState<boolean>(true);
   const [showStatisticsModal, setShowStatisticsModal] =
     useState<boolean>(false);
+  const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
 
   useEffect(() => {
     init();
@@ -59,7 +61,7 @@ const Game = () => {
     const gameData = getGameData();
 
     if (gameData.id === 0) {
-      // TODO: 게임 방법 모달창
+      setShowHelpModal(true);
     }
 
     if (gameData.id === r.data.id) {
@@ -302,7 +304,10 @@ const Game = () => {
 
   return (
     <div className="game">
-      <GameHeader onClickStatistics={() => setShowStatisticsModal(true)} />
+      <GameHeader
+        onClickStatistics={() => setShowStatisticsModal(true)}
+        onClickHowTo={() => setShowHelpModal(true)}
+      />
       <GameBody
         curRow={curRow}
         lettersList={lettersList}
@@ -327,6 +332,7 @@ const Game = () => {
         show={showStatisticsModal}
         onClose={() => setShowStatisticsModal(false)}
       />
+      <HelpModal show={showHelpModal} onClose={() => setShowHelpModal(false)} />
     </div>
   );
 };

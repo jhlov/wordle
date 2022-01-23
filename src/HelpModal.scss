@@ -1,0 +1,62 @@
+.help-modal {
+  .modal-body {
+    margin-top: -10px;
+    padding-top: 0;
+
+    section {
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+
+    .examples {
+      .items {
+        margin-bottom: 2px;
+        display: flex;
+
+        .item {
+          width: 40px;
+          height: 40px;
+          margin: 2px;
+          font-weight: 900;
+          font-size: 24px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          &.letter {
+            border: 2px solid #878a8c;
+            animation: ani 0.2s;
+          }
+
+          &.jump {
+            animation: jump 1s ease-in-out !important;
+          }
+
+          &.s,
+          &.b,
+          &.o {
+            color: white;
+            border: 0;
+            animation: rotate 0.3s;
+            animation-delay: 0.5s;
+          }
+
+          &.s {
+            background-color: #6aaa64;
+          }
+
+          &.b {
+            background-color: #c9b458;
+          }
+
+          &.o {
+            background-color: #787c7e;
+          }
+        }
+      }
+    }
+  }
+}

@@ -6,12 +6,13 @@ import "./GameHeader.scss";
 
 interface Props {
   onClickStatistics: () => void;
+  onClickHowTo: () => void;
 }
 
 const GameHeader = (props: Props) => {
   return (
     <div className="game-header align-items-center justify-content-between py-1 border-bottom">
-      <button>
+      <button onClick={props.onClickHowTo}>
         <HelpOutlineIcon />
       </button>
       <h1 className="m-0 p-0">워들</h1>
