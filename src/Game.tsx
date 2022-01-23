@@ -260,7 +260,7 @@ const Game = () => {
             // 통계 모달
             setTimeout(() => {
               setShowStatisticsModal(true);
-            }, 1500);
+            }, 2000);
           } else if (curRow === ROW_COUNT - 1) {
             notify({
               text: "다음 기회에 다시 도전해보세요",
@@ -270,7 +270,7 @@ const Game = () => {
             // 통계 모달
             setTimeout(() => {
               setShowStatisticsModal(true);
-            }, 1500);
+            }, 2000);
           } else {
             setCurRow(prev => prev + 1);
             setIsEnabledInput(true);
@@ -322,7 +322,7 @@ const Game = () => {
         keyMap={keyMap}
       />
 
-      <Notification options={{ position: "top", delay: 1000 }} />
+      <Notification options={{ position: "top", delay: 2000 }} />
       {isLoading && (
         <div className="loading">
           <Spinner animation="border" />

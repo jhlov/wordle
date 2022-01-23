@@ -17,10 +17,7 @@ const GameBody = (props: Props) => {
     // 마지막 check 가 다 맞는지 확인
     if (props.checkList[props.curRow] === "sssss") {
       for (let i = 0; i < LETTER_COUNT; ++i) {
-        setTimeout(() => {
-          setJump(i + 1);
-          console.log(i + 1);
-        }, i * 200);
+        setTimeout(() => setJump(i + 1), i * 200);
       }
     } else {
       setJump(0);
