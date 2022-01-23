@@ -2,7 +2,11 @@ import classNames from "classnames";
 import React, { useEffect, useMemo, useState } from "react";
 import { Modal, ProgressBar } from "react-bootstrap";
 import { ROW_COUNT } from "./const";
-import { StatisticsData } from "./StatisticsData";
+import {
+  getStatisticsData,
+  initStatisticsData,
+  StatisticsData
+} from "./StatisticsData";
 import "./StatisticsModal.scss";
 
 interface Props {
@@ -11,25 +15,12 @@ interface Props {
 }
 
 const StatisticsModal = (props: Props) => {
-  const initData: StatisticsData = {
-    currentStreak: 0,
-    maxStreak: 0,
-    success: {},
-    fail: 0,
-    lastGame: 0
-  };
-
   const [statisticsData, setStatisticsData] =
-    useState<StatisticsData>(initData);
+    useState<StatisticsData>(initStatisticsData);
 
   useEffect(() => {
-    const str = localStorage.getItem("statisticsData");
-    if (str) {
-      setStatisticsData(JSON.parse(str));
-    } else {
-      setStatisticsData(initData);
-      localStorage.setItem("statisticsData", JSON.stringify(initData));
-    }
+    const statisticsData = getStatisticsData();
+    setStatisticsData(statisticsData);
   }, [props.show]);
 
   const winCount = useMemo(() => {

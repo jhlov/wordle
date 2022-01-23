@@ -9,6 +9,7 @@ import "./Game.scss";
 import { GameBody } from "./GameBody";
 import { GameHeader } from "./GameHeader";
 import { GameKeyboard } from "./GameKeyboard";
+import { getStatisticsData, saveStatisticsData } from "./StatisticsData";
 import { StatisticsModal } from "./StatisticsModal";
 
 interface Response {
@@ -108,6 +109,26 @@ const Game = () => {
           return;
         }
 
+        // 통계 업데이트
+        if (r.data.check?.every(e => e === "s")) {
+          // 성공
+          const statisticsData = getStatisticsData();
+          statisticsData.currentStreak += 1;
+          statisticsData.maxStreak = Math.max(
+            statisticsData.maxStreak,
+            statisticsData.currentStreak
+          );
+          statisticsData.success[curRow] =
+            (statisticsData.success[curRow] ?? 0) + 1;
+          saveStatisticsData(statisticsData);
+        } else if (curRow === ROW_COUNT - 1) {
+          // 실패
+          const statisticsData = getStatisticsData();
+          statisticsData.currentStreak = 0;
+          statisticsData.fail += 1;
+          saveStatisticsData(statisticsData);
+        }
+
         // 애니메이션 주면서 세팅
         for (let i = 0; i < 5; ++i) {
           setTimeout(() => {
@@ -151,11 +172,22 @@ const Game = () => {
               variant: "dark"
             });
 
-            // TODO: 통계 모달
+            // 통계 모달
+            setTimeout(() => {
+              setShowStatisticsModal(true);
+            }, 1500);
+          } else if (curRow === ROW_COUNT - 1) {
+            notify({
+              text: "다음 기회에 다시 도전해보세요",
+              variant: "dark"
+            });
+
+            // 통계 모달
+            setTimeout(() => {
+              setShowStatisticsModal(true);
+            }, 1500);
           } else {
-            if (curRow < ROW_COUNT - 1) {
-              setCurRow(prev => prev + 1);
-            }
+            setCurRow(prev => prev + 1);
           }
         }, 1500);
       } else {
