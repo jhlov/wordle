@@ -1,12 +1,12 @@
 import className from "classnames";
 import React, { useEffect, useState } from "react";
-import { ROW_COUNT, WORD_COUNT } from "./const";
+import { LETTER_COUNT, ROW_COUNT } from "./const";
 import "./GameBody.scss";
 
 interface Props {
   curRow: number;
-  words: string[][];
-  checks: string[][];
+  lettersList: string[];
+  checkList: string[];
   shake: boolean;
 }
 
@@ -15,11 +15,8 @@ const GameBody = (props: Props) => {
 
   useEffect(() => {
     // 마지막 check 가 다 맞는지 확인
-    if (
-      props.checks[props.curRow].length === WORD_COUNT &&
-      props.checks[props.curRow].every(e => e === "s")
-    ) {
-      for (let i = 0; i < WORD_COUNT; ++i) {
+    if (props.checkList[props.curRow] === "sssss") {
+      for (let i = 0; i < LETTER_COUNT; ++i) {
         setTimeout(() => {
           setJump(i + 1);
           console.log(i + 1);
@@ -28,7 +25,7 @@ const GameBody = (props: Props) => {
     } else {
       setJump(0);
     }
-  }, [props.checks]);
+  }, [props.checkList]);
 
   return (
     <div className="game-body">
@@ -41,7 +38,7 @@ const GameBody = (props: Props) => {
               shake: i === props.curRow && props.shake
             })}
           >
-            {Array(WORD_COUNT)
+            {Array(LETTER_COUNT)
               .fill(0)
               .map((_, j) => (
                 <div
@@ -49,12 +46,12 @@ const GameBody = (props: Props) => {
                   className={className(
                     "item",
                     `item-${j + 1}`,
-                    [props.words[i][j] ? "letter" : "empty"],
-                    { [props.checks[i][j]]: props.checks[i][j] },
+                    [props.lettersList[i][j] ? "letter" : "empty"],
+                    { [props.checkList[i][j]]: props.checkList[i][j] },
                     { jump: i === props.curRow && 0 < jump && j < jump }
                   )}
                 >
-                  {props.words[i][j]}
+                  {props.lettersList[i][j]}
                 </div>
               ))}
           </div>

@@ -1,11 +1,11 @@
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import classNames from "classnames";
 import React from "react";
-import { WORD_COUNT } from "./const";
+import { LETTER_COUNT } from "./const";
 import "./GameKeyboard.scss";
 
 interface Props {
-  curWord: string[];
+  curLetters: string;
   onClickKeyboard: (letter: string) => void;
   onClickEner: () => void;
   onClickBack: () => void;
@@ -48,7 +48,7 @@ const GameKeyboard = (props: Props) => {
       <div className="game-keyboard-row">
         <button
           className="item"
-          disabled={props.curWord.length < WORD_COUNT}
+          disabled={props.curLetters.length < LETTER_COUNT}
           onClick={props.onClickEner}
         >
           ENTER
@@ -66,7 +66,7 @@ const GameKeyboard = (props: Props) => {
         ))}
         <button
           className="item"
-          disabled={props.curWord.length === 0}
+          disabled={props.curLetters.length === 0}
           onClick={props.onClickBack}
         >
           <BackspaceOutlinedIcon />

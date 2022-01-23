@@ -4,9 +4,10 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Notification, { notify } from "react-notify-bootstrap";
-import { ROW_COUNT, WORD_COUNT } from "./const";
+import { LETTER_COUNT, ROW_COUNT } from "./const";
 import "./Game.scss";
 import { GameBody } from "./GameBody";
+import { GameData, getGameData, initGameData, saveGameData } from "./GameData";
 import { GameHeader } from "./GameHeader";
 import { GameKeyboard } from "./GameKeyboard";
 import { getStatisticsData, saveStatisticsData } from "./StatisticsData";
@@ -14,17 +15,29 @@ import { StatisticsModal } from "./StatisticsModal";
 
 interface Response {
   id?: number;
-  word?: string;
   letters?: string;
-  check?: string[];
+  check?: string;
   error?: string;
 }
 
 const Game = () => {
-  const [id, setId] = useState<number>(0);
   const [curRow, setCurRow] = useState<number>(0);
-  const [words, setWords] = useState<string[][]>([[], [], [], [], [], []]);
-  const [checks, setChecks] = useState<string[][]>([[], [], [], [], [], []]);
+  const [lettersList, setLettersList] = useState<string[]>([
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]);
+  const [checkList, setCheckList] = useState<string[]>([
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ]);
   const [keyMap, setKeyMap] = useState<{ [key: string]: string }>({});
   const [shake, setShake] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -43,12 +56,41 @@ const Game = () => {
       "https://ukntcifwza.execute-api.ap-northeast-2.amazonaws.com/default/wordle"
     );
 
-    setId(r.data.id!);
+    const gameData = getGameData();
 
-    // TODO: local load
-    // TODO: 방법
+    if (gameData.id === 0) {
+      // TODO: 게임 방법 모달창
+    }
+
+    if (gameData.id === r.data.id) {
+      syncGameData(gameData);
+
+      if (gameData.state === "FINISH") {
+        setIsEnabledInput(false);
+        setTimeout(() => {
+          setShowStatisticsModal(true);
+        }, 1000);
+      }
+    } else {
+      startNewGame(r.data.id!);
+    }
 
     setIsLoading(false);
+  };
+
+  const startNewGame = (id: number) => {
+    const gameData: GameData = _.cloneDeep(initGameData);
+    gameData.id = id;
+    saveGameData(gameData);
+    syncGameData(gameData);
+    setIsEnabledInput(true);
+  };
+
+  const syncGameData = (gameData: GameData) => {
+    setCurRow(gameData.curRow);
+    setLettersList([...gameData.letters]);
+    setCheckList([...gameData.checks]);
+    setKeyMap({ ...gameData.keyMap });
   };
 
   const onClickKeyboard = (letter: string) => {
@@ -56,11 +98,33 @@ const Game = () => {
       return;
     }
 
-    if (words[curRow].length < WORD_COUNT) {
-      const newWords = _.cloneDeep(words);
-      newWords[curRow].push(letter);
-      setWords(newWords);
+    if (lettersList[curRow].length < LETTER_COUNT) {
+      const lettersList_ = _.cloneDeep(lettersList);
+      lettersList_[curRow] += letter;
+      setLettersList(lettersList_);
     }
+  };
+
+  const getUpdateKyeMap = (
+    letters: string,
+    check: string
+  ): { [key: string]: string } => {
+    const newkeyMap = _.cloneDeep(keyMap);
+    letters.split("").forEach((letter, i) => {
+      if (check[i] === "s") {
+        newkeyMap[letter] = "s";
+      } else if (check[i] === "b") {
+        if (newkeyMap[letter] !== "s") {
+          newkeyMap[letter] = "b";
+        }
+      } else {
+        if (newkeyMap[letter] === undefined) {
+          newkeyMap[letter] = "o";
+        }
+      }
+    });
+
+    return newkeyMap;
   };
 
   const onClickEnter = async () => {
@@ -68,9 +132,8 @@ const Game = () => {
       return;
     }
 
-    if (words[curRow].length === WORD_COUNT) {
-      const word = Hangul.assemble(words[curRow]);
-      console.log(word);
+    if (lettersList[curRow].length === LETTER_COUNT) {
+      const word = Hangul.assemble(lettersList[curRow].split(""));
 
       // 완성된 한글인지 체크
       const isCompleteWord = word
@@ -82,14 +145,8 @@ const Game = () => {
         setIsEnabledInput(false);
 
         const r = await axios.get<Response>(
-          `https://ukntcifwza.execute-api.ap-northeast-2.amazonaws.com/default/wordle?word=${word}&letters=${words[
-            curRow
-          ].join("")}`
+          `https://ukntcifwza.execute-api.ap-northeast-2.amazonaws.com/default/wordle?word=${word}&letters=${lettersList[curRow]}`
         );
-
-        // TODO: id 가 변경 되었을 경우 처리
-
-        // TODO: 기록
 
         setIsLoading(false);
 
@@ -109,8 +166,29 @@ const Game = () => {
           return;
         }
 
+        // id 가 변경 되었을 경우 처리
+        const gameData = getGameData();
+        if (r.data.id !== gameData.id) {
+          notify({
+            text: "게임이 업데이트 되었습니다. 새로운 게임을 시작합니다.",
+            variant: "dark"
+          });
+
+          startNewGame(r.data.id!);
+          return;
+        }
+
+        // 게임 기록 업데이트
+        gameData.curRow = curRow + 1;
+        gameData.letters[curRow] = r.data.letters!;
+        gameData.checks[curRow] = r.data.check!;
+        gameData.keyMap = _.cloneDeep(
+          getUpdateKyeMap(r.data.letters!, r.data.check!)
+        );
+        saveGameData(gameData);
+
         // 통계 업데이트
-        if (r.data.check?.every(e => e === "s")) {
+        if (r.data.check === "sssss") {
           // 성공
           const statisticsData = getStatisticsData();
           statisticsData.currentStreak += 1;
@@ -121,20 +199,26 @@ const Game = () => {
           statisticsData.success[curRow] =
             (statisticsData.success[curRow] ?? 0) + 1;
           saveStatisticsData(statisticsData);
+
+          gameData.state = "FINISH";
+          saveGameData(gameData);
         } else if (curRow === ROW_COUNT - 1) {
           // 실패
           const statisticsData = getStatisticsData();
           statisticsData.currentStreak = 0;
           statisticsData.fail += 1;
           saveStatisticsData(statisticsData);
+
+          gameData.state = "FINISH";
+          saveGameData(gameData);
         }
 
         // 애니메이션 주면서 세팅
         for (let i = 0; i < 5; ++i) {
           setTimeout(() => {
-            const newChecks = _.cloneDeep(checks);
-            newChecks[curRow] = (r.data.check ?? []).slice(0, i + 1);
-            setChecks(newChecks);
+            const newCheckList = _.cloneDeep(checkList);
+            newCheckList[curRow] = (r.data.check ?? "").slice(0, i + 1);
+            setCheckList(newCheckList);
           }, i * 300);
         }
 
@@ -154,10 +238,9 @@ const Game = () => {
             }
           });
           setKeyMap(newkeyMap);
-          setIsEnabledInput(true);
 
           // 종료 처리
-          if (r.data.check?.every(e => e === "s")) {
+          if (r.data.check === "sssss") {
             const answerString = [
               "천재!!!",
               "굉장해요!!!",
@@ -188,6 +271,7 @@ const Game = () => {
             }, 1500);
           } else {
             setCurRow(prev => prev + 1);
+            setIsEnabledInput(true);
           }
         }, 1500);
       } else {
@@ -209,19 +293,24 @@ const Game = () => {
       return;
     }
 
-    if (0 < words[curRow].length) {
-      const newWords = _.cloneDeep(words);
-      newWords[curRow].pop();
-      setWords(newWords);
+    if (0 < lettersList[curRow].length) {
+      const lettersList_ = _.cloneDeep(lettersList);
+      lettersList_[curRow] = lettersList_[curRow].slice(0, -1);
+      setLettersList(lettersList_);
     }
   };
 
   return (
     <div className="game">
       <GameHeader onClickStatistics={() => setShowStatisticsModal(true)} />
-      <GameBody curRow={curRow} words={words} checks={checks} shake={shake} />
+      <GameBody
+        curRow={curRow}
+        lettersList={lettersList}
+        checkList={checkList}
+        shake={shake}
+      />
       <GameKeyboard
-        curWord={words[curRow]}
+        curLetters={lettersList[curRow]}
         onClickKeyboard={onClickKeyboard}
         onClickEner={onClickEnter}
         onClickBack={onClickBack}

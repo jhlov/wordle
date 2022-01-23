@@ -7,7 +7,7 @@ export interface StatisticsData {
   fail: number;
 }
 
-export const initStatisticsData = {
+export const initStatisticsData: StatisticsData = {
   currentStreak: 0,
   maxStreak: 0,
   success: {},
