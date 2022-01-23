@@ -24,6 +24,7 @@ const StatisticsModal = (props: Props) => {
   const [isFinish, setIsFinish] = useState<boolean>(false);
   const [nextTime, setNextTime] = useState<string>("");
   const [intervalId, setIntervalId] = useState<any>(null);
+  const [lastWinRow, setLastWinRow] = useState<number>(-1);
 
   useEffect(() => {
     if (props.show) {
@@ -31,6 +32,7 @@ const StatisticsModal = (props: Props) => {
       setStatisticsData(statisticsData);
 
       const gameData = getGameData();
+      setLastWinRow(gameData.checks.indexOf("sssss"));
       setIsFinish(gameData.state === "FINISH");
       if (gameData.state === "FINISH") {
         const intervalId_ = setInterval(() => {
@@ -126,7 +128,7 @@ const StatisticsModal = (props: Props) => {
                 <div key={i} className="guess-distribution-item">
                   <span>{i + 1}</span>
                   <ProgressBar
-                    className={classNames({ first: i === 0 })}
+                    className={classNames({ last: i === lastWinRow })}
                     now={(statisticsData.success[i] / maxSuccess) * 100}
                     label={statisticsData.success[i] ?? 0}
                   />
