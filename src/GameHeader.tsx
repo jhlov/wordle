@@ -1,6 +1,5 @@
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
-import SettingsIcon from "@mui/icons-material/Settings";
 import React from "react";
 import "./GameHeader.scss";
 
@@ -11,7 +10,7 @@ interface Props {
 
 const GameHeader = (props: Props) => {
   return (
-    <div className="game-header align-items-center justify-content-between py-1 border-bottom">
+    <div className="game-header align-items-center justify-content-between py-2 border-bottom">
       <button onClick={props.onClickHowTo}>
         <HelpOutlineIcon />
       </button>
@@ -19,9 +18,6 @@ const GameHeader = (props: Props) => {
       <div>
         <button onClick={props.onClickStatistics}>
           <LeaderboardOutlinedIcon />
-        </button>
-        <button>
-          <SettingsIcon />
         </button>
       </div>
     </div>

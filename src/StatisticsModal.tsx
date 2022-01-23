@@ -1,7 +1,9 @@
 import classNames from "classnames";
+import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Modal, ProgressBar } from "react-bootstrap";
 import { ROW_COUNT } from "./const";
+import { getGameData } from "./GameData";
 import {
   getStatisticsData,
   initStatisticsData,
@@ -17,10 +19,49 @@ interface Props {
 const StatisticsModal = (props: Props) => {
   const [statisticsData, setStatisticsData] =
     useState<StatisticsData>(initStatisticsData);
+  const [isFinish, setIsFinish] = useState<boolean>(false);
+  const [nextTime, setNextTime] = useState<string>("");
+  const [intervalId, setIntervalId] = useState<any>(null);
 
   useEffect(() => {
-    const statisticsData = getStatisticsData();
-    setStatisticsData(statisticsData);
+    if (props.show) {
+      const statisticsData = getStatisticsData();
+      setStatisticsData(statisticsData);
+
+      const gameData = getGameData();
+      setIsFinish(gameData.state === "FINISH");
+      if (gameData.state === "FINISH") {
+        const intervalId_ = setInterval(() => {
+          const now = moment();
+          let nextTime = moment();
+          if (now.get("h") < 12) {
+            nextTime = now.hour(12).minute(0).second(0);
+          } else {
+            nextTime = moment().add("d", 1).startOf("d");
+          }
+
+          const hours = Math.floor(
+            moment.duration(nextTime.diff(now)).asHours()
+          );
+          const minutes = Math.floor(
+            moment.duration(nextTime.diff(now)).asMinutes() % 60
+          );
+          const seconds = Math.floor(
+            moment.duration(nextTime.diff(now)).asSeconds() % 60
+          );
+
+          setNextTime(
+            `${hours.toString().padStart(2, "0")}:${minutes
+              .toString()
+              .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+          );
+        }, 1000);
+
+        setIntervalId(intervalId_);
+      }
+    } else {
+      clearInterval(intervalId);
+    }
   }, [props.show]);
 
   const winCount = useMemo(() => {
@@ -42,10 +83,6 @@ const StatisticsModal = (props: Props) => {
   const maxSuccess = useMemo(() => {
     return Math.max(...Object.values(statisticsData.success));
   }, [statisticsData]);
-
-  const isFinished = useMemo(() => {
-    return false;
-  }, []);
 
   return (
     <Modal
@@ -96,7 +133,17 @@ const StatisticsModal = (props: Props) => {
           </div>
         </section>
 
-        {isFinished && <section></section>}
+        {isFinish && (
+          <section>
+            <div>
+              <div>
+                <h2>다음 워들</h2>
+                <div className="next-time">{nextTime}</div>
+              </div>
+              <div></div>
+            </div>
+          </section>
+        )}
       </Modal.Body>
     </Modal>
   );
