@@ -4,7 +4,11 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import React from "react";
 import "./GameHeader.scss";
 
-const GameHeader = () => {
+interface Props {
+  onClickStatistics: () => void;
+}
+
+const GameHeader = (props: Props) => {
   return (
     <div className="game-header align-items-center justify-content-between py-1 border-bottom">
       <button>
@@ -12,7 +16,7 @@ const GameHeader = () => {
       </button>
       <h1 className="m-0 p-0">워들</h1>
       <div>
-        <button>
+        <button onClick={props.onClickStatistics}>
           <LeaderboardOutlinedIcon />
         </button>
         <button>

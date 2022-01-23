@@ -17,5 +17,9 @@
   button {
     border: 0;
     background-color: transparent;
+
+    &:focus {
+      outline: 0;
+    }
   }
 }

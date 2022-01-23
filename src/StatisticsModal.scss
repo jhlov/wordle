@@ -1,0 +1,71 @@
+.statistics-modal {
+  h2 {
+    text-align: center;
+    font-size: 20px;
+  }
+
+  .modal-body {
+    margin-top: -10px;
+    padding-top: 0;
+
+    section {
+      margin-bottom: 20px;
+    }
+
+    .summary {
+      display: flex;
+      justify-content: center;
+
+      .summary-item {
+        display: flex;
+        flex-direction: column;
+        padding: 0 6px;
+        text-align: center;
+
+        .value {
+          font-size: 36px;
+          font-weight: 500;
+          line-height: 1;
+        }
+
+        .title {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .guess-distribution {
+      padding: 0 60px;
+
+      .guess-distribution-item {
+        display: flex;
+        align-items: center;
+
+        span {
+          margin-right: 4px;
+          width: 14px;
+        }
+
+        .progress {
+          flex: 1;
+          height: 20px;
+          background-color: transparent;
+          border-radius: 0;
+
+          &.first {
+            .progress-bar {
+              background-color: #6aaa64;
+            }
+          }
+
+          .progress-bar {
+            background-color: #787c7e;
+            text-align: right;
+            padding: 10px;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+}

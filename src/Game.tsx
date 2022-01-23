@@ -9,6 +9,7 @@ import "./Game.scss";
 import { GameBody } from "./GameBody";
 import { GameHeader } from "./GameHeader";
 import { GameKeyboard } from "./GameKeyboard";
+import { StatisticsModal } from "./StatisticsModal";
 
 interface Response {
   id?: number;
@@ -27,6 +28,8 @@ const Game = () => {
   const [shake, setShake] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEnabledInput, setIsEnabledInput] = useState<boolean>(true);
+  const [showStatisticsModal, setShowStatisticsModal] =
+    useState<boolean>(false);
 
   useEffect(() => {
     init();
@@ -183,7 +186,7 @@ const Game = () => {
 
   return (
     <div className="game">
-      <GameHeader />
+      <GameHeader onClickStatistics={() => setShowStatisticsModal(true)} />
       <GameBody curRow={curRow} words={words} checks={checks} shake={shake} />
       <GameKeyboard
         curWord={words[curRow]}
@@ -199,6 +202,10 @@ const Game = () => {
           <Spinner animation="border" />
         </div>
       )}
+      <StatisticsModal
+        show={showStatisticsModal}
+        onClose={() => setShowStatisticsModal(false)}
+      />
     </div>
   );
 };
