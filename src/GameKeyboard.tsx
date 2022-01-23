@@ -13,9 +13,9 @@ interface Props {
 }
 
 const GameKeyboard = (props: Props) => {
-  const row1 = ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ", "ㅂ", "ㅏ", "ㅑ", "ㅓ", "ㅕ"];
-  const row2 = ["ㅅ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅗ", "ㅛ", "ㅜ", "ㅠ"];
-  const row3 = ["ㅌ", "ㅍ", "ㅎ", "ㅡ", "ㅣ", "ㅐ", "ㅔ"];
+  const row1 = ["ㅂ", "ㅈ", "ㄷ", "ㄱ", "ㅅ", "ㅛ", "ㅕ", "ㅑ", "ㅐ", "ㅔ"];
+  const row2 = ["ㅁ", "ㄴ", "ㅇ", "ㄹ", "ㅎ", "ㅗ", "ㅓ", "ㅏ", "ㅣ"];
+  const row3 = ["ㅋ", "ㅌ", "ㅊ", "ㅍ", "ㅠ", "ㅜ", "ㅡ"];
 
   return (
     <div className="game-keyboard">
