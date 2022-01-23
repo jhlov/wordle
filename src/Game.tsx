@@ -307,7 +307,9 @@ const Game = () => {
   const onClickShare = () => {
     const gameData = getGameData();
     let copyText = `워들 ${gameData.id} ${
-      gameData.checks.filter(row => row).length
+      gameData.checks.some(row => row === "sssss")
+        ? gameData.checks.filter(row => row).length
+        : "X"
     }/${gameData.checks.length}\n\n`;
 
     copyText += gameData.checks
