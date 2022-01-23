@@ -42,6 +42,7 @@ const Game = () => {
     setId(r.data.id!);
 
     // TODO: local load
+    // TODO: 방법
 
     setIsLoading(false);
   };
@@ -81,6 +82,10 @@ const Game = () => {
             curRow
           ].join("")}`
         );
+
+        // TODO: id 가 변경 되었을 경우 처리
+
+        // TODO: 기록
 
         setIsLoading(false);
 
@@ -127,8 +132,27 @@ const Game = () => {
           setKeyMap(newkeyMap);
           setIsEnabledInput(true);
 
-          if (curRow < ROW_COUNT - 1) {
-            setCurRow(prev => prev + 1);
+          // 종료 처리
+          if (r.data.check?.every(e => e === "s")) {
+            const answerString = [
+              "천재!!!",
+              "굉장해요!!!",
+              "정말 잘했어요!!",
+              "멋져요!",
+              "잘했어요!!",
+              "겨우 맞췄네요!"
+            ];
+
+            notify({
+              text: answerString[curRow],
+              variant: "dark"
+            });
+
+            // TODO: 통계 모달
+          } else {
+            if (curRow < ROW_COUNT - 1) {
+              setCurRow(prev => prev + 1);
+            }
           }
         }, 1500);
       } else {
