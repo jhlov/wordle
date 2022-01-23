@@ -1,7 +1,7 @@
 import axios from "axios";
 import Hangul from "hangul-js";
 import _ from "lodash";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Notification, { notify } from "react-notify-bootstrap";
 import { ROW_COUNT, WORD_COUNT } from "./const";
@@ -19,14 +19,38 @@ interface Response {
 }
 
 const Game = () => {
+  const [id, setId] = useState<number>(0);
   const [curRow, setCurRow] = useState<number>(0);
   const [words, setWords] = useState<string[][]>([[], [], [], [], [], []]);
   const [checks, setChecks] = useState<string[][]>([[], [], [], [], [], []]);
   const [keyMap, setKeyMap] = useState<{ [key: string]: string }>({});
   const [shake, setShake] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isEnabledInput, setIsEnabledInput] = useState<boolean>(true);
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = async () => {
+    setIsLoading(true);
+
+    const r = await axios.get<Response>(
+      "https://ukntcifwza.execute-api.ap-northeast-2.amazonaws.com/default/wordle"
+    );
+
+    setId(r.data.id!);
+
+    // TODO: local load
+
+    setIsLoading(false);
+  };
 
   const onClickKeyboard = (letter: string) => {
+    if (!isEnabledInput) {
+      return;
+    }
+
     if (words[curRow].length < WORD_COUNT) {
       const newWords = _.cloneDeep(words);
       newWords[curRow].push(letter);
@@ -35,6 +59,10 @@ const Game = () => {
   };
 
   const onClickEnter = async () => {
+    if (!isEnabledInput) {
+      return;
+    }
+
     if (words[curRow].length === WORD_COUNT) {
       const word = Hangul.assemble(words[curRow]);
       console.log(word);
@@ -46,6 +74,7 @@ const Game = () => {
 
       if (isCompleteWord) {
         setIsLoading(true);
+        setIsEnabledInput(false);
 
         const r = await axios.get<Response>(
           `https://ukntcifwza.execute-api.ap-northeast-2.amazonaws.com/default/wordle?word=${word}&letters=${words[
@@ -66,6 +95,8 @@ const Game = () => {
           setTimeout(() => {
             setShake(false);
           }, 200);
+
+          setIsEnabledInput(true);
           return;
         }
 
@@ -94,6 +125,7 @@ const Game = () => {
             }
           });
           setKeyMap(newkeyMap);
+          setIsEnabledInput(true);
 
           if (curRow < ROW_COUNT - 1) {
             setCurRow(prev => prev + 1);
@@ -114,6 +146,10 @@ const Game = () => {
   };
 
   const onClickBack = () => {
+    if (!isEnabledInput) {
+      return;
+    }
+
     if (0 < words[curRow].length) {
       const newWords = _.cloneDeep(words);
       newWords[curRow].pop();
