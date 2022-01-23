@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/wordle/static/css/main.b7d9bb4c.chunk.css",
-    "main.js": "/wordle/static/js/main.537cda2c.chunk.js",
+    "main.js": "/wordle/static/js/main.111ecc58.chunk.js",
     "runtime-main.js": "/wordle/static/js/runtime-main.3742234f.js",
     "static/css/2.48bd9356.chunk.css": "/wordle/static/css/2.48bd9356.chunk.css",
     "static/js/2.c67625d8.chunk.js": "/wordle/static/js/2.c67625d8.chunk.js",
@@ -14,6 +14,6 @@
     "static/css/2.48bd9356.chunk.css",
     "static/js/2.c67625d8.chunk.js",
     "static/css/main.b7d9bb4c.chunk.css",
-    "static/js/main.537cda2c.chunk.js"
+    "static/js/main.111ecc58.chunk.js"
   ]
 }
