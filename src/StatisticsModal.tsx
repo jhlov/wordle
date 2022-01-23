@@ -1,7 +1,8 @@
+import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import classNames from "classnames";
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
-import { Modal, ProgressBar } from "react-bootstrap";
+import { Button, Modal, ProgressBar } from "react-bootstrap";
 import { ROW_COUNT } from "./const";
 import { getGameData } from "./GameData";
 import {
@@ -14,6 +15,7 @@ import "./StatisticsModal.scss";
 interface Props {
   show: boolean;
   onClose: () => void;
+  onClickShare: () => void;
 }
 
 const StatisticsModal = (props: Props) => {
@@ -135,12 +137,20 @@ const StatisticsModal = (props: Props) => {
 
         {isFinish && (
           <section>
-            <div>
-              <div>
-                <h2>다음 워들</h2>
+            <div className="bottom">
+              <div className="border-right">
+                <h2>다음 워들까지</h2>
                 <div className="next-time">{nextTime}</div>
               </div>
-              <div></div>
+              <div className="d-flex align-items-center justify-content-center">
+                <Button
+                  className="share-btn"
+                  size="lg"
+                  onClick={props.onClickShare}
+                >
+                  공유 <ShareOutlinedIcon />
+                </Button>
+              </div>
             </div>
           </section>
         )}

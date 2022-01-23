@@ -302,6 +302,31 @@ const Game = () => {
     }
   };
 
+  const onClickShare = () => {
+    const gameData = getGameData();
+    let str = `워들 ${gameData.id} ${
+      gameData.checks.filter(row => row).length
+    }/${gameData.checks.length}\n\n`;
+
+    str += gameData.checks
+      .filter(row => row !== "")
+      .map(row =>
+        row
+          .split("")
+          .reduce(
+            (p, c) => (p += c === "s" ? "🟩" : c === "b" ? "🟨" : "⬜"),
+            ""
+          )
+      )
+      .join("\n");
+    navigator.clipboard.writeText(str);
+
+    notify({
+      text: "게임 결과를 클립보드에 복사했습니다.",
+      variant: "dark"
+    });
+  };
+
   return (
     <div className="game">
       <GameHeader
@@ -331,6 +356,7 @@ const Game = () => {
       <StatisticsModal
         show={showStatisticsModal}
         onClose={() => setShowStatisticsModal(false)}
+        onClickShare={onClickShare}
       />
       <HelpModal show={showHelpModal} onClose={() => setShowHelpModal(false)} />
     </div>
