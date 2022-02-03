@@ -19,6 +19,7 @@ interface Response {
   letters?: string;
   check?: string;
   error?: string;
+  solution?: string;
 }
 
 const Game = () => {
@@ -147,7 +148,9 @@ const Game = () => {
         setIsEnabledInput(false);
 
         const r = await axios.get<Response>(
-          `https://ukntcifwza.execute-api.ap-northeast-2.amazonaws.com/default/wordle?word=${word}&letters=${lettersList[curRow]}`
+          `https://ukntcifwza.execute-api.ap-northeast-2.amazonaws.com/default/wordle?word=${word}&letters=${
+            lettersList[curRow]
+          }&isLast=${curRow === ROW_COUNT - 1}`
         );
 
         setIsLoading(false);
@@ -265,7 +268,7 @@ const Game = () => {
             }, 2000);
           } else if (curRow === ROW_COUNT - 1) {
             notify({
-              text: "다음 기회에 다시 도전해보세요",
+              text: `다음 기회에 다시 도전해보세요. 정답은 '${r.data.solution}' 입니다`,
               variant: "dark"
             });
 
