@@ -10,6 +10,7 @@ import { GameBody } from "./GameBody";
 import { GameData, getGameData, initGameData, saveGameData } from "./GameData";
 import { GameHeader } from "./GameHeader";
 import { GameKeyboard } from "./GameKeyboard";
+import { GameKeyboardInput } from "./GameKeyboardInput";
 import { HelpModal } from "./HelpModal";
 import { getStatisticsData, saveStatisticsData } from "./StatisticsData";
 import { StatisticsModal } from "./StatisticsModal";
@@ -359,6 +360,12 @@ const Game = () => {
         onClickEner={onClickEnter}
         onClickBack={onClickBack}
         keyMap={keyMap}
+      />
+      <GameKeyboardInput
+        curLetters={lettersList[curRow]}
+        onClickKeyboard={onClickKeyboard}
+        onClickEner={onClickEnter}
+        onClickBack={onClickBack}
       />
 
       <Notification options={{ position: "top", delay: 2000 }} />
