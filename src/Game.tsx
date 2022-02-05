@@ -314,7 +314,8 @@ const Game = () => {
       gameData.checks.some(row => row === "sssss")
         ? gameData.checks.filter(row => row).length
         : "X"
-    }/${gameData.checks.length}\n\n`;
+    }/${gameData.checks.length}\n`;
+    copyText += "https://jhlov.github.io/wordle\n\n";
 
     copyText += gameData.checks
       .filter(row => row !== "")
