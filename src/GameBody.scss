@@ -16,6 +16,11 @@
       justify-content: center;
       align-items: center;
 
+      @media (max-width: 320px) {
+        width: 46px;
+        height: 46px;
+      }
+
       &.letter {
         border: 2px solid #878a8c;
         animation: ani 0.2s;

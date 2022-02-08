@@ -32,7 +32,7 @@ const GameKeyboard = (props: Props) => {
           </div>
         ))}
       </div>
-      <div className="game-keyboard-row">
+      <div className="game-keyboard-row px-3">
         {row2.map(letter => (
           <div
             key={letter}
