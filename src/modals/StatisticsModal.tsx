@@ -1,15 +1,18 @@
+import CloseIcon from "@mui/icons-material/Close";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import classNames from "classnames";
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Modal, ProgressBar } from "react-bootstrap";
-import { ROW_COUNT } from "./const";
-import { getGameData } from "./GameData";
+import { useSelector } from "react-redux";
+import { ROW_COUNT } from "./../const";
+import { getGameData } from "./../GameData";
 import {
   getStatisticsData,
   initStatisticsData,
   StatisticsData
-} from "./StatisticsData";
+} from "./../StatisticsData";
+import { RootState } from "./../store";
 import "./StatisticsModal.scss";
 
 interface Props {
@@ -25,6 +28,8 @@ const StatisticsModal = (props: Props) => {
   const [nextTime, setNextTime] = useState<string>("");
   const [intervalId, setIntervalId] = useState<any>(null);
   const [lastWinRow, setLastWinRow] = useState<number>(-1);
+
+  const isDarkmode = useSelector((state: RootState) => state.common.isDarkmode);
 
   useEffect(() => {
     if (props.show) {
@@ -90,11 +95,17 @@ const StatisticsModal = (props: Props) => {
 
   return (
     <Modal
-      className="statistics-modal"
+      className={classNames("statistics-modal", { darkmode: isDarkmode })}
+      backdropClassName={isDarkmode ? "darkmode" : ""}
       show={props.show}
       onHide={props.onClose}
+      centered
     >
-      <Modal.Header className="border-0" closeButton />
+      <Modal.Header className="border-0">
+        <button className="close-btn" onClick={props.onClose}>
+          <CloseIcon />
+        </button>
+      </Modal.Header>
 
       <Modal.Body>
         <section>

@@ -1,5 +1,9 @@
+import CloseIcon from "@mui/icons-material/Close";
+import classNames from "classnames";
 import React from "react";
 import { Modal } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import { RootState } from "./../store";
 import "./HelpModal.scss";
 
 interface Props {
@@ -8,9 +12,20 @@ interface Props {
 }
 
 const HelpModal = (props: Props) => {
+  const isDarkmode = useSelector((state: RootState) => state.common.isDarkmode);
+
   return (
-    <Modal className="help-modal" show={props.show} onHide={props.onClose}>
-      <Modal.Header className="border-0" closeButton />
+    <Modal
+      className={classNames("help-modal fullsize", { darkmode: isDarkmode })}
+      backdropClassName={isDarkmode ? "darkmode fullsize" : "fullsize"}
+      show={props.show}
+      onHide={props.onClose}
+    >
+      <Modal.Header className="border-0">
+        <button className="close-btn" onClick={props.onClose}>
+          <CloseIcon />
+        </button>
+      </Modal.Header>
 
       <Modal.Body>
         <section className="border-bottom">

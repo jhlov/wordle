@@ -1,3 +1,5 @@
+@import "./../color";
+
 .statistics-modal {
   h2 {
     text-align: center;
@@ -54,12 +56,12 @@
 
           &.last {
             .progress-bar {
-              background-color: #6aaa64;
+              background-color: $tile-green-color;
             }
           }
 
           .progress-bar {
-            background-color: #787c7e;
+            background-color: $tile-gray-color;
             text-align: right;
             padding: 10px;
             font-weight: bold;
@@ -82,9 +84,35 @@
       }
 
       .share-btn {
-        background-color: #6aaa64;
+        background-color: $tile-green-color;
         border: 0;
         font-weight: bold;
+      }
+    }
+  }
+}
+
+.statistics-modal.darkmode {
+  .modal-body {
+    .guess-distribution {
+      .guess-distribution-item {
+        .progress {
+          &.last {
+            .progress-bar {
+              background-color: $dark-tile-green-color;
+            }
+          }
+
+          .progress-bar {
+            background-color: $dark-tile-gray-color;
+          }
+        }
+      }
+    }
+
+    .bottom {
+      .share-btn {
+        background-color: $dark-tile-green-color;
       }
     }
   }

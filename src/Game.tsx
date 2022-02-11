@@ -11,9 +11,9 @@ import { GameData, getGameData, initGameData, saveGameData } from "./GameData";
 import { GameHeader } from "./GameHeader";
 import { GameKeyboard } from "./GameKeyboard";
 import { GameKeyboardInput } from "./GameKeyboardInput";
-import { HelpModal } from "./HelpModal";
+import { HelpModal } from "./modals/HelpModal";
+import { StatisticsModal } from "./modals/StatisticsModal";
 import { getStatisticsData, saveStatisticsData } from "./StatisticsData";
-import { StatisticsModal } from "./StatisticsModal";
 
 interface Response {
   id?: number;

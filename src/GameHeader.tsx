@@ -1,7 +1,9 @@
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
-import React from "react";
+import SettingsIcon from "@mui/icons-material/Settings";
+import React, { useState } from "react";
 import "./GameHeader.scss";
+import { SettingModal } from "./modals/SettingModal";
 
 interface Props {
   onClickStatistics: () => void;
@@ -9,6 +11,8 @@ interface Props {
 }
 
 const GameHeader = (props: Props) => {
+  const [showSettingModal, setShowSettingModal] = useState<boolean>(false);
+
   return (
     <div className="game-header align-items-center justify-content-between py-2 border-bottom">
       <button onClick={props.onClickHowTo}>
@@ -19,7 +23,15 @@ const GameHeader = (props: Props) => {
         <button onClick={props.onClickStatistics}>
           <LeaderboardOutlinedIcon />
         </button>
+        <button onClick={() => setShowSettingModal(true)}>
+          <SettingsIcon />
+        </button>
       </div>
+
+      <SettingModal
+        show={showSettingModal}
+        onClose={() => setShowSettingModal(false)}
+      />
     </div>
   );
 };

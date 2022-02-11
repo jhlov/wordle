@@ -1,3 +1,5 @@
+@import "color";
+
 .game-body {
   display: flex;
   flex-direction: column;
@@ -27,7 +29,7 @@
       }
 
       &.empty {
-        border: 2px solid #d3d6da;
+        border: 2px solid $tile-border-color;
       }
 
       &.jump {
@@ -43,15 +45,15 @@
       }
 
       &.s {
-        background-color: #6aaa64;
+        background-color: $tile-green-color;
       }
 
       &.b {
-        background-color: #c9b458;
+        background-color: $tile-yellow-color;
       }
 
       &.o {
-        background-color: #787c7e;
+        background-color: $tile-gray-color;
       }
     }
 
@@ -61,6 +63,29 @@
   }
 }
 
+.darkmode {
+  .game-body {
+    .game-body-row {
+      .item {
+        &.empty {
+          border: 2px solid $dark-tile-border-color;
+        }
+
+        &.s {
+          background-color: $dark-tile-green-color;
+        }
+
+        &.b {
+          background-color: $dark-tile-yellow-color;
+        }
+
+        &.o {
+          background-color: $dark-tile-gray-color;
+        }
+      }
+    }
+  }
+}
 @keyframes ani {
   0% {
     transform: scale(1.1);

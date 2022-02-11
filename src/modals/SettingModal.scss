@@ -1,0 +1,62 @@
+@import "./../color";
+
+.setting-modal {
+  .modal-title {
+    flex: 1;
+    text-align: center;
+  }
+
+  section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 -1rem;
+    padding: 1rem;
+    border-bottom: 1px solid $border-color;
+
+    p {
+      margin: 0;
+      color: $tile-gray-color;
+    }
+
+    form {
+      .form-check {
+        display: flex;
+        align-items: center;
+
+        .form-check-input {
+          transform: scale(1.2);
+          margin: 0;
+          margin-right: 4px;
+          position: unset;
+
+          &:checked {
+            background-color: $tile-green-color;
+            border-color: $tile-green-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+.setting-modal.darkmode {
+  section {
+    border-bottom: 1px solid $dark-border-color;
+
+    p {
+      color: $dark-key-bg-color;
+    }
+
+    form {
+      .form-check {
+        .form-check-input {
+          &:checked {
+            background-color: $dark-tile-green-color;
+            border-color: $dark-tile-green-color;
+          }
+        }
+      }
+    }
+  }
+}

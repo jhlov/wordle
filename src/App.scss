@@ -1,4 +1,5 @@
 @import "~bootstrap/scss/bootstrap";
+@import "color";
 
 .App {
   text-align: center;
@@ -18,4 +19,75 @@
   .toast {
     top: 130px !important;
   }
+
+  // common
+  .border-bottom {
+    border-bottom: 1px solid $border-color !important;
+  }
+
+  &.darkmode {
+    background-color: black;
+    color: white;
+
+    .border-bottom {
+      border-bottom: 1px solid $border-color !important;
+    }
+  }
+}
+
+.modal {
+  .close-btn {
+    transform: scale(1.2);
+    background-color: transparent;
+    box-shadow: none;
+    border: 0;
+    margin-left: auto !important;
+    opacity: 0.5;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+body.darkmode {
+  background-color: black;
+}
+
+.modal.darkmode {
+  .close-btn {
+    color: white;
+  }
+
+  .modal-content {
+    background-color: #121213;
+    border: 1px solid #1a1a1b;
+    color: white;
+
+    .btn-close {
+      background-color: white;
+    }
+  }
+}
+
+.modal.fullsize {
+  .modal-dialog {
+    margin-top: 0;
+    margin-bottom: 0;
+
+    .modal-content {
+      min-height: 100vh;
+      border: 0;
+    }
+  }
+}
+
+.fullsize.modal-backdrop {
+  background-color: white !important;
+  opacity: 1;
+}
+
+.darkmode.fullsize.modal-backdrop {
+  background-color: #121213 !important;
+  opacity: 1;
 }
