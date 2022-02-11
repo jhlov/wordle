@@ -1,0 +1,43 @@
+.add-solution {
+  .toast-container {
+    z-index: 11111111111111;
+  }
+
+  .add-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+
+    button {
+      width: 48px;
+      height: 48px;
+      border-radius: 24px;
+      border: 0;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+      background-color: white;
+    }
+  }
+}
+
+.add-solution-modal {
+  .tiles {
+    display: flex;
+    justify-content: center;
+
+    .tile {
+      border: 2px solid #878a8c;
+      width: 60px;
+      height: 60px;
+      margin: 3px;
+      font-weight: 900;
+      font-size: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &.invalid {
+        background-color: pink;
+      }
+    }
+  }
+}

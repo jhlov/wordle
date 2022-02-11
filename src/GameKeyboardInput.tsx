@@ -1,23 +1,25 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { LETTER_COUNT } from "./const";
+import useInterval from "./useInterval";
 
 interface Props {
   curLetters: string;
   onClickKeyboard: (letter: string) => void;
   onClickEner: () => void;
   onClickBack: () => void;
+  showAddSolutionModal: boolean;
 }
 
 const GameKeyboardInput = (props: Props) => {
   const divRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setInterval(() => {
-      if (divRef.current) {
+  useInterval(() => {
+    if (divRef.current) {
+      if (!props.showAddSolutionModal) {
         divRef.current.focus();
       }
-    }, 100);
-  }, []);
+    }
+  }, 100);
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.code === "Enter") {

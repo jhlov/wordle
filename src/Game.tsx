@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Notification, { notify } from "react-notify-bootstrap";
 import { useSelector } from "react-redux";
+import { AddSolution } from "./AddSolution";
 import { LETTER_COUNT, ROW_COUNT } from "./const";
 import "./Game.scss";
 import { GameBody } from "./GameBody";
@@ -50,6 +51,8 @@ const Game = () => {
   const [showStatisticsModal, setShowStatisticsModal] =
     useState<boolean>(false);
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
+  const [showAddSolutionModal, setShowAddSolutionModal] =
+    useState<boolean>(false);
 
   const isDarkmode = useSelector((state: RootState) => state.common.isDarkmode);
   const isHardmode = useSelector((state: RootState) => state.common.isHardmode);
@@ -431,20 +434,26 @@ const Game = () => {
         onClickKeyboard={onClickKeyboard}
         onClickEner={onClickEnter}
         onClickBack={onClickBack}
+        showAddSolutionModal={showAddSolutionModal}
       />
 
       <Notification options={{ position: "top", delay: 2000 }} />
+
       {isLoading && (
         <div className="loading">
           <Spinner animation="border" />
         </div>
       )}
+
       <StatisticsModal
         show={showStatisticsModal}
         onClose={() => setShowStatisticsModal(false)}
         onClickShare={onClickShare}
       />
+
       <HelpModal show={showHelpModal} onClose={() => setShowHelpModal(false)} />
+
+      <AddSolution setShowAddSolutionModal={setShowAddSolutionModal} />
     </div>
   );
 };
