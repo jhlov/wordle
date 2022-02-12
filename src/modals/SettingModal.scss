@@ -40,20 +40,22 @@
   }
 }
 
-.setting-modal.darkmode {
-  section {
-    border-bottom: 1px solid $dark-border-color;
+.darkmode {
+  .setting-modal {
+    section {
+      border-bottom: 1px solid $dark-border-color;
 
-    p {
-      color: $dark-key-bg-color;
-    }
+      p {
+        color: $dark-key-bg-color;
+      }
 
-    form {
-      .form-check {
-        .form-check-input {
-          &:checked {
-            background-color: $dark-tile-green-color;
-            border-color: $dark-tile-green-color;
+      form {
+        .form-check {
+          .form-check-input {
+            &:checked {
+              background-color: $dark-tile-green-color;
+              border-color: $dark-tile-green-color;
+            }
           }
         }
       }

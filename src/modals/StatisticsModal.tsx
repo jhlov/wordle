@@ -4,7 +4,6 @@ import classNames from "classnames";
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Modal, ProgressBar } from "react-bootstrap";
-import { useSelector } from "react-redux";
 import { ROW_COUNT } from "./../const";
 import { getGameData } from "./../GameData";
 import {
@@ -12,7 +11,6 @@ import {
   initStatisticsData,
   StatisticsData
 } from "./../StatisticsData";
-import { RootState } from "./../store";
 import "./StatisticsModal.scss";
 
 interface Props {
@@ -28,8 +26,6 @@ const StatisticsModal = (props: Props) => {
   const [nextTime, setNextTime] = useState<string>("");
   const [intervalId, setIntervalId] = useState<any>(null);
   const [lastWinRow, setLastWinRow] = useState<number>(-1);
-
-  const isDarkmode = useSelector((state: RootState) => state.common.isDarkmode);
 
   useEffect(() => {
     if (props.show) {
@@ -95,8 +91,7 @@ const StatisticsModal = (props: Props) => {
 
   return (
     <Modal
-      className={classNames("statistics-modal", { darkmode: isDarkmode })}
-      backdropClassName={isDarkmode ? "darkmode" : ""}
+      className="statistics-modal"
       show={props.show}
       onHide={props.onClose}
       centered

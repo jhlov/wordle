@@ -1,10 +1,18 @@
 @import "~bootstrap/scss/bootstrap";
 @import "color";
 
+body {
+  color: #1a1a1b;
+}
+
+body.darkmode {
+  background-color: black;
+  color: white;
+}
+
 .App {
   text-align: center;
   font-family: "Titillium Web", "Noto Sans KR", sans-serif;
-  color: rgb(26, 26, 27);
 
   .mobile-container {
     padding: 0 15px;
@@ -18,11 +26,6 @@
 
   .toast {
     top: 130px !important;
-  }
-
-  &.darkmode {
-    background-color: black;
-    color: white;
   }
 }
 
@@ -52,22 +55,20 @@
   }
 }
 
-body.darkmode {
-  background-color: black;
-}
+.darkmode {
+  .modal {
+    .close-btn {
+      color: white;
+    }
 
-.modal.darkmode {
-  .close-btn {
-    color: white;
-  }
+    .modal-content {
+      background-color: #121213;
+      border: 1px solid #1a1a1b;
+      color: white;
 
-  .modal-content {
-    background-color: #121213;
-    border: 1px solid #1a1a1b;
-    color: white;
-
-    .btn-close {
-      background-color: white;
+      .btn-close {
+        background-color: white;
+      }
     }
   }
 }
@@ -89,7 +90,9 @@ body.darkmode {
   opacity: 1;
 }
 
-.darkmode.fullsize.modal-backdrop {
-  background-color: #121213 !important;
-  opacity: 1;
+.darkmode {
+  .fullsize.modal-backdrop {
+    background-color: #121213 !important;
+    opacity: 1;
+  }
 }

@@ -4,6 +4,7 @@ import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Notification, { notify } from "react-notify-bootstrap";
+import { useSelector } from "react-redux";
 import { LETTER_COUNT, ROW_COUNT } from "./const";
 import "./Game.scss";
 import { GameBody } from "./GameBody";
@@ -14,6 +15,7 @@ import { GameKeyboardInput } from "./GameKeyboardInput";
 import { HelpModal } from "./modals/HelpModal";
 import { StatisticsModal } from "./modals/StatisticsModal";
 import { getStatisticsData, saveStatisticsData } from "./StatisticsData";
+import { RootState } from "./store";
 
 interface Response {
   id?: number;
@@ -48,6 +50,8 @@ const Game = () => {
   const [showStatisticsModal, setShowStatisticsModal] =
     useState<boolean>(false);
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
+
+  const isDarkmode = useSelector((state: RootState) => state.common.isDarkmode);
 
   useEffect(() => {
     init();
@@ -323,7 +327,9 @@ const Game = () => {
         row
           .split("")
           .reduce(
-            (p, c) => (p += c === "s" ? "🟩" : c === "b" ? "🟨" : "⬜"),
+            (p, c) =>
+              (p +=
+                c === "s" ? "🟩" : c === "b" ? "🟨" : isDarkmode ? "⬛" : "⬜"),
             ""
           )
       )

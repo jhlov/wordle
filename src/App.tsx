@@ -1,16 +1,14 @@
 import classNames from "classnames";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import "./App.scss";
 import { Game } from "./Game";
-import { RootState } from "./store";
 import { setDarkmode } from "./store/common";
 
 function App() {
   const dispatch = useDispatch();
 
   const isMobile = true;
-  const isDarkmode = useSelector((state: RootState) => state.common.isDarkmode);
 
   useEffect(() => {
     const darkmode = localStorage.getItem("wordle-darkmode") === "true";
@@ -22,7 +20,7 @@ function App() {
   }, []);
 
   return (
-    <div className={classNames("App", { darkmode: isDarkmode })}>
+    <div className="App">
       <div className={classNames(isMobile ? "mobile-container" : "container")}>
         <Game />
       </div>

@@ -63,25 +63,27 @@
   }
 }
 
-.help-modal.darkmode {
-  .modal-body {
-    .examples {
-      .items {
-        .item {
-          &.letter {
-            border: 2px solid $dark-tile-border-color;
-          }
+.darkmode {
+  .help-modal {
+    .modal-body {
+      .examples {
+        .items {
+          .item {
+            &.letter {
+              border: 2px solid $dark-tile-border-color;
+            }
 
-          &.s {
-            background-color: $dark-tile-green-color;
-          }
+            &.s {
+              background-color: $dark-tile-green-color;
+            }
 
-          &.b {
-            background-color: $dark-tile-yellow-color;
-          }
+            &.b {
+              background-color: $dark-tile-yellow-color;
+            }
 
-          &.o {
-            background-color: $dark-tile-gray-color;
+            &.o {
+              background-color: $dark-tile-gray-color;
+            }
           }
         }
       }

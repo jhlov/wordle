@@ -38,8 +38,8 @@ const SettingModal = (props: Props) => {
 
   return (
     <Modal
-      className={classNames("setting-modal fullsize", { darkmode: isDarkmode })}
-      backdropClassName={isDarkmode ? "darkmode fullsize" : "fullsize"}
+      className="setting-modal fullsize"
+      backdropClassName="fullsize"
       show={props.show}
       onHide={props.onClose}
     >
