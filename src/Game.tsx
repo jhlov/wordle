@@ -53,6 +53,9 @@ const Game = () => {
 
   const isDarkmode = useSelector((state: RootState) => state.common.isDarkmode);
   const isHardmode = useSelector((state: RootState) => state.common.isHardmode);
+  const isContrastmode = useSelector(
+    (state: RootState) => state.common.isContrastMode
+  );
 
   useEffect(() => {
     init();
@@ -374,7 +377,17 @@ const Game = () => {
           .reduce(
             (p, c) =>
               (p +=
-                c === "s" ? "🟩" : c === "b" ? "🟨" : isDarkmode ? "⬛" : "⬜"),
+                c === "s"
+                  ? isContrastmode
+                    ? "🟧"
+                    : "🟩"
+                  : c === "b"
+                  ? isContrastmode
+                    ? "🟦"
+                    : "🟨"
+                  : isDarkmode
+                  ? "⬛"
+                  : "⬜"),
             ""
           )
       )
