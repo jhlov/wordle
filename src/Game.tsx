@@ -52,6 +52,7 @@ const Game = () => {
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
 
   const isDarkmode = useSelector((state: RootState) => state.common.isDarkmode);
+  const isHardmode = useSelector((state: RootState) => state.common.isHardmode);
 
   useEffect(() => {
     init();
@@ -149,6 +150,50 @@ const Game = () => {
         .every(letter => Hangul.isComplete(letter));
 
       if (isCompleteWord) {
+        // 하드 모드 체크
+        if (isHardmode) {
+          // 스트라이크 체크
+          for (let i = 0; i < curRow; ++i) {
+            for (let j = 0; j < LETTER_COUNT; ++j) {
+              if (checkList[i].split("")[j] === "s") {
+                if (
+                  lettersList[curRow].split("")[j] !==
+                  lettersList[i].split("")[j]
+                ) {
+                  notify({
+                    text: `${j + 1}번째 글자는 '${
+                      lettersList[i].split("")[j]
+                    }' 이어야 합니다.`,
+                    variant: "dark"
+                  });
+
+                  return;
+                }
+              }
+            }
+          }
+
+          // 볼 체크
+          for (let i = 0; i < curRow; ++i) {
+            for (let j = 0; j < LETTER_COUNT; ++j) {
+              if (checkList[i].split("")[j] === "b") {
+                if (
+                  !lettersList[curRow].includes(lettersList[i].split("")[j])
+                ) {
+                  notify({
+                    text: `'${
+                      lettersList[i].split("")[j]
+                    }' 글자가 포함되어야 합니다.`,
+                    variant: "dark"
+                  });
+
+                  return;
+                }
+              }
+            }
+          }
+        }
+
         setIsLoading(true);
         setIsEnabledInput(false);
 
@@ -318,7 +363,7 @@ const Game = () => {
       gameData.checks.some(row => row === "sssss")
         ? gameData.checks.filter(row => row).length
         : "X"
-    }/${gameData.checks.length}\n`;
+    }/${gameData.checks.length}${isHardmode ? "*" : ""}\n`;
     copyText += "https://jhlov.github.io/wordle\n\n";
 
     copyText += gameData.checks

@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import "./App.scss";
 import { Game } from "./Game";
-import { setDarkmode } from "./store/common";
+import { setDarkmode, setHardmode } from "./store/common";
 
 function App() {
   const dispatch = useDispatch();
@@ -11,6 +11,9 @@ function App() {
   const isMobile = true;
 
   useEffect(() => {
+    const harmode = localStorage.getItem("wordle-hardmode") === "true";
+    dispatch(setHardmode(harmode));
+
     const darkmode = localStorage.getItem("wordle-darkmode") === "true";
     dispatch(setDarkmode(darkmode));
 

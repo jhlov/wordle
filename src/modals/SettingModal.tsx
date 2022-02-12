@@ -50,7 +50,7 @@ const SettingModal = (props: Props) => {
         </button>
       </Modal.Header>
       <Modal.Body>
-        {/* <section className="pt-0">
+        <section className="pt-0">
           <div>
             <div>
               <b>하드 모드</b>
@@ -68,7 +68,7 @@ const SettingModal = (props: Props) => {
               onChange={onChangeHardmode}
             />
           </Form>
-        </section> */}
+        </section>
         <section>
           <div>
             <div>
