@@ -23,7 +23,7 @@ const GameKeyboard = (props: Props) => {
         {row1.map(letter => (
           <div
             key={letter}
-            className={classNames("item", {
+            className={classNames("tile", {
               [props.keyMap[letter]]: props.keyMap[letter]
             })}
             onClick={() => props.onClickKeyboard(letter)}
@@ -36,7 +36,7 @@ const GameKeyboard = (props: Props) => {
         {row2.map(letter => (
           <div
             key={letter}
-            className={classNames("item", {
+            className={classNames("tile", {
               [props.keyMap[letter]]: props.keyMap[letter]
             })}
             onClick={() => props.onClickKeyboard(letter)}
@@ -47,7 +47,7 @@ const GameKeyboard = (props: Props) => {
       </div>
       <div className="game-keyboard-row">
         <button
-          className="item"
+          className="tile"
           disabled={props.curLetters.length < LETTER_COUNT}
           onClick={props.onClickEner}
         >
@@ -56,7 +56,7 @@ const GameKeyboard = (props: Props) => {
         {row3.map(letter => (
           <div
             key={letter}
-            className={classNames("item", {
+            className={classNames("tile", {
               [props.keyMap[letter]]: props.keyMap[letter]
             })}
             onClick={() => props.onClickKeyboard(letter)}
@@ -65,7 +65,7 @@ const GameKeyboard = (props: Props) => {
           </div>
         ))}
         <button
-          className="item"
+          className="tile"
           disabled={props.curLetters.length === 0}
           onClick={props.onClickBack}
         >

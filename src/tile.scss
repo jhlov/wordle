@@ -1,60 +1,72 @@
 @import "color";
 
 .tile {
+  color: #212529 !important;
+
+  &:disabled {
+    color: rgba(#212529, 0.3) !important;
+  }
+
   &.letter {
-    border: 2px solid $tile-letter-border-color;
+    border: 2px solid $tile-letter-border-color !important;
   }
 
   &.empty {
-    border: 2px solid $tile-empty-border-color;
+    border: 2px solid $tile-empty-border-color !important;
   }
 
   &.s,
   &.b,
   &.o {
-    color: white;
-    border: 0;
+    color: white !important;
+    border: 0 !important;
   }
 
   &.s {
-    background-color: $tile-green-color;
+    background-color: $tile-green-color !important;
   }
 
   &.b {
-    background-color: $tile-yellow-color;
+    background-color: $tile-yellow-color !important;
   }
 
   &.o {
-    background-color: $tile-gray-color;
+    background-color: $tile-gray-color !important;
   }
 }
 
 .darkmode {
   .tile {
+    color: white !important;
+
+    &:disabled {
+      color: rgba(white, 0.3) !important;
+    }
+
     &.letter {
-      border: 2px solid $dark-tile-letter-border-color;
+      border: 2px solid $dark-tile-letter-border-color !important;
     }
 
     &.empty {
-      border: 2px solid $dark-tile-empty-border-color;
+      border: 2px solid $dark-tile-empty-border-color !important;
     }
 
     &.s,
     &.b,
     &.o {
-      border: 0;
+      border: 0 !important;
     }
 
     &.s {
-      background-color: $dark-tile-green-color;
+      background-color: $dark-tile-green-color !important;
     }
 
     &.b {
-      background-color: $dark-tile-yellow-color;
+      background-color: $dark-tile-yellow-color !important;
     }
 
     &.o {
-      background-color: $dark-tile-gray-color;
+      background-color: $dark-tile-gray-color !important;
     }
   }
 }
