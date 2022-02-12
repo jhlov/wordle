@@ -85,6 +85,16 @@ const SettingModal = (props: Props) => {
             />
           </Form>
         </section>
+        <section>
+          <div>
+            <div>
+              <b>피드백</b>
+            </div>
+          </div>
+          <div>
+            <a href="mailto:jhlovv@gmail.com">jhlovv@gmail.com</a>
+          </div>
+        </section>
       </Modal.Body>
     </Modal>
   );
