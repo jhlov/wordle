@@ -1,10 +1,9 @@
 import CloseIcon from "@mui/icons-material/Close";
-import classNames from "classnames";
 import React from "react";
 import { Form, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./../store";
-import { setDarkmode, setHardmode } from "./../store/common";
+import { setContrastmode, setDarkmode, setHardmode } from "./../store/common";
 import "./SettingModal.scss";
 
 interface Props {
@@ -17,6 +16,9 @@ const SettingModal = (props: Props) => {
 
   const isHardmode = useSelector((state: RootState) => state.common.isHardmode);
   const isDarkmode = useSelector((state: RootState) => state.common.isDarkmode);
+  const isContrastMode = useSelector(
+    (state: RootState) => state.common.isContrastMode
+  );
 
   const onChangeHardmode = (e: React.ChangeEvent) => {
     const v = (e.target as HTMLInputElement).checked;
@@ -33,6 +35,18 @@ const SettingModal = (props: Props) => {
       document.body.classList.add("darkmode");
     } else {
       document.body.classList.remove("darkmode");
+    }
+  };
+
+  const onChangeContrastmode = (e: React.ChangeEvent) => {
+    const v = (e.target as HTMLInputElement).checked;
+    localStorage.setItem("wordle-contrast", v.toString());
+    dispatch(setContrastmode(v));
+
+    if (v) {
+      document.body.classList.add("contrast");
+    } else {
+      document.body.classList.remove("contrast");
     }
   };
 
@@ -82,6 +96,25 @@ const SettingModal = (props: Props) => {
               label=""
               defaultChecked={isDarkmode}
               onChange={onChangeDarkmode}
+            />
+          </Form>
+        </section>
+        <section>
+          <div>
+            <div>
+              <b>고대비 모드</b>
+            </div>
+            <p>
+              <small>시인성 향상</small>
+            </p>
+          </div>
+          <Form>
+            <Form.Check
+              type="switch"
+              id="contrast"
+              label=""
+              defaultChecked={isContrastMode}
+              onChange={onChangeContrastmode}
             />
           </Form>
         </section>

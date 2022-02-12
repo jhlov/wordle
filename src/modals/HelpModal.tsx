@@ -41,30 +41,30 @@ const HelpModal = (props: Props) => {
           <p>
             <b>예시</b>
           </p>
-          <div className="items">
-            <div className="item letter s rotate">ㅅ</div>
-            <div className="item letter">ㅏ</div>
-            <div className="item letter">ㄹ</div>
-            <div className="item letter">ㅏ</div>
-            <div className="item letter">ㅇ</div>
+          <div className="tiles">
+            <div className="tile letter s rotate">ㅅ</div>
+            <div className="tile letter">ㅏ</div>
+            <div className="tile letter">ㄹ</div>
+            <div className="tile letter">ㅏ</div>
+            <div className="tile letter">ㅇ</div>
           </div>
           <p>'ㅅ' 글자는 단어에 있고, 정확한 위치에 있습니다.</p>
 
-          <div className="items">
-            <div className="item letter">ㄱ</div>
-            <div className="item letter">ㅏ</div>
-            <div className="item letter b rotate">ㅁ</div>
-            <div className="item letter">ㅅ</div>
-            <div className="item letter">ㅏ</div>
+          <div className="tiles">
+            <div className="tile letter">ㄱ</div>
+            <div className="tile letter">ㅏ</div>
+            <div className="tile letter b rotate">ㅁ</div>
+            <div className="tile letter">ㅅ</div>
+            <div className="tile letter">ㅏ</div>
           </div>
           <p>'ㅁ' 글자는 단어에는 있지만 잘못된 위치에 있습니다.</p>
 
-          <div className="items">
-            <div className="item letter">ㅇ</div>
-            <div className="item letter">ㅕ</div>
-            <div className="item letter">ㄹ</div>
-            <div className="item letter o rotate">ㅡ</div>
-            <div className="item letter">ㅁ</div>
+          <div className="tiles">
+            <div className="tile letter">ㅇ</div>
+            <div className="tile letter">ㅕ</div>
+            <div className="tile letter">ㄹ</div>
+            <div className="tile letter o rotate">ㅡ</div>
+            <div className="tile letter">ㅁ</div>
           </div>
           <p>'ㅡ' 글자는 단어에 없습니다.</p>
         </section>

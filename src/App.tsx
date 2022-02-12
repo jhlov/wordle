@@ -3,7 +3,8 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import "./App.scss";
 import { Game } from "./Game";
-import { setDarkmode, setHardmode } from "./store/common";
+import { setContrastmode, setDarkmode, setHardmode } from "./store/common";
+import "./tile.scss";
 
 function App() {
   const dispatch = useDispatch();
@@ -19,6 +20,13 @@ function App() {
 
     if (darkmode) {
       document.body.classList.add("darkmode");
+    }
+
+    const contrastmode = localStorage.getItem("wordle-contrast") === "true";
+    dispatch(setContrastmode(contrastmode));
+
+    if (contrastmode) {
+      document.body.classList.add("contrast");
     }
   }, []);
 

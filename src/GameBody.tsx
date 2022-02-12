@@ -41,8 +41,7 @@ const GameBody = (props: Props) => {
                 <div
                   key={`${i}_${j}`}
                   className={className(
-                    "item",
-                    `item-${j + 1}`,
+                    "tile",
                     [props.lettersList[i][j] ? "letter" : "empty"],
                     { [props.checkList[i][j]]: props.checkList[i][j] },
                     { jump: i === props.curRow && 0 < jump && j < jump }

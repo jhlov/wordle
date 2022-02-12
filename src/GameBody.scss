@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
 
-    .item {
+    .tile {
       width: 60px;
       height: 60px;
       margin: 3px;
@@ -24,12 +24,7 @@
       }
 
       &.letter {
-        border: 2px solid #878a8c;
         animation: ani 0.2s;
-      }
-
-      &.empty {
-        border: 2px solid $tile-border-color;
       }
 
       &.jump {
@@ -39,21 +34,7 @@
       &.s,
       &.b,
       &.o {
-        color: white;
-        border: 0;
         animation: rotate 0.3s;
-      }
-
-      &.s {
-        background-color: $tile-green-color;
-      }
-
-      &.b {
-        background-color: $tile-yellow-color;
-      }
-
-      &.o {
-        background-color: $tile-gray-color;
       }
     }
 
@@ -63,29 +44,6 @@
   }
 }
 
-.darkmode {
-  .game-body {
-    .game-body-row {
-      .item {
-        &.empty {
-          border: 2px solid $dark-tile-border-color;
-        }
-
-        &.s {
-          background-color: $dark-tile-green-color;
-        }
-
-        &.b {
-          background-color: $dark-tile-yellow-color;
-        }
-
-        &.o {
-          background-color: $dark-tile-gray-color;
-        }
-      }
-    }
-  }
-}
 @keyframes ani {
   0% {
     transform: scale(1.1);

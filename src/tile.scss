@@ -1,0 +1,60 @@
+@import "color";
+
+.tile {
+  &.letter {
+    border: 2px solid $tile-letter-border-color;
+  }
+
+  &.empty {
+    border: 2px solid $tile-empty-border-color;
+  }
+
+  &.s,
+  &.b,
+  &.o {
+    color: white;
+    border: 0;
+  }
+
+  &.s {
+    background-color: $tile-green-color;
+  }
+
+  &.b {
+    background-color: $tile-yellow-color;
+  }
+
+  &.o {
+    background-color: $tile-gray-color;
+  }
+}
+
+.darkmode {
+  .tile {
+    &.letter {
+      border: 2px solid $dark-tile-letter-border-color;
+    }
+
+    &.empty {
+      border: 2px solid $dark-tile-empty-border-color;
+    }
+
+    &.s,
+    &.b,
+    &.o {
+      border: 0;
+    }
+
+    &.s {
+      background-color: $dark-tile-green-color;
+    }
+
+    &.b {
+      background-color: $dark-tile-yellow-color;
+    }
+
+    &.o {
+      background-color: $dark-tile-gray-color;
+    }
+  }
+}
