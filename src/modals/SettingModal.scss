@@ -62,3 +62,20 @@
     }
   }
 }
+
+.contrast {
+  .setting-modal {
+    section {
+      form {
+        .form-check {
+          .form-check-input {
+            &:checked {
+              background-color: $contrast-tile-green-color;
+              border-color: $contrast-tile-green-color;
+            }
+          }
+        }
+      }
+    }
+  }
+}

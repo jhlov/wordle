@@ -70,3 +70,15 @@
     }
   }
 }
+
+.contrast {
+  .tile {
+    &.s {
+      background-color: $contrast-tile-green-color !important;
+    }
+
+    &.b {
+      background-color: $contrast-tile-yellow-color !important;
+    }
+  }
+}
