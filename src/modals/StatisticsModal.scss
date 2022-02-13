@@ -1,6 +1,8 @@
 @import "./../color";
 
 .statistics-modal {
+  z-index: 200000000;
+
   h2 {
     text-align: center;
     font-size: 20px;

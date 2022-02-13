@@ -104,7 +104,7 @@ const AddSolution = (props: Props) => {
         dispatch(setLoading(false));
 
         if (r.data.error) {
-          dispatch(addToast({ text: r.data.error, delay: 1000 }));
+          dispatch(addToast({ text: r.data.error }));
 
           // 흔들기
           tilesRef.current?.classList.add("shake");

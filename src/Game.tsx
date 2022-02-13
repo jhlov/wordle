@@ -2,7 +2,6 @@ import axios from "axios";
 import Hangul from "hangul-js";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
-import Notification, { notify } from "react-notify-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { AddSolution } from "./AddSolution";
 import { LETTER_COUNT, ROW_COUNT } from "./const";
@@ -16,7 +15,7 @@ import { HelpModal } from "./modals/HelpModal";
 import { StatisticsModal } from "./modals/StatisticsModal";
 import { getStatisticsData, saveStatisticsData } from "./StatisticsData";
 import { RootState } from "./store";
-import { setLoading } from "./store/common";
+import { addToast, setLoading } from "./store/common";
 
 interface Response {
   id?: number;
@@ -121,6 +120,13 @@ const Game = () => {
     }
   };
 
+  const shakeTiles = () => {
+    setShake(true);
+    setTimeout(() => {
+      setShake(false);
+    }, 200);
+  };
+
   const getUpdateKyeMap = (
     letters: string,
     check: string
@@ -167,13 +173,14 @@ const Game = () => {
                   lettersList[curRow].split("")[j] !==
                   lettersList[i].split("")[j]
                 ) {
-                  notify({
-                    text: `${j + 1}번째 글자는 '${
-                      lettersList[i].split("")[j]
-                    }' 이어야 합니다.`,
-                    variant: "dark"
-                  });
-
+                  dispatch(
+                    addToast({
+                      text: `${j + 1}번째 글자는 '${
+                        lettersList[i].split("")[j]
+                      }' 이어야 합니다.`
+                    })
+                  );
+                  shakeTiles();
                   return;
                 }
               }
@@ -187,13 +194,14 @@ const Game = () => {
                 if (
                   !lettersList[curRow].includes(lettersList[i].split("")[j])
                 ) {
-                  notify({
-                    text: `'${
-                      lettersList[i].split("")[j]
-                    }' 글자가 포함되어야 합니다.`,
-                    variant: "dark"
-                  });
-
+                  dispatch(
+                    addToast({
+                      text: `'${
+                        lettersList[i].split("")[j]
+                      }' 글자가 포함되어야 합니다.`
+                    })
+                  );
+                  shakeTiles();
                   return;
                 }
               }
@@ -214,16 +222,8 @@ const Game = () => {
 
         // 에러 체크
         if (r.data.error) {
-          notify({
-            text: r.data.error,
-            variant: "dark"
-          });
-
-          setShake(true);
-          setTimeout(() => {
-            setShake(false);
-          }, 200);
-
+          dispatch(addToast({ text: r.data.error }));
+          shakeTiles();
           setIsEnabledInput(true);
           return;
         }
@@ -231,11 +231,12 @@ const Game = () => {
         // id 가 변경 되었을 경우 처리
         const gameData = getGameData();
         if (r.data.id !== gameData.id) {
-          notify({
-            text: "게임이 업데이트 되었습니다. 새로운 게임을 시작합니다.",
-            variant: "dark"
-          });
-
+          dispatch(
+            addToast({
+              text: "게임이 업데이트 되었습니다. 새로운 게임을 시작합니다.",
+              delay: 2000
+            })
+          );
           startNewGame(r.data.id!);
           return;
         }
@@ -314,20 +315,31 @@ const Game = () => {
               "겨우 맞췄네요!"
             ];
 
-            notify({
-              text: answerString[curRow],
-              variant: "dark"
-            });
+            dispatch(
+              addToast({
+                text: answerString[curRow],
+                delay: 2000
+              })
+            );
 
             // 통계 모달
             setTimeout(() => {
               setShowStatisticsModal(true);
             }, 2000);
           } else if (curRow === ROW_COUNT - 1) {
-            notify({
-              text: `다음 기회에 다시 도전해보세요. 정답은 '${r.data.solution}' 입니다`,
-              variant: "dark"
-            });
+            dispatch(
+              addToast({
+                text: "다음 기회에 다시 도전해보세요.",
+                delay: 2000
+              })
+            );
+
+            dispatch(
+              addToast({
+                text: `정답은 '${r.data.solution}' 입니다`,
+                delay: 4000
+              })
+            );
 
             // 통계 모달
             setTimeout(() => {
@@ -339,15 +351,12 @@ const Game = () => {
           }
         }, 1500);
       } else {
-        notify({
-          text: "단어 목록에 없습니다.",
-          variant: "dark"
-        });
-
-        setShake(true);
-        setTimeout(() => {
-          setShake(false);
-        }, 200);
+        dispatch(
+          addToast({
+            text: "단어 목록에 없습니다."
+          })
+        );
+        shakeTiles();
       }
     }
   };
@@ -403,11 +412,12 @@ const Game = () => {
       });
     } else {
       navigator.clipboard.writeText(copyText);
-
-      notify({
-        text: "게임 결과를 클립보드에 복사했습니다.",
-        variant: "dark"
-      });
+      dispatch(
+        addToast({
+          text: "게임 결과를 클립보드에 복사했습니다.",
+          delay: 2000
+        })
+      );
     }
   };
 
@@ -440,8 +450,6 @@ const Game = () => {
           onClickBack={onClickBack}
           showAddSolutionModal={showAddSolutionModal}
         />
-
-        <Notification options={{ position: "top", delay: 2000 }} />
 
         <StatisticsModal
           show={showStatisticsModal}

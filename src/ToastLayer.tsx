@@ -28,7 +28,7 @@ const ToastLayer = () => {
             show={toast.show ?? true}
             key={i}
             autohide
-            delay={toast.delay ?? 2000}
+            delay={toast.delay ?? 1000}
             onClose={() => onClose(i)}
           >
             <Toast.Body>{toast.text}</Toast.Body>
