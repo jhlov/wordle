@@ -167,6 +167,7 @@ const AddSolution = (props: Props) => {
           <div ref={tilesRef} className="tiles mb-4">
             {letters.map((letter, i) => (
               <div
+                key={`add-solution-tile-${i}`}
                 className={classNames("tile", {
                   invalid:
                     (letter && !validLetterList.includes(letter)) || 4 < i
