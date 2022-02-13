@@ -3,8 +3,10 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import "./App.scss";
 import { Game } from "./Game";
+import { LoadingLayer } from "./LoadingLayer";
 import { setContrastmode, setDarkmode, setHardmode } from "./store/common";
 import "./tile.scss";
+import { ToastLayer } from "./ToastLayer";
 
 function App() {
   const dispatch = useDispatch();
@@ -34,6 +36,8 @@ function App() {
     <div className="App">
       <div className={classNames(isMobile ? "mobile-container" : "container")}>
         <Game />
+        <LoadingLayer />
+        <ToastLayer />
       </div>
     </div>
   );

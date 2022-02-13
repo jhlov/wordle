@@ -1,0 +1,20 @@
+.toast-container {
+  z-index: 11111111111111;
+  top: 120px !important;
+
+  .toast {
+    background-color: black;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+  }
+}
+
+.darkmode {
+  .toast-container {
+    .toast {
+      background-color: white;
+      color: black;
+    }
+  }
+}

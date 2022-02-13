@@ -2,9 +2,8 @@ import axios from "axios";
 import Hangul from "hangul-js";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import Notification, { notify } from "react-notify-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AddSolution } from "./AddSolution";
 import { LETTER_COUNT, ROW_COUNT } from "./const";
 import "./Game.scss";
@@ -17,6 +16,7 @@ import { HelpModal } from "./modals/HelpModal";
 import { StatisticsModal } from "./modals/StatisticsModal";
 import { getStatisticsData, saveStatisticsData } from "./StatisticsData";
 import { RootState } from "./store";
+import { setLoading } from "./store/common";
 
 interface Response {
   id?: number;
@@ -27,6 +27,8 @@ interface Response {
 }
 
 const Game = () => {
+  const dispatch = useDispatch();
+
   const [curRow, setCurRow] = useState<number>(0);
   const [lettersList, setLettersList] = useState<string[]>([
     "",
@@ -46,7 +48,6 @@ const Game = () => {
   ]);
   const [keyMap, setKeyMap] = useState<{ [key: string]: string }>({});
   const [shake, setShake] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isEnabledInput, setIsEnabledInput] = useState<boolean>(true);
   const [showStatisticsModal, setShowStatisticsModal] =
     useState<boolean>(false);
@@ -65,7 +66,7 @@ const Game = () => {
   }, []);
 
   const init = async () => {
-    setIsLoading(true);
+    dispatch(setLoading(true));
 
     const r = await axios.get<Response>(
       "https://ukntcifwza.execute-api.ap-northeast-2.amazonaws.com/default/wordle"
@@ -90,7 +91,7 @@ const Game = () => {
       startNewGame(r.data.id!);
     }
 
-    setIsLoading(false);
+    dispatch(setLoading(false));
   };
 
   const startNewGame = (id: number) => {
@@ -200,7 +201,7 @@ const Game = () => {
           }
         }
 
-        setIsLoading(true);
+        dispatch(setLoading(true));
         setIsEnabledInput(false);
 
         const r = await axios.get<Response>(
@@ -209,7 +210,7 @@ const Game = () => {
           }&isLast=${curRow === ROW_COUNT - 1}`
         );
 
-        setIsLoading(false);
+        dispatch(setLoading(false));
 
         // 에러 체크
         if (r.data.error) {
@@ -429,31 +430,32 @@ const Game = () => {
         onClickBack={onClickBack}
         keyMap={keyMap}
       />
-      <GameKeyboardInput
-        curLetters={lettersList[curRow]}
-        onClickKeyboard={onClickKeyboard}
-        onClickEner={onClickEnter}
-        onClickBack={onClickBack}
-        showAddSolutionModal={showAddSolutionModal}
-      />
 
-      <Notification options={{ position: "top", delay: 2000 }} />
+      {/* other */}
+      <div>
+        <GameKeyboardInput
+          curLetters={lettersList[curRow]}
+          onClickKeyboard={onClickKeyboard}
+          onClickEner={onClickEnter}
+          onClickBack={onClickBack}
+          showAddSolutionModal={showAddSolutionModal}
+        />
 
-      {isLoading && (
-        <div className="loading">
-          <Spinner animation="border" />
-        </div>
-      )}
+        <Notification options={{ position: "top", delay: 2000 }} />
 
-      <StatisticsModal
-        show={showStatisticsModal}
-        onClose={() => setShowStatisticsModal(false)}
-        onClickShare={onClickShare}
-      />
+        <StatisticsModal
+          show={showStatisticsModal}
+          onClose={() => setShowStatisticsModal(false)}
+          onClickShare={onClickShare}
+        />
 
-      <HelpModal show={showHelpModal} onClose={() => setShowHelpModal(false)} />
+        <HelpModal
+          show={showHelpModal}
+          onClose={() => setShowHelpModal(false)}
+        />
 
-      <AddSolution setShowAddSolutionModal={setShowAddSolutionModal} />
+        <AddSolution setShowAddSolutionModal={setShowAddSolutionModal} />
+      </div>
     </div>
   );
 };

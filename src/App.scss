@@ -70,6 +70,10 @@ body.darkmode {
         background-color: white;
       }
     }
+
+    .modal-footer {
+      border-top: 1px solid $dark-border-color;
+    }
   }
 }
 

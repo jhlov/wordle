@@ -1,8 +1,4 @@
 .add-solution {
-  .toast-container {
-    z-index: 11111111111111;
-  }
-
   .add-btn {
     position: fixed;
     bottom: 30px;
@@ -24,6 +20,10 @@
     display: flex;
     justify-content: center;
 
+    &.shake {
+      animation: shake 0.2s;
+    }
+
     .tile {
       border: 2px solid #878a8c;
       width: 60px;
@@ -39,5 +39,26 @@
         background-color: pink;
       }
     }
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(-5px);
+  }
+  20% {
+    transform: translateX(5px);
+  }
+  40% {
+    transform: translateX(-5px);
+  }
+  60% {
+    transform: translateX(5px);
+  }
+  80% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
   }
 }

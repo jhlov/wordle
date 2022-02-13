@@ -1,35 +1,28 @@
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
+import axios from "axios";
 import classNames from "classnames";
 import Hangul from "hangul-js";
-import React, { useEffect, useMemo, useState } from "react";
-import {
-  Button,
-  Form,
-  Modal,
-  OverlayTrigger,
-  Toast,
-  ToastContainer,
-  Tooltip
-} from "react-bootstrap";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Button, Form, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { isBrowser } from "react-device-detect";
+import { useDispatch } from "react-redux";
 import "./AddSolution.scss";
-import CloseIcon from "@mui/icons-material/Close";
 import { LETTER_COUNT } from "./const";
+import { addToast, setLoading } from "./store/common";
 
 interface Props {
   setShowAddSolutionModal: (v: boolean) => void;
 }
 
-interface ToastData {
-  show: boolean;
-  text?: string;
-}
-
 const AddSolution = (props: Props) => {
+  const dispatch = useDispatch();
+
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showCompleteModal, setShowCompleteModal] = useState<boolean>(false);
   const [word, setWord] = useState<string>("");
-  const [toastList, setToastList] = useState<ToastData[]>([]);
+
+  const tilesRef = useRef<HTMLDivElement>(null);
 
   const validLetterList = [
     "ㅂ",
@@ -61,7 +54,9 @@ const AddSolution = (props: Props) => {
   ];
 
   useEffect(() => {
-    setWord("");
+    if (showModal) {
+      setWord("");
+    }
   }, [showModal]);
 
   const isValid = useMemo(() => {
@@ -96,18 +91,39 @@ const AddSolution = (props: Props) => {
     props.setShowAddSolutionModal(false);
   };
 
-  const addWord = () => {
+  const addWord = async () => {
     if (isValid) {
-      setTimeout(() => {
-        setShowModal(false);
-        setShowCompleteModal(true);
-      }, 1000);
+      dispatch(setLoading(true));
+
+      try {
+        const r = await axios.post(
+          "https://apn7ny4u9f.execute-api.ap-northeast-2.amazonaws.com/default/wordle-add-solution",
+          { word: word }
+        );
+
+        dispatch(setLoading(false));
+
+        if (r.data.error) {
+          dispatch(addToast({ text: r.data.error, delay: 1000 }));
+
+          // 흔들기
+          tilesRef.current?.classList.add("shake");
+          setTimeout(() => {
+            tilesRef.current?.classList.remove("shake");
+          }, 200);
+          return;
+        }
+
+        if (r.status === 200) {
+          setShowModal(false);
+          setShowCompleteModal(true);
+        }
+      } catch (error) {
+        dispatch(setLoading(false));
+      } finally {
+        dispatch(setLoading(false));
+      }
     }
-    // setToastList([...toastList, { show: true, text: word }]);
-    // 에러 체크
-    // 단어 길이
-    // 글자 수
-    // 정상적인 글자인지
   };
 
   const letters: string[] = useMemo<string[]>(() => {
@@ -148,7 +164,7 @@ const AddSolution = (props: Props) => {
         </Modal.Header>
 
         <Modal.Body>
-          <div className="tiles mb-4">
+          <div ref={tilesRef} className="tiles mb-4">
             {letters.map((letter, i) => (
               <div
                 className={classNames("tile", {
@@ -194,9 +210,9 @@ const AddSolution = (props: Props) => {
 
         <Modal.Body>
           <p className="text-center">
-            문제 추가가 완료 되었습니다.
+            '<b>{word}</b>' 단어 추가가 완료 되었습니다.
             <br />
-            올려주신 문제 단어는 확인을 거친 후 정식 문제로 등록 됩니다.
+            올려주신 단어는 확인을 거친 후 정식 문제로 등록 됩니다.
             <br />
             감사합니다!!
           </p>
@@ -207,26 +223,6 @@ const AddSolution = (props: Props) => {
           </Button>
         </Modal.Footer>
       </Modal>
-
-      <ToastContainer position="top-center" className="p-3">
-        {toastList.map((toast, i) => (
-          <Toast
-            show={toast.show}
-            key={i}
-            autohide
-            delay={3000}
-            onClose={() => {
-              setToastList(
-                toastList.map((t, j) =>
-                  j === i ? { show: false, text: t.text } : t
-                )
-              );
-            }}
-          >
-            <Toast.Body>{toast.text}</Toast.Body>
-          </Toast>
-        ))}
-      </ToastContainer>
     </div>
   );
 };

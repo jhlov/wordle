@@ -11,15 +11,6 @@
 
   overscroll-behavior: contain;
 
-  .loading {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  }
-
   .toast-header {
     border-radius: 6px;
     border: 0;
