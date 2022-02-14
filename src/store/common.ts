@@ -7,6 +7,7 @@ interface InitialState {
   isContrastMode: boolean;
   isLoading: boolean;
   toastList: ToastData[];
+  toastList2: ToastData[];
 }
 
 const initialState: InitialState = {
@@ -14,7 +15,8 @@ const initialState: InitialState = {
   isDarkmode: false,
   isContrastMode: false,
   isLoading: false,
-  toastList: []
+  toastList: [],
+  toastList2: []
 };
 
 export const common = createSlice({
@@ -40,6 +42,14 @@ export const common = createSlice({
       state.toastList = state.toastList.map((toast, i) =>
         i === action.payload ? { ...toast, show: false } : toast
       );
+    },
+    addToast2: (state, action: { payload: ToastData }) => {
+      state.toastList2 = [...state.toastList2, action.payload];
+    },
+    closeToast2: (state, action: { payload: number }) => {
+      state.toastList2 = state.toastList2.map((toast, i) =>
+        i === action.payload ? { ...toast, show: false } : toast
+      );
     }
   }
 });
@@ -51,7 +61,9 @@ export const {
   setContrastmode,
   setLoading,
   addToast,
-  closeToast
+  closeToast,
+  addToast2,
+  closeToast2
 } = common.actions;
 
 export default common.reducer;

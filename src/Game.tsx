@@ -15,7 +15,7 @@ import { HelpModal } from "./modals/HelpModal";
 import { StatisticsModal } from "./modals/StatisticsModal";
 import { getStatisticsData, saveStatisticsData } from "./StatisticsData";
 import { RootState } from "./store";
-import { addToast, setLoading } from "./store/common";
+import { addToast, addToast2, setLoading } from "./store/common";
 
 interface Response {
   id?: number;
@@ -413,7 +413,7 @@ const Game = () => {
     } else {
       navigator.clipboard.writeText(copyText);
       dispatch(
-        addToast({
+        addToast2({
           text: "게임 결과를 클립보드에 복사했습니다.",
           delay: 2000
         })

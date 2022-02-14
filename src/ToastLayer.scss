@@ -1,5 +1,12 @@
-.toast-container {
-  z-index: 100000000;
+.toast-layer {
+  &.toast-layer-1 {
+    z-index: 100000000;
+  }
+
+  &.toast-layer-2 {
+    z-index: 300000000;
+  }
+
   top: 120px !important;
 
   .toast {
