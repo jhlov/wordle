@@ -2,6 +2,7 @@ import axios from "axios";
 import Hangul from "hangul-js";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useDispatch, useSelector } from "react-redux";
 import { AddSolution } from "./AddSolution";
 import { LETTER_COUNT, ROW_COUNT } from "./const";
@@ -406,7 +407,7 @@ const Game = () => {
       )
       .join("\n");
 
-    if (navigator.share) {
+    if (isMobile && navigator.share) {
       navigator.share({
         text: copyText
       });
