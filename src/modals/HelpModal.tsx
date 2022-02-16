@@ -10,12 +10,7 @@ interface Props {
 
 const HelpModal = (props: Props) => {
   return (
-    <Modal
-      className="help-modal fullsize"
-      backdropClassName="fullsize"
-      show={props.show}
-      onHide={props.onClose}
-    >
+    <Modal className="help-modal" show={props.show} onHide={props.onClose}>
       <Modal.Header className="border-0">
         <button className="close-btn" onClick={props.onClose}>
           <CloseIcon />

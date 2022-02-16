@@ -51,12 +51,7 @@ const SettingModal = (props: Props) => {
   };
 
   return (
-    <Modal
-      className="setting-modal fullsize"
-      backdropClassName="fullsize"
-      show={props.show}
-      onHide={props.onClose}
-    >
+    <Modal className="setting-modal" show={props.show} onHide={props.onClose}>
       <Modal.Header className="border-0">
         <Modal.Title className="pl-4">설정</Modal.Title>
         <button className="close-btn" onClick={props.onClose}>
