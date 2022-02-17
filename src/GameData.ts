@@ -1,8 +1,8 @@
 import _ from "lodash";
 
 export interface GameData {
-  letters: string[];
-  checks: string[];
+  guessList: string[];
+  evaluationList: string[];
   keyMap: { [key: string]: string };
   curRow: number;
   id: number;
@@ -10,18 +10,23 @@ export interface GameData {
 }
 
 export const initGameData: GameData = {
-  letters: ["", "", "", "", "", ""],
-  checks: ["", "", "", "", "", ""],
+  guessList: ["", "", "", "", "", ""],
+  evaluationList: ["", "", "", "", "", ""],
   keyMap: {},
   curRow: 0,
   id: 0,
   state: "PLAYING"
 };
 
-export const getGameData = (): GameData => {
+export const getGameDataFromLS = (): GameData => {
   const str = localStorage.getItem("gameData");
   if (str) {
-    return JSON.parse(str);
+    const data: GameData = JSON.parse(str);
+    if (!data.guessList || !data.evaluationList) {
+      return { ...initGameData, id: -1 };
+    }
+
+    return { ...data };
   } else {
     localStorage.setItem("gameData", JSON.stringify(initGameData));
     return _.cloneDeep(initGameData);

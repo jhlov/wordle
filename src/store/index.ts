@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import commonReducer from "./common";
+import gameReducer from "./game";
 
 const store = configureStore({
   reducer: {
-    common: commonReducer
+    common: commonReducer,
+    game: gameReducer
   }
 });
 

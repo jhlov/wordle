@@ -1,9 +1,10 @@
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 import { LETTER_COUNT } from "./const";
 import useInterval from "./useInterval";
 
 interface Props {
-  curLetters: string;
   onClickKeyboard: (letter: string) => void;
   onClickEner: () => void;
   onClickBack: () => void;
@@ -12,6 +13,13 @@ interface Props {
 
 const GameKeyboardInput = (props: Props) => {
   const divRef = useRef<HTMLDivElement>(null);
+
+  const curRow = useSelector((state: RootState) => state.game.curRow);
+  const guessList = useSelector((state: RootState) => state.game.guessList);
+
+  const curGuess = useMemo(() => {
+    return guessList[curRow];
+  }, [curRow, guessList]);
 
   useInterval(() => {
     if (divRef.current) {
@@ -23,11 +31,11 @@ const GameKeyboardInput = (props: Props) => {
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.code === "Enter") {
-      if (props.curLetters.length === LETTER_COUNT) {
+      if (curGuess.length === LETTER_COUNT) {
         props.onClickEner();
       }
     } else if (e.code === "Backspace") {
-      if (0 < props.curLetters.length) {
+      if (0 < curGuess.length) {
         props.onClickBack();
       }
     } else {

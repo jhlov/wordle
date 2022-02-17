@@ -1,21 +1,29 @@
 import BackspaceOutlinedIcon from "@mui/icons-material/BackspaceOutlined";
 import classNames from "classnames";
-import React from "react";
+import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 import { LETTER_COUNT } from "./const";
 import "./GameKeyboard.scss";
 
 interface Props {
-  curLetters: string;
   onClickKeyboard: (letter: string) => void;
   onClickEner: () => void;
   onClickBack: () => void;
-  keyMap: { [key: string]: string };
 }
 
 const GameKeyboard = (props: Props) => {
+  const curRow = useSelector((state: RootState) => state.game.curRow);
+  const guessList = useSelector((state: RootState) => state.game.guessList);
+  const keyMap = useSelector((state: RootState) => state.game.keyMap);
+
   const row1 = ["ㅂ", "ㅈ", "ㄷ", "ㄱ", "ㅅ", "ㅛ", "ㅕ", "ㅑ", "ㅐ", "ㅔ"];
   const row2 = ["ㅁ", "ㄴ", "ㅇ", "ㄹ", "ㅎ", "ㅗ", "ㅓ", "ㅏ", "ㅣ"];
   const row3 = ["ㅋ", "ㅌ", "ㅊ", "ㅍ", "ㅠ", "ㅜ", "ㅡ"];
+
+  const curGuess = useMemo(() => {
+    return guessList[curRow];
+  }, [curRow, guessList]);
 
   return (
     <div className="game-keyboard">
@@ -24,7 +32,7 @@ const GameKeyboard = (props: Props) => {
           <div
             key={letter}
             className={classNames("tile", {
-              [props.keyMap[letter]]: props.keyMap[letter]
+              [keyMap[letter]]: keyMap[letter]
             })}
             onClick={() => props.onClickKeyboard(letter)}
           >
@@ -37,7 +45,7 @@ const GameKeyboard = (props: Props) => {
           <div
             key={letter}
             className={classNames("tile", {
-              [props.keyMap[letter]]: props.keyMap[letter]
+              [keyMap[letter]]: keyMap[letter]
             })}
             onClick={() => props.onClickKeyboard(letter)}
           >
@@ -48,7 +56,7 @@ const GameKeyboard = (props: Props) => {
       <div className="game-keyboard-row">
         <button
           className="tile"
-          disabled={props.curLetters.length < LETTER_COUNT}
+          disabled={curGuess.length < LETTER_COUNT}
           onClick={props.onClickEner}
         >
           ENTER
@@ -57,7 +65,7 @@ const GameKeyboard = (props: Props) => {
           <div
             key={letter}
             className={classNames("tile", {
-              [props.keyMap[letter]]: props.keyMap[letter]
+              [keyMap[letter]]: keyMap[letter]
             })}
             onClick={() => props.onClickKeyboard(letter)}
           >
@@ -66,7 +74,7 @@ const GameKeyboard = (props: Props) => {
         ))}
         <button
           className="tile"
-          disabled={props.curLetters.length === 0}
+          disabled={curGuess.length === 0}
           onClick={props.onClickBack}
         >
           <BackspaceOutlinedIcon />

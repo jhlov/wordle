@@ -5,7 +5,7 @@ import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Modal, ProgressBar } from "react-bootstrap";
 import { ROW_COUNT } from "./../const";
-import { getGameData } from "./../GameData";
+import { getGameDataFromLS } from "./../GameData";
 import {
   getStatisticsData,
   initStatisticsData,
@@ -32,8 +32,8 @@ const StatisticsModal = (props: Props) => {
       const statisticsData = getStatisticsData();
       setStatisticsData(statisticsData);
 
-      const gameData = getGameData();
-      setLastWinRow(gameData.checks.indexOf("sssss"));
+      const gameData = getGameDataFromLS();
+      setLastWinRow(gameData.evaluationList.indexOf("sssss"));
       setIsFinish(gameData.state === "FINISH");
       if (gameData.state === "FINISH") {
         const intervalId_ = setInterval(() => {
@@ -75,7 +75,7 @@ const StatisticsModal = (props: Props) => {
 
   const played = useMemo(() => {
     return statisticsData.fail + winCount;
-  }, [statisticsData]);
+  }, [statisticsData, winCount]);
 
   const winRate = useMemo(() => {
     if (played === 0) {
@@ -83,7 +83,7 @@ const StatisticsModal = (props: Props) => {
     }
 
     return Math.round((winCount / played) * 100);
-  }, [statisticsData]);
+  }, [winCount, played]);
 
   const maxSuccess = useMemo(() => {
     return Math.max(...Object.values(statisticsData.success));
