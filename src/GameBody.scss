@@ -34,7 +34,7 @@
       &.s,
       &.b,
       &.o {
-        animation: rotate 0.3s;
+        animation: rotate 0.5s ease-in-out;
       }
     }
 
@@ -100,7 +100,7 @@
     transform: rotateX(0deg);
   }
   50% {
-    transform: rotateX(90deg);
+    transform: rotateX(-90deg);
   }
   100% {
     transform: rotateX(0deg);

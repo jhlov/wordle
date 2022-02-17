@@ -238,7 +238,7 @@ const Game = () => {
           const evaluationList_ = [...evaluationList];
           evaluationList_[curRow] = evaluation.slice(0, i + 1);
           dispatch(setEvaluationList(evaluationList_));
-        }, i * 300);
+        }, i * 320);
       }
 
       setTimeout(() => {
@@ -290,7 +290,7 @@ const Game = () => {
           dispatch(setCurRow(curRow + 1));
           setIsEnabledInput(true);
         }
-      }, 1500);
+      }, 1600);
     }
   };
 
