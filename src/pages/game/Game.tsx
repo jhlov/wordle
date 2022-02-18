@@ -1,10 +1,14 @@
 import axios from "axios";
+import { AddSolution } from "components/AddSolution";
+import { HelpModal } from "components/modals/HelpModal";
+import { StatisticsModal } from "components/modals/StatisticsModal";
 import Hangul from "hangul-js";
 import _ from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
+import { addToast, addToast2, setLoading } from "store/common";
 import {
   setCurRow,
   setEvaluationList,
@@ -14,24 +18,20 @@ import {
   setSolution,
   syncFromGameData
 } from "store/game";
-import { Utils } from "Utils";
-import { AddSolution } from "./AddSolution";
-import { LETTER_COUNT, ROW_COUNT } from "./const";
-import "./Game.scss";
-import { GameBody } from "./GameBody";
+import { LETTER_COUNT, ROW_COUNT } from "utils/const";
 import {
   GameData,
   getGameDataFromLS,
   initGameData,
   saveGameData
-} from "./GameData";
+} from "utils/GameData";
+import { getStatisticsData, saveStatisticsData } from "utils/StatisticsData";
+import { Utils } from "utils/Utils";
+import "./Game.scss";
+import { GameBody } from "./GameBody";
 import { GameHeader } from "./GameHeader";
 import { GameKeyboard } from "./GameKeyboard";
 import { GameKeyboardInput } from "./GameKeyboardInput";
-import { HelpModal } from "./modals/HelpModal";
-import { StatisticsModal } from "./modals/StatisticsModal";
-import { getStatisticsData, saveStatisticsData } from "./StatisticsData";
-import { addToast, addToast2, setLoading } from "./store/common";
 
 interface Response {
   id?: number;

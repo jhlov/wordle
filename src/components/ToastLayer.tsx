@@ -1,8 +1,8 @@
 import React from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./store";
-import { closeToast, closeToast2 } from "./store/common";
+import { RootState } from "store";
+import { closeToast, closeToast2 } from "store/common";
 import "./ToastLayer.scss";
 
 export interface ToastData {

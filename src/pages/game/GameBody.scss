@@ -1,5 +1,3 @@
-@import "color";
-
 .game-body {
   display: flex;
   flex-direction: column;
@@ -96,6 +94,18 @@
 }
 
 @keyframes rotate {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes color_o {
   0% {
     transform: rotateX(0deg);
   }

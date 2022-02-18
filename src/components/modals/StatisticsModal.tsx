@@ -4,13 +4,13 @@ import classNames from "classnames";
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Modal, ProgressBar } from "react-bootstrap";
-import { ROW_COUNT } from "./../const";
-import { getGameDataFromLS } from "./../GameData";
+import { ROW_COUNT } from "utils/const";
+import { getGameDataFromLS } from "utils/GameData";
 import {
   getStatisticsData,
   initStatisticsData,
   StatisticsData
-} from "./../StatisticsData";
+} from "utils/StatisticsData";
 import "./StatisticsModal.scss";
 
 interface Props {

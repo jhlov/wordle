@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ROW_COUNT } from "const";
-import { GameData } from "GameData";
 import _ from "lodash";
+import { ROW_COUNT } from "utils/const";
+import { GameData } from "utils/GameData";
 
 interface InitialState {
   id: number;

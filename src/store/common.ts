@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ToastData } from "../ToastLayer";
+import { ToastData } from "components/ToastLayer";
 
 interface InitialState {
   isHardmode: boolean;

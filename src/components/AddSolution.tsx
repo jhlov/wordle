@@ -7,9 +7,9 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Form, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { isBrowser } from "react-device-detect";
 import { useDispatch } from "react-redux";
+import { addToast, setLoading } from "store/common";
+import { LETTER_COUNT } from "utils/const";
 import "./AddSolution.scss";
-import { LETTER_COUNT } from "./const";
-import { addToast, setLoading } from "./store/common";
 
 interface Props {
   setShowAddSolutionModal: (v: boolean) => void;

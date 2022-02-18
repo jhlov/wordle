@@ -2,7 +2,7 @@ import className from "classnames";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import { LETTER_COUNT, ROW_COUNT } from "./const";
+import { LETTER_COUNT, ROW_COUNT } from "utils/const";
 import "./GameBody.scss";
 
 interface Props {

@@ -1,9 +1,9 @@
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { SettingModal } from "components/modals/SettingModal";
 import React, { useState } from "react";
 import "./GameHeader.scss";
-import { SettingModal } from "./modals/SettingModal";
 
 interface Props {
   onClickStatistics: () => void;

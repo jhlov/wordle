@@ -1,5 +1,5 @@
-import { LETTER_COUNT, ROW_COUNT } from "const";
-import { GameData } from "GameData";
+import { LETTER_COUNT, ROW_COUNT } from "utils/const";
+import { GameData } from "utils/GameData";
 import _ from "lodash";
 import Hangul from "hangul-js";
 
@@ -79,6 +79,7 @@ export const Utils = {
     isDarkmode: boolean,
     gameData: GameData
   ) => {
+    console.log(gameData);
     let copyText = `워들 ${gameData.id} ${
       gameData.evaluationList.some(evaluation => evaluation === "sssss")
         ? gameData.evaluationList.filter(evaluation => evaluation).length

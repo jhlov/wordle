@@ -3,7 +3,7 @@ import classNames from "classnames";
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import { LETTER_COUNT } from "./const";
+import { LETTER_COUNT } from "utils/const";
 import "./GameKeyboard.scss";
 
 interface Props {

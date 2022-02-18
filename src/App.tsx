@@ -1,12 +1,12 @@
 import classNames from "classnames";
+import { LoadingLayer } from "components/LoadingLayer";
+import { ToastLayer } from "components/ToastLayer";
+import { Game } from "pages/game/Game";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { setContrastmode, setDarkmode, setHardmode } from "store/common";
+import "styles/tile.scss";
 import "./App.scss";
-import { Game } from "./Game";
-import { LoadingLayer } from "./LoadingLayer";
-import { setContrastmode, setDarkmode, setHardmode } from "./store/common";
-import "./tile.scss";
-import { ToastLayer } from "./ToastLayer";
 
 function App() {
   const dispatch = useDispatch();

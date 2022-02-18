@@ -2,8 +2,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import React from "react";
 import { Form, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./../store";
-import { setContrastmode, setDarkmode, setHardmode } from "./../store/common";
+import { RootState } from "store";
+import { setContrastmode, setDarkmode, setHardmode } from "store/common";
 import "./SettingModal.scss";
 
 interface Props {

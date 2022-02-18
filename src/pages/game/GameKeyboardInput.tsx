@@ -1,8 +1,8 @@
 import React, { useMemo, useRef } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
-import { LETTER_COUNT } from "./const";
-import useInterval from "./useInterval";
+import { LETTER_COUNT } from "utils/const";
+import useInterval from "utils/useInterval";
 
 interface Props {
   onClickKeyboard: (letter: string) => void;

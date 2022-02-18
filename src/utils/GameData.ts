@@ -23,6 +23,7 @@ export const getGameDataFromLS = (): GameData => {
   if (str) {
     const data: GameData = JSON.parse(str);
     if (!data.guessList || !data.evaluationList) {
+      // 버전 바꼈을 때, 헬프 팝업 띄우지 않게 하기 위해 id 를 -1로
       return { ...initGameData, id: -1 };
     }
 
