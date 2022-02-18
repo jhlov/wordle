@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/wordle/static/css/main.a4b3561e.chunk.css",
-    "main.js": "/wordle/static/js/main.3678d166.chunk.js",
+    "main.css": "/wordle/static/css/main.9fb0a0dc.chunk.css",
+    "main.js": "/wordle/static/js/main.0064909a.chunk.js",
     "runtime-main.js": "/wordle/static/js/runtime-main.d4dc0841.js",
-    "static/js/2.c2731903.chunk.js": "/wordle/static/js/2.c2731903.chunk.js",
+    "static/js/2.75a820bd.chunk.js": "/wordle/static/js/2.75a820bd.chunk.js",
     "static/js/3.6bbe6ff7.chunk.js": "/wordle/static/js/3.6bbe6ff7.chunk.js",
     "index.html": "/wordle/index.html",
-    "static/js/2.c2731903.chunk.js.LICENSE.txt": "/wordle/static/js/2.c2731903.chunk.js.LICENSE.txt"
+    "static/js/2.75a820bd.chunk.js.LICENSE.txt": "/wordle/static/js/2.75a820bd.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.d4dc0841.js",
-    "static/js/2.c2731903.chunk.js",
-    "static/css/main.a4b3561e.chunk.css",
-    "static/js/main.3678d166.chunk.js"
+    "static/js/2.75a820bd.chunk.js",
+    "static/css/main.9fb0a0dc.chunk.css",
+    "static/js/main.0064909a.chunk.js"
   ]
 }
