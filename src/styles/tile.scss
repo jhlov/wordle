@@ -15,22 +15,22 @@
     border: 2px solid $tile-empty-border-color !important;
   }
 
-  &.s,
-  &.b,
-  &.o {
+  &.s.evaluation,
+  &.b.evaluation,
+  &.o.evaluation {
     color: white !important;
     border: 0 !important;
   }
 
-  &.s {
+  &.s.evaluation {
     background-color: $tile-green-color !important;
   }
 
-  &.b {
+  &.b.evaluation {
     background-color: $tile-yellow-color !important;
   }
 
-  &.o {
+  &.o.evaluation {
     background-color: $tile-gray-color !important;
   }
 }
@@ -51,21 +51,21 @@
       border: 2px solid $dark-tile-empty-border-color !important;
     }
 
-    &.s,
-    &.b,
-    &.o {
+    &.s.evaluation,
+    &.b.evaluation,
+    &.o.evaluation {
       border: 0 !important;
     }
 
-    &.s {
+    &.s.evaluation {
       background-color: $dark-tile-green-color !important;
     }
 
-    &.b {
+    &.b.evaluation {
       background-color: $dark-tile-yellow-color !important;
     }
 
-    &.o {
+    &.o.evaluation {
       background-color: $dark-tile-gray-color !important;
     }
   }
@@ -73,11 +73,11 @@
 
 .contrast {
   .tile {
-    &.s {
+    &.s.evaluation {
       background-color: $contrast-tile-green-color !important;
     }
 
-    &.b {
+    &.b.evaluation {
       background-color: $contrast-tile-yellow-color !important;
     }
   }

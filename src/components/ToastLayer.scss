@@ -9,6 +9,10 @@
 
   top: 120px !important;
 
+  &.top-0 {
+    top: 120px !important;
+  }
+
   .toast {
     background-color: black;
     color: white;

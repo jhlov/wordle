@@ -45,7 +45,7 @@ const HelpModal = () => {
             <b>예시</b>
           </p>
           <div className="tiles">
-            <div className="tile letter s rotate">ㅅ</div>
+            <div className="tile letter s rotate evaluation">ㅅ</div>
             <div className="tile letter">ㅏ</div>
             <div className="tile letter">ㄹ</div>
             <div className="tile letter">ㅏ</div>
@@ -56,7 +56,7 @@ const HelpModal = () => {
           <div className="tiles">
             <div className="tile letter">ㄱ</div>
             <div className="tile letter">ㅏ</div>
-            <div className="tile letter b rotate">ㅁ</div>
+            <div className="tile letter b rotate evaluation">ㅁ</div>
             <div className="tile letter">ㅅ</div>
             <div className="tile letter">ㅏ</div>
           </div>
@@ -66,7 +66,7 @@ const HelpModal = () => {
             <div className="tile letter">ㅇ</div>
             <div className="tile letter">ㅕ</div>
             <div className="tile letter">ㄹ</div>
-            <div className="tile letter o rotate">ㅡ</div>
+            <div className="tile letter o rotate evaluation">ㅡ</div>
             <div className="tile letter">ㅁ</div>
           </div>
           <p>'ㅡ' 글자는 단어에 없습니다.</p>

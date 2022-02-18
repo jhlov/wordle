@@ -228,7 +228,7 @@ const Game = () => {
         saveGameData(gameData);
       }
 
-      // 애니메이션 주면서 타일 오픈 1.5초
+      // 애니메이션 주면서 타일 오픈 1.6초
       for (let i = 0; i < LETTER_COUNT; ++i) {
         setTimeout(() => {
           const evaluationList_ = [...evaluationList];
@@ -261,7 +261,7 @@ const Game = () => {
 
           // 통계 모달
           setTimeout(() => {
-            setShowStatisticsModal(true);
+            dispatch(setShowStatisticsModal(true));
           }, 2000);
         } else if (curRow === ROW_COUNT - 1) {
           dispatch(
@@ -280,7 +280,7 @@ const Game = () => {
 
           // 통계 모달
           setTimeout(() => {
-            setShowStatisticsModal(true);
+            dispatch(setShowStatisticsModal(true));
           }, 2000);
         } else {
           dispatch(setCurRow(curRow + 1));

@@ -1,9 +1,10 @@
-import className from "classnames";
+import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 import { LETTER_COUNT, ROW_COUNT } from "utils/const";
 import "./GameBody.scss";
+import { GameTile } from "./GameTile";
 
 interface Props {
   shake: boolean;
@@ -36,24 +37,19 @@ const GameBody = (props: Props) => {
         .map((_, i) => (
           <div
             key={i}
-            className={className("game-body-row", {
+            className={classNames("game-body-row", {
               shake: i === curRow && props.shake
             })}
           >
             {Array(LETTER_COUNT)
               .fill(0)
               .map((_, j) => (
-                <div
+                <GameTile
                   key={`${i}_${j}`}
-                  className={className(
-                    "tile",
-                    [guessList[i][j] ? "letter" : "empty"],
-                    { [evaluationList[i][j]]: evaluationList[i][j] },
-                    { jump: i === curRow && 0 < jump && j < jump }
-                  )}
-                >
-                  {guessList[i][j]}
-                </div>
+                  letter={guessList[i][j]}
+                  evaluation={evaluationList[i][j]}
+                  jump={i === curRow && 0 < jump && j < jump}
+                />
               ))}
           </div>
         ))}

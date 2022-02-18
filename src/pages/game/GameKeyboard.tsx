@@ -31,9 +31,15 @@ const GameKeyboard = (props: Props) => {
         {row1.map(letter => (
           <div
             key={letter}
-            className={classNames("tile", {
-              [keyMap[letter]]: keyMap[letter]
-            })}
+            className={classNames(
+              "tile",
+              {
+                [keyMap[letter]]: keyMap[letter]
+              },
+              {
+                evaluation: keyMap[letter]
+              }
+            )}
             onClick={() => props.onClickKeyboard(letter)}
           >
             {letter}
@@ -44,9 +50,15 @@ const GameKeyboard = (props: Props) => {
         {row2.map(letter => (
           <div
             key={letter}
-            className={classNames("tile", {
-              [keyMap[letter]]: keyMap[letter]
-            })}
+            className={classNames(
+              "tile",
+              {
+                [keyMap[letter]]: keyMap[letter]
+              },
+              {
+                evaluation: keyMap[letter]
+              }
+            )}
             onClick={() => props.onClickKeyboard(letter)}
           >
             {letter}
@@ -64,9 +76,15 @@ const GameKeyboard = (props: Props) => {
         {row3.map(letter => (
           <div
             key={letter}
-            className={classNames("tile", {
-              [keyMap[letter]]: keyMap[letter]
-            })}
+            className={classNames(
+              "tile",
+              {
+                [keyMap[letter]]: keyMap[letter]
+              },
+              {
+                evaluation: keyMap[letter]
+              }
+            )}
             onClick={() => props.onClickKeyboard(letter)}
           >
             {letter}
