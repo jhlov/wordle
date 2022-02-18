@@ -1,18 +1,26 @@
 import CloseIcon from "@mui/icons-material/Close";
 import React from "react";
 import { Modal } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "store";
+import { setShowHelpModal } from "store/modal";
 import "./HelpModal.scss";
 
-interface Props {
-  show: boolean;
-  onClose: () => void;
-}
+const HelpModal = () => {
+  const dispatch = useDispatch();
 
-const HelpModal = (props: Props) => {
+  const showHelpModal = useSelector(
+    (state: RootState) => state.modal.showHelpModal
+  );
+
+  const onClose = () => {
+    dispatch(setShowHelpModal(false));
+  };
+
   return (
-    <Modal className="help-modal" show={props.show} onHide={props.onClose}>
+    <Modal className="help-modal" show={showHelpModal} onHide={onClose}>
       <Modal.Header className="border-0">
-        <button className="close-btn" onClick={props.onClose}>
+        <button className="close-btn" onClick={onClose}>
           <CloseIcon />
         </button>
       </Modal.Header>

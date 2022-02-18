@@ -4,6 +4,9 @@ import classNames from "classnames";
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Modal, ProgressBar } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "store";
+import { setShowStatisticsModal } from "store/modal";
 import { ROW_COUNT } from "utils/const";
 import { getGameDataFromLS } from "utils/GameData";
 import {
@@ -14,12 +17,16 @@ import {
 import "./StatisticsModal.scss";
 
 interface Props {
-  show: boolean;
-  onClose: () => void;
   onClickShare: () => void;
 }
 
 const StatisticsModal = (props: Props) => {
+  const dispatch = useDispatch();
+
+  const showStatisticsModal = useSelector(
+    (state: RootState) => state.modal.showStatisticsModal
+  );
+
   const [statisticsData, setStatisticsData] =
     useState<StatisticsData>(initStatisticsData);
   const [isFinish, setIsFinish] = useState<boolean>(false);
@@ -27,8 +34,12 @@ const StatisticsModal = (props: Props) => {
   const [intervalId, setIntervalId] = useState<any>(null);
   const [lastWinRow, setLastWinRow] = useState<number>(-1);
 
+  const onClose = () => {
+    dispatch(setShowStatisticsModal(false));
+  };
+
   useEffect(() => {
-    if (props.show) {
+    if (showStatisticsModal) {
       const statisticsData = getStatisticsData();
       setStatisticsData(statisticsData);
 
@@ -67,7 +78,7 @@ const StatisticsModal = (props: Props) => {
     } else {
       clearInterval(intervalId);
     }
-  }, [props.show]);
+  }, [showStatisticsModal]);
 
   const winCount = useMemo(() => {
     return Object.values(statisticsData.success).reduce((p, c) => p + c, 0);
@@ -92,12 +103,12 @@ const StatisticsModal = (props: Props) => {
   return (
     <Modal
       className="statistics-modal"
-      show={props.show}
-      onHide={props.onClose}
+      show={showStatisticsModal}
+      onHide={onClose}
       centered
     >
       <Modal.Header className="border-0">
-        <button className="close-btn" onClick={props.onClose}>
+        <button className="close-btn" onClick={onClose}>
           <CloseIcon />
         </button>
       </Modal.Header>

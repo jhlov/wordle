@@ -4,21 +4,24 @@ import { Form, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { setContrastmode, setDarkmode, setHardmode } from "store/common";
+import { setShowSettingModal } from "store/modal";
 import "./SettingModal.scss";
 
-interface Props {
-  show: boolean;
-  onClose: () => void;
-}
-
-const SettingModal = (props: Props) => {
+const SettingModal = () => {
   const dispatch = useDispatch();
 
+  const showSettingModal = useSelector(
+    (state: RootState) => state.modal.showSettingModal
+  );
   const isHardmode = useSelector((state: RootState) => state.common.isHardmode);
   const isDarkmode = useSelector((state: RootState) => state.common.isDarkmode);
   const isContrastMode = useSelector(
     (state: RootState) => state.common.isContrastMode
   );
+
+  const onClose = () => {
+    dispatch(setShowSettingModal(false));
+  };
 
   const onChangeHardmode = (e: React.ChangeEvent) => {
     const v = (e.target as HTMLInputElement).checked;
@@ -51,10 +54,10 @@ const SettingModal = (props: Props) => {
   };
 
   return (
-    <Modal className="setting-modal" show={props.show} onHide={props.onClose}>
+    <Modal className="setting-modal" show={showSettingModal} onHide={onClose}>
       <Modal.Header className="border-0">
         <Modal.Title className="pl-4">설정</Modal.Title>
-        <button className="close-btn" onClick={props.onClose}>
+        <button className="close-btn" onClick={onClose}>
           <CloseIcon />
         </button>
       </Modal.Header>

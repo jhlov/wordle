@@ -18,6 +18,7 @@ import {
   setSolution,
   syncFromGameData
 } from "store/game";
+import { setShowHelpModal, setShowStatisticsModal } from "store/modal";
 import { LETTER_COUNT, ROW_COUNT } from "utils/const";
 import {
   GameData,
@@ -52,11 +53,6 @@ const Game = () => {
 
   const [shake, setShake] = useState<boolean>(false);
   const [isEnabledInput, setIsEnabledInput] = useState<boolean>(true);
-  const [showStatisticsModal, setShowStatisticsModal] =
-    useState<boolean>(false);
-  const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
-  const [showAddSolutionModal, setShowAddSolutionModal] =
-    useState<boolean>(false);
 
   const isDarkmode = useSelector((state: RootState) => state.common.isDarkmode);
   const isHardmode = useSelector((state: RootState) => state.common.isHardmode);
@@ -96,7 +92,7 @@ const Game = () => {
 
     // 최초 접속 시 헬프 모달
     if (gameData.id === 0) {
-      setShowHelpModal(true);
+      dispatch(setShowHelpModal(true));
     }
 
     // 기존 진행하고 있는 게임 일 경우, 게임데이터 싱크
@@ -106,7 +102,7 @@ const Game = () => {
       if (gameData.state === "FINISH") {
         setIsEnabledInput(false);
         setTimeout(() => {
-          setShowStatisticsModal(true);
+          dispatch(setShowStatisticsModal(true));
         }, 1000);
       }
     } else {
@@ -332,10 +328,7 @@ const Game = () => {
 
   return (
     <div className="game">
-      <GameHeader
-        onClickStatistics={() => setShowStatisticsModal(true)}
-        onClickHowTo={() => setShowHelpModal(true)}
-      />
+      <GameHeader />
       <GameBody shake={shake} />
       <GameKeyboard
         onClickKeyboard={onClickKeyboard}
@@ -349,21 +342,11 @@ const Game = () => {
           onClickKeyboard={onClickKeyboard}
           onClickEner={onClickEnter}
           onClickBack={onClickBack}
-          showAddSolutionModal={showAddSolutionModal}
         />
 
-        <StatisticsModal
-          show={showStatisticsModal}
-          onClose={() => setShowStatisticsModal(false)}
-          onClickShare={onClickShare}
-        />
-
-        <HelpModal
-          show={showHelpModal}
-          onClose={() => setShowHelpModal(false)}
-        />
-
-        <AddSolution setShowAddSolutionModal={setShowAddSolutionModal} />
+        <StatisticsModal onClickShare={onClickShare} />
+        <HelpModal />
+        <AddSolution />
       </div>
     </div>
   );

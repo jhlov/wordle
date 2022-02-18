@@ -6,19 +6,20 @@ import Hangul from "hangul-js";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Form, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { isBrowser } from "react-device-detect";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "store";
 import { addToast, setLoading } from "store/common";
+import { setShowAddSolutionModal } from "store/modal";
 import { LETTER_COUNT } from "utils/const";
 import "./AddSolution.scss";
 
-interface Props {
-  setShowAddSolutionModal: (v: boolean) => void;
-}
-
-const AddSolution = (props: Props) => {
+const AddSolution = () => {
   const dispatch = useDispatch();
 
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const showAddSolutionModal = useSelector(
+    (state: RootState) => state.modal.showAddSolutionModal
+  );
+
   const [showCompleteModal, setShowCompleteModal] = useState<boolean>(false);
   const [word, setWord] = useState<string>("");
 
@@ -54,10 +55,10 @@ const AddSolution = (props: Props) => {
   ];
 
   useEffect(() => {
-    if (showModal) {
+    if (showAddSolutionModal) {
       setWord("");
     }
-  }, [showModal]);
+  }, [showAddSolutionModal]);
 
   const isValid = useMemo(() => {
     if (word.length !== 2) {
@@ -77,18 +78,16 @@ const AddSolution = (props: Props) => {
   }, [word]);
 
   const onClick = () => {
-    setShowModal(true);
-    props.setShowAddSolutionModal(true);
+    dispatch(setShowAddSolutionModal(true));
   };
 
   const onHide = () => {
-    setShowModal(false);
-    props.setShowAddSolutionModal(false);
+    dispatch(setShowAddSolutionModal(false));
   };
 
   const onHideCompleteModal = () => {
+    dispatch(setShowAddSolutionModal(false));
     setShowCompleteModal(false);
-    props.setShowAddSolutionModal(false);
   };
 
   const addWord = async () => {
@@ -115,7 +114,7 @@ const AddSolution = (props: Props) => {
         }
 
         if (r.status === 200) {
-          setShowModal(false);
+          dispatch(setShowAddSolutionModal(false));
           setShowCompleteModal(true);
         }
       } catch (error) {
@@ -156,7 +155,11 @@ const AddSolution = (props: Props) => {
         </div>
       )}
 
-      <Modal className="add-solution-modal" show={showModal} onHide={onHide}>
+      <Modal
+        className="add-solution-modal"
+        show={showAddSolutionModal}
+        onHide={onHide}
+      >
         <Modal.Header className="border-0">
           <button className="close-btn" onClick={onHide}>
             <CloseIcon />

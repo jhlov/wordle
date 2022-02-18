@@ -8,10 +8,13 @@ interface Props {
   onClickKeyboard: (letter: string) => void;
   onClickEner: () => void;
   onClickBack: () => void;
-  showAddSolutionModal: boolean;
 }
 
 const GameKeyboardInput = (props: Props) => {
+  const showAddSolutionModal = useSelector(
+    (state: RootState) => state.modal.showAddSolutionModal
+  );
+
   const divRef = useRef<HTMLDivElement>(null);
 
   const curRow = useSelector((state: RootState) => state.game.curRow);
@@ -23,7 +26,7 @@ const GameKeyboardInput = (props: Props) => {
 
   useInterval(() => {
     if (divRef.current) {
-      if (!props.showAddSolutionModal) {
+      if (!showAddSolutionModal) {
         divRef.current.focus();
       }
     }
