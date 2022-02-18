@@ -259,6 +259,10 @@ const Game = () => {
             })
           );
 
+          axios.get(
+            `https://jnfj4yqnp0.execute-api.ap-northeast-2.amazonaws.com/default/wordle-result?id=${gameData.id}&row=${curRow}`
+          );
+
           // 통계 모달
           setTimeout(() => {
             dispatch(setShowStatisticsModal(true));
@@ -276,6 +280,10 @@ const Game = () => {
               text: `정답은 '${solution}' 입니다`,
               delay: 4000
             })
+          );
+
+          axios.get(
+            `https://jnfj4yqnp0.execute-api.ap-northeast-2.amazonaws.com/default/wordle-result?id=${gameData.id}&row=-1`
           );
 
           // 통계 모달
