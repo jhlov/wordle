@@ -3,6 +3,7 @@ import { BarChartOptions, PieChartOptions } from "@toast-ui/chart/types";
 import { BarChart, PieChart } from "@toast-ui/react-chart";
 import { ResultSummaryRes } from "pages/game/Game";
 import React, { useMemo } from "react";
+import { isMobile } from "react-device-detect";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 
@@ -48,7 +49,11 @@ export const ResultSummary = (props: Props) => {
 
   const pieOptions: PieChartOptions = useMemo(() => {
     return {
-      chart: { title: "성공/실패", width: 200, height: 200 },
+      chart: {
+        title: "성공/실패",
+        width: isMobile ? 150 : 200,
+        height: isMobile ? 150 : 200
+      },
       tooltip: {
         template: () => ""
       },
@@ -103,7 +108,11 @@ export const ResultSummary = (props: Props) => {
 
   const barOptions: BarChartOptions = useMemo(() => {
     return {
-      chart: { title: "성공 단계", width: 200, height: 220 },
+      chart: {
+        title: "성공 단계",
+        width: isMobile ? 150 : 200,
+        height: isMobile ? 150 : 200
+      },
       tooltip: {
         template: () => ""
       },
@@ -119,7 +128,8 @@ export const ResultSummary = (props: Props) => {
       xAxis: {
         label: {
           formatter: () => ""
-        }
+        },
+        height: 1
       },
       theme: {
         title: {
