@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import _ from "lodash";
+import { ResultSummaryRes } from "pages/game/Game";
 import { ROW_COUNT } from "utils/const";
 import { GameData } from "utils/GameData";
 
@@ -10,6 +11,8 @@ interface InitialState {
   guessList: string[];
   evaluationList: string[];
   keyMap: { [key: string]: string };
+  curReslutSummary: ResultSummaryRes | null;
+  prevReslutSummary: ResultSummaryRes | null;
 }
 
 const initialState: InitialState = {
@@ -18,7 +21,9 @@ const initialState: InitialState = {
   curRow: 0,
   guessList: ["", "", "", "", "", ""],
   evaluationList: ["", "", "", "", "", ""],
-  keyMap: {}
+  keyMap: {},
+  curReslutSummary: null,
+  prevReslutSummary: null
 };
 
 export const game = createSlice({
@@ -48,6 +53,12 @@ export const game = createSlice({
       state.guessList = [...action.payload.guessList];
       state.evaluationList = [...action.payload.evaluationList];
       state.keyMap = _.cloneDeep(action.payload.keyMap);
+    },
+    setCurResultSummary: (state, action: { payload: ResultSummaryRes }) => {
+      state.curReslutSummary = { ...action.payload };
+    },
+    setPrevResultSummary: (state, action: { payload: ResultSummaryRes }) => {
+      state.prevReslutSummary = { ...action.payload };
     }
   }
 });
@@ -60,7 +71,9 @@ export const {
   setGuessList,
   setEvaluationList,
   setKeyMap,
-  syncFromGameData
+  syncFromGameData,
+  setCurResultSummary,
+  setPrevResultSummary
 } = game.actions;
 
 export default game.reducer;

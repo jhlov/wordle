@@ -10,11 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { addToast, addToast2, setLoading } from "store/common";
 import {
+  setCurResultSummary,
   setCurRow,
   setEvaluationList,
   setGuessList,
   setId,
   setKeyMap,
+  setPrevResultSummary,
   setSolution,
   syncFromGameData
 } from "store/game";
@@ -33,6 +35,18 @@ import { GameBody } from "./GameBody";
 import { GameHeader } from "./GameHeader";
 import { GameKeyboard } from "./GameKeyboard";
 import { GameKeyboardInput } from "./GameKeyboardInput";
+
+export interface ResultSummaryRes {
+  id: number;
+  solution: string;
+  "-1": number;
+  0: number;
+  1: number;
+  2: number;
+  3: number;
+  4: number;
+  5: number;
+}
 
 interface Response {
   id?: number;
@@ -88,6 +102,9 @@ const Game = () => {
     dispatch(setId(r.data.id));
     dispatch(setSolution(r.data.solution));
 
+    fetchResultSummary(r.data.id, false);
+    fetchResultSummary(r.data.id - 1, true);
+
     const gameData = getGameDataFromLS();
 
     // 최초 접속 시 헬프 모달
@@ -110,6 +127,18 @@ const Game = () => {
     }
 
     dispatch(setLoading(false));
+  };
+
+  const fetchResultSummary = async (id: number, isPrev: boolean) => {
+    const url = `https://ff91bzwy7j.execute-api.ap-northeast-2.amazonaws.com/default/wordle-get-result-summary?id=${id}`;
+    const r = await axios.get<ResultSummaryRes>(url);
+    if (!_.isEmpty(r.data)) {
+      if (isPrev) {
+        dispatch(setPrevResultSummary(r.data));
+      } else {
+        dispatch(setCurResultSummary(r.data));
+      }
+    }
   };
 
   const startNewGame = (id: number) => {

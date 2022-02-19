@@ -14,6 +14,7 @@ import {
   initStatisticsData,
   StatisticsData
 } from "utils/StatisticsData";
+import { ResultSummary } from "./ResultSummary";
 import "./StatisticsModal.scss";
 
 interface Props {
@@ -25,6 +26,14 @@ const StatisticsModal = (props: Props) => {
 
   const showStatisticsModal = useSelector(
     (state: RootState) => state.modal.showStatisticsModal
+  );
+
+  const curResultSummary = useSelector(
+    (state: RootState) => state.game.curReslutSummary
+  );
+
+  const prevReslutSummary = useSelector(
+    (state: RootState) => state.game.prevReslutSummary
   );
 
   const [statisticsData, setStatisticsData] =
@@ -155,23 +164,35 @@ const StatisticsModal = (props: Props) => {
         </section>
 
         {isFinish && (
-          <section>
-            <div className="bottom">
-              <div className="border-right">
-                <h2>다음 워들까지</h2>
-                <div className="next-time">&nbsp;{nextTime}&nbsp;</div>
+          <>
+            <section className="border-bottom pb-4">
+              <div className="bottom">
+                <div className="border-right">
+                  <h2>다음 워들까지</h2>
+                  <div className="next-time">&nbsp;{nextTime}&nbsp;</div>
+                </div>
+                <div className="d-flex align-items-center justify-content-center">
+                  <Button
+                    className="share-btn"
+                    size="lg"
+                    onClick={props.onClickShare}
+                  >
+                    공유 <ShareOutlinedIcon />
+                  </Button>
+                </div>
               </div>
-              <div className="d-flex align-items-center justify-content-center">
-                <Button
-                  className="share-btn"
-                  size="lg"
-                  onClick={props.onClickShare}
-                >
-                  공유 <ShareOutlinedIcon />
-                </Button>
-              </div>
-            </div>
-          </section>
+            </section>
+
+            <section>
+              <h2>이번 문제 통계 ({curResultSummary?.solution})</h2>
+              <ResultSummary resultSummary={curResultSummary} />
+            </section>
+
+            <section>
+              <h2>이전 문제 통계 ({prevReslutSummary?.solution})</h2>
+              <ResultSummary resultSummary={prevReslutSummary} />
+            </section>
+          </>
         )}
       </Modal.Body>
     </Modal>
