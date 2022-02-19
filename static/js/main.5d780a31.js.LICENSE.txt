@@ -10,6 +10,15 @@ object-assign
   http://jedwatson.github.io/classnames
 */
 
+/*!
+ * TOAST UI Chart 4th Edition
+ * @version 4.4.1 | Wed Oct 20 2021
+ * @author NHN. FE Development Lab <dl_javascript@nhn.com>
+ * @license MIT
+ */
+
+/*! For license information please see toastui-react-chart.js.LICENSE.txt */
+
 /**
  * @license
  * Lodash <https://lodash.com/>
@@ -19,7 +28,7 @@ object-assign
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
 
-/** @license MUI v5.3.0
+/** @license MUI v5.4.2
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
@@ -78,5 +87,7 @@ object-assign
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
+
+// @license RGB <-> HSV conversion utilities based off of http://www.cs.rit.edu/~ncs/color/t_convert.html
 
 //! moment.js
