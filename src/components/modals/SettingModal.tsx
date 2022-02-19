@@ -54,7 +54,12 @@ const SettingModal = () => {
   };
 
   return (
-    <Modal className="setting-modal" show={showSettingModal} onHide={onClose}>
+    <Modal
+      className="setting-modal"
+      show={showSettingModal}
+      onHide={onClose}
+      scrollable
+    >
       <Modal.Header className="border-0">
         <Modal.Title className="pl-4">설정</Modal.Title>
         <button className="close-btn" onClick={onClose}>

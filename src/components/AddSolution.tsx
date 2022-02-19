@@ -159,6 +159,7 @@ const AddSolution = () => {
         className="add-solution-modal"
         show={showAddSolutionModal}
         onHide={onHide}
+        scrollable
       >
         <Modal.Header className="border-0">
           <button className="close-btn" onClick={onHide}>
@@ -205,6 +206,7 @@ const AddSolution = () => {
         className="add-solution-complete-modal"
         show={showCompleteModal}
         onHide={onHideCompleteModal}
+        scrollable
       >
         <Modal.Header className="border-0">
           <button className="close-btn" onClick={onHideCompleteModal}>

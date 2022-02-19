@@ -115,6 +115,7 @@ const StatisticsModal = (props: Props) => {
       show={showStatisticsModal}
       onHide={onClose}
       centered
+      scrollable
     >
       <Modal.Header className="border-0">
         <button className="close-btn" onClick={onClose}>

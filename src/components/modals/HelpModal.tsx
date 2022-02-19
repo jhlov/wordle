@@ -18,7 +18,12 @@ const HelpModal = () => {
   };
 
   return (
-    <Modal className="help-modal" show={showHelpModal} onHide={onClose}>
+    <Modal
+      className="help-modal"
+      show={showHelpModal}
+      onHide={onClose}
+      scrollable
+    >
       <Modal.Header className="border-0">
         <button className="close-btn" onClick={onClose}>
           <CloseIcon />
