@@ -184,10 +184,12 @@ const StatisticsModal = (props: Props) => {
               </div>
             </section>
 
-            <section>
-              <h2>이번 문제 통계 ({curResultSummary?.solution})</h2>
-              <ResultSummary resultSummary={curResultSummary} />
-            </section>
+            {curResultSummary && (
+              <section>
+                <h2>이번 문제 통계 ({curResultSummary?.solution})</h2>
+                <ResultSummary resultSummary={curResultSummary} />
+              </section>
+            )}
 
             <section>
               <h2>이전 문제 통계 ({prevReslutSummary?.solution})</h2>
