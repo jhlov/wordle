@@ -7,12 +7,14 @@ import _ from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "store";
 import { addToast, addToast2, setLoading } from "store/common";
 import {
   setCurResultSummary,
   setCurRow,
   setEvaluationList,
+  setGameType,
   setGuessList,
   setId,
   setKeyMap,
@@ -54,7 +56,7 @@ interface Response {
   solution?: string;
 }
 
-const Game = () => {
+const Game = ({ match }: RouteComponentProps) => {
   const dispatch = useDispatch();
 
   const solution = useSelector((state: RootState) => state.game.solution);
@@ -79,6 +81,9 @@ const Game = () => {
   }, [curRow, guessList]);
 
   useEffect(() => {
+    const gameType: string | undefined = (match.params as any).gameType;
+    dispatch(setGameType(gameType));
+
     init();
   }, []);
 

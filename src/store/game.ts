@@ -4,7 +4,10 @@ import { ResultSummaryRes } from "pages/game/Game";
 import { ROW_COUNT } from "utils/const";
 import { GameData } from "utils/GameData";
 
+export type GameType = "NORMAL" | "INFINITE";
+
 interface InitialState {
+  gameType: GameType;
   id: number;
   solution: string;
   curRow: number;
@@ -16,6 +19,7 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
+  gameType: "NORMAL",
   id: -1,
   solution: "",
   curRow: 0,
@@ -30,6 +34,13 @@ export const game = createSlice({
   name: "game",
   initialState,
   reducers: {
+    setGameType: (state, action: { payload: string | undefined }) => {
+      if (action.payload === "infinite") {
+        state.gameType = "INFINITE";
+      } else {
+        state.gameType = "NORMAL";
+      }
+    },
     setId: (state, action: { payload: number }) => {
       state.id = action.payload;
     },
@@ -65,6 +76,7 @@ export const game = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
+  setGameType,
   setId,
   setSolution,
   setCurRow,

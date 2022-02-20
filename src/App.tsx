@@ -4,6 +4,7 @@ import { ToastLayer } from "components/ToastLayer";
 import { Game } from "pages/game/Game";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { HashRouter, Route } from "react-router-dom";
 import { setContrastmode, setDarkmode, setHardmode } from "store/common";
 import "styles/tile.scss";
 import "./App.scss";
@@ -35,7 +36,10 @@ function App() {
   return (
     <div className="App">
       <div className={classNames(isMobile ? "mobile-container" : "container")}>
-        <Game />
+        <HashRouter>
+          <Route path="/" component={Game} exact />
+          <Route path="/:gameType" component={Game} />
+        </HashRouter>
         <LoadingLayer />
         <ToastLayer />
       </div>

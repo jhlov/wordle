@@ -1,9 +1,13 @@
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
+import MenuIcon from "@mui/icons-material/Menu";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { SettingModal } from "components/modals/SettingModal";
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useMemo, useState } from "react";
+import { Accordion } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { RootState } from "store";
 import {
   setShowHelpModal,
   setShowSettingModal,
@@ -12,7 +16,27 @@ import {
 import "./GameHeader.scss";
 
 const GameHeader = () => {
+  const [activeMenuKey, setActiveMenuKey] = useState<string>("");
+
   const dispatch = useDispatch();
+
+  const gameType = useSelector((state: RootState) => state.game.gameType);
+
+  const title = useMemo(() => {
+    if (gameType === "INFINITE") {
+      return "무한 워들";
+    }
+
+    return "워들";
+  }, [gameType]);
+
+  const onClickMenu = () => {
+    if (activeMenuKey === "") {
+      setActiveMenuKey("0");
+    } else {
+      setActiveMenuKey("");
+    }
+  };
 
   const onClickHowTo = () => {
     dispatch(setShowHelpModal(true));
@@ -27,21 +51,48 @@ const GameHeader = () => {
   };
 
   return (
-    <div className="game-header align-items-center justify-content-between py-2 border-bottom">
-      <button onClick={onClickHowTo}>
-        <HelpOutlineIcon />
-      </button>
-      <h1 className="m-0 p-0">워들</h1>
-      <div>
-        <button onClick={onClickStatistics}>
-          <LeaderboardOutlinedIcon />
-        </button>
-        <button onClick={onClickSetting}>
-          <SettingsIcon />
-        </button>
-      </div>
+    <div>
+      <div className="game-header align-items-center justify-content-between py-2 border-bottom">
+        <div>
+          <button onClick={onClickMenu}>
+            <MenuIcon />
+          </button>
+          <button onClick={onClickHowTo}>
+            <HelpOutlineIcon />
+          </button>
+        </div>
+        <h1 className="m-0 p-0">{title}</h1>
+        <div>
+          <button onClick={onClickStatistics}>
+            <LeaderboardOutlinedIcon />
+          </button>
+          <button onClick={onClickSetting}>
+            <SettingsIcon />
+          </button>
+        </div>
 
-      <SettingModal />
+        <SettingModal />
+      </div>
+      <Accordion activeKey={activeMenuKey}>
+        <Accordion.Collapse eventKey="0">
+          <div className="game-header-menu pt-1 pb-2">
+            {gameType === "NORMAL" ? (
+              <span className="px-2">워들</span>
+            ) : (
+              <Link className="px-2" to="/">
+                워들
+              </Link>
+            )}
+            {gameType === "INFINITE" ? (
+              <span className="px-2">무한 워들</span>
+            ) : (
+              <Link className="px-2" to="/infinite">
+                무한 워들
+              </Link>
+            )}
+          </div>
+        </Accordion.Collapse>
+      </Accordion>
     </div>
   );
 };
