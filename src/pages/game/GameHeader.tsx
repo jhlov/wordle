@@ -6,16 +6,20 @@ import { SettingModal } from "components/modals/SettingModal";
 import React, { useMemo, useState } from "react";
 import { Accordion } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { RootState } from "store";
+import { syncFromGameData } from "store/game";
 import {
   setShowHelpModal,
   setShowSettingModal,
   setShowStatisticsModal
 } from "store/modal";
+import { initGameData } from "utils/GameData";
 import "./GameHeader.scss";
 
 const GameHeader = () => {
+  const history = useHistory();
+
   const [activeMenuKey, setActiveMenuKey] = useState<string>("");
 
   const dispatch = useDispatch();
@@ -79,16 +83,28 @@ const GameHeader = () => {
             {gameType === "NORMAL" ? (
               <span className="px-2">워들</span>
             ) : (
-              <Link className="px-2" to="/">
+              <a
+                className="px-2"
+                onClick={() => {
+                  dispatch(syncFromGameData(initGameData));
+                  history.replace("/");
+                }}
+              >
                 워들
-              </Link>
+              </a>
             )}
             {gameType === "INFINITE" ? (
               <span className="px-2">무한 워들</span>
             ) : (
-              <Link className="px-2" to="/infinite">
+              <a
+                className="px-2"
+                onClick={() => {
+                  dispatch(syncFromGameData(initGameData));
+                  history.replace("/infinite");
+                }}
+              >
                 무한 워들
-              </Link>
+              </a>
             )}
           </div>
         </Accordion.Collapse>
