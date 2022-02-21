@@ -31,7 +31,7 @@ const GameBody = (props: Props) => {
   }, [evaluationList, curRow]);
 
   return (
-    <div className="game-body">
+    <div className="game-body my-3">
       {Array(ROW_COUNT)
         .fill(0)
         .map((_, i) => (

@@ -37,6 +37,7 @@ import { GameBody } from "./GameBody";
 import { GameHeader } from "./GameHeader";
 import { GameKeyboard } from "./GameKeyboard";
 import { GameKeyboardInput } from "./GameKeyboardInput";
+import AdSense from "react-adsense";
 
 export interface ResultSummaryRes {
   id: number;
@@ -431,14 +432,6 @@ const Game = ({ match }: RouteComponentProps) => {
 
   return (
     <div className="game">
-      <GameHeader />
-      <GameBody shake={shake} />
-      <GameKeyboard
-        onClickKeyboard={onClickKeyboard}
-        onClickEner={onClickEnter}
-        onClickBack={onClickBack}
-      />
-
       {/* other */}
       <div>
         <GameKeyboardInput
@@ -454,6 +447,21 @@ const Game = ({ match }: RouteComponentProps) => {
         <HelpModal />
         <AddSolution />
       </div>
+
+      <GameHeader />
+      <GameBody shake={shake} />
+      <GameKeyboard
+        onClickKeyboard={onClickKeyboard}
+        onClickEner={onClickEnter}
+        onClickBack={onClickBack}
+      />
+      <AdSense.Google
+        className="mt-4 mb-2"
+        style={{ display: "inline-block", width: "100%", height: 90 }}
+        client="ca-pub-7150456660061561"
+        slot="3236246273"
+        format=""
+      />
     </div>
   );
 };
