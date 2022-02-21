@@ -445,7 +445,7 @@ const Game = ({ match }: RouteComponentProps) => {
           onClickNewInfiniteGame={startNewInfiniteGame}
         />
         <HelpModal />
-        <AddSolution />
+        {gameType === "NORMAL" && <AddSolution />}
       </div>
 
       <GameHeader />

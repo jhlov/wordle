@@ -1,4 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
+import MenuIcon from "@mui/icons-material/Menu";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import classNames from "classnames";
 import moment from "moment";
@@ -174,11 +175,7 @@ const StatisticsModal = (props: Props) => {
 
         {isFinish && (
           <>
-            <section
-              className={classNames("pb-4", {
-                "border-bottom": gameType === "NORMAL"
-              })}
-            >
+            <section>
               <div className="bottom">
                 <div className="text-center border-right">
                   {gameType === "NORMAL" && (
@@ -210,7 +207,7 @@ const StatisticsModal = (props: Props) => {
             </section>
 
             {gameType === "NORMAL" && (
-              <>
+              <div className="border-top pt-4">
                 {curResultSummary && (
                   <section>
                     <h2>이번 문제 통계 ({curResultSummary?.solution})</h2>
@@ -222,10 +219,15 @@ const StatisticsModal = (props: Props) => {
                   <h2>이전 문제 통계 ({prevReslutSummary?.solution})</h2>
                   <ResultSummary resultSummary={prevReslutSummary} />
                 </section>
-              </>
+              </div>
             )}
           </>
         )}
+
+        <section className="border-top pt-4 word-break-keep-all">
+          무한워들 모드가 추가 되었습니다. 왼쪽 상단의 <MenuIcon /> 메뉴버튼을
+          눌러 플레이 할 수 있습니다.
+        </section>
       </Modal.Body>
     </Modal>
   );

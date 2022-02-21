@@ -30,6 +30,10 @@ body.darkmode {
 }
 
 // common
+.word-break-keep-all {
+  word-break: keep-all;
+}
+
 .border-bottom {
   border-bottom: 1px solid $border-color !important;
 }
