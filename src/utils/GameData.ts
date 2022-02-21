@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { GameType } from "store/game";
 
 export interface GameData {
   guessList: string[];
@@ -7,6 +8,7 @@ export interface GameData {
   curRow: number;
   id: number;
   state: "PLAYING" | "FINISH";
+  solution?: string;
 }
 
 export const initGameData: GameData = {
@@ -18,8 +20,9 @@ export const initGameData: GameData = {
   state: "PLAYING"
 };
 
-export const getGameDataFromLS = (): GameData => {
-  const str = localStorage.getItem("gameData");
+export const getGameDataFromLS = (gameType: GameType): GameData => {
+  const key = gameType === "NORMAL" ? "gameData" : "wordle-gamedata-infinite";
+  const str = localStorage.getItem(key);
   if (str) {
     const data: GameData = JSON.parse(str);
     if (!data.guessList || !data.evaluationList) {
@@ -29,11 +32,12 @@ export const getGameDataFromLS = (): GameData => {
 
     return { ...data };
   } else {
-    localStorage.setItem("gameData", JSON.stringify(initGameData));
+    localStorage.setItem(key, JSON.stringify(initGameData));
     return _.cloneDeep(initGameData);
   }
 };
 
-export const saveGameData = (gameData: GameData) => {
-  localStorage.setItem("gameData", JSON.stringify(gameData));
+export const saveGameData = (gameType: GameType, gameData: GameData) => {
+  const key = gameType === "NORMAL" ? "gameData" : "wordle-gamedata-infinite";
+  localStorage.setItem(key, JSON.stringify(gameData));
 };

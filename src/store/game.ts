@@ -4,7 +4,7 @@ import { ResultSummaryRes } from "pages/game/Game";
 import { ROW_COUNT } from "utils/const";
 import { GameData } from "utils/GameData";
 
-export type GameType = "NORMAL" | "INFINITE";
+export type GameType = "NONE" | "NORMAL" | "INFINITE";
 
 interface InitialState {
   gameType: GameType;
@@ -19,7 +19,7 @@ interface InitialState {
 }
 
 const initialState: InitialState = {
-  gameType: "NORMAL",
+  gameType: "NONE",
   id: -1,
   solution: "",
   curRow: 0,
@@ -60,10 +60,14 @@ export const game = createSlice({
       state.keyMap = { ...action.payload };
     },
     syncFromGameData: (state, action: { payload: GameData }) => {
+      state.id = action.payload.id;
       state.curRow = Math.min(ROW_COUNT - 1, action.payload.curRow);
       state.guessList = [...action.payload.guessList];
       state.evaluationList = [...action.payload.evaluationList];
       state.keyMap = _.cloneDeep(action.payload.keyMap);
+      if (action.payload.solution) {
+        state.solution = action.payload.solution;
+      }
     },
     setCurResultSummary: (state, action: { payload: ResultSummaryRes }) => {
       state.curReslutSummary = { ...action.payload };

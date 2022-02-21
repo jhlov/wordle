@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { GameType } from "store/game";
 
 export interface StatisticsData {
   currentStreak: number;
@@ -14,16 +15,23 @@ export const initStatisticsData: StatisticsData = {
   fail: 0
 };
 
-export const getStatisticsData = (): StatisticsData => {
-  const str = localStorage.getItem("statisticsData");
+export const getStatisticsData = (gameType: GameType): StatisticsData => {
+  const key =
+    gameType === "NORMAL" ? "statisticsData" : "wordle-statisticsdata-infinite";
+  const str = localStorage.getItem(key);
   if (str) {
     return JSON.parse(str);
   } else {
-    localStorage.setItem("statisticsData", JSON.stringify(initStatisticsData));
+    localStorage.setItem(key, JSON.stringify(initStatisticsData));
     return _.cloneDeep(initStatisticsData);
   }
 };
 
-export const saveStatisticsData = (statisticsData: StatisticsData) => {
-  localStorage.setItem("statisticsData", JSON.stringify(statisticsData));
+export const saveStatisticsData = (
+  gameType: GameType,
+  statisticsData: StatisticsData
+) => {
+  const key =
+    gameType === "NORMAL" ? "statisticsData" : "wordle-statisticsdata-infinite";
+  localStorage.setItem(key, JSON.stringify(statisticsData));
 };

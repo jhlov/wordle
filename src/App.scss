@@ -34,9 +34,17 @@ body.darkmode {
   border-bottom: 1px solid $border-color !important;
 }
 
+.border-right {
+  border-right: 1px solid $border-color !important;
+}
+
 .darkmode {
   .border-bottom {
     border-bottom: 1px solid $dark-border-color !important;
+  }
+
+  .border-right {
+    border-right: 1px solid $dark-border-color !important;
   }
 }
 

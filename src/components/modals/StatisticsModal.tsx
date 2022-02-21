@@ -19,10 +19,13 @@ import "./StatisticsModal.scss";
 
 interface Props {
   onClickShare: () => void;
+  onClickNewInfiniteGame: () => void;
 }
 
 const StatisticsModal = (props: Props) => {
   const dispatch = useDispatch();
+
+  const gameType = useSelector((state: RootState) => state.game.gameType);
 
   const showStatisticsModal = useSelector(
     (state: RootState) => state.modal.showStatisticsModal
@@ -49,13 +52,13 @@ const StatisticsModal = (props: Props) => {
 
   useEffect(() => {
     if (showStatisticsModal) {
-      const statisticsData = getStatisticsData();
+      const statisticsData = getStatisticsData(gameType);
       setStatisticsData(statisticsData);
 
-      const gameData = getGameDataFromLS();
+      const gameData = getGameDataFromLS(gameType);
       setLastWinRow(gameData.evaluationList.indexOf("sssss"));
       setIsFinish(gameData.state === "FINISH");
-      if (gameData.state === "FINISH") {
+      if (gameType === "NORMAL" && gameData.state === "FINISH") {
         const intervalId_ = setInterval(() => {
           const now = moment();
           let nextTime = moment();
@@ -87,7 +90,7 @@ const StatisticsModal = (props: Props) => {
     } else {
       clearInterval(intervalId);
     }
-  }, [showStatisticsModal]);
+  }, [gameType, showStatisticsModal]);
 
   const winCount = useMemo(() => {
     return Object.values(statisticsData.success).reduce((p, c) => p + c, 0);
@@ -108,6 +111,11 @@ const StatisticsModal = (props: Props) => {
   const maxSuccess = useMemo(() => {
     return Math.max(...Object.values(statisticsData.success));
   }, [statisticsData]);
+
+  const onClickNewInfiniteGame = () => {
+    props.onClickNewInfiniteGame();
+    onClose();
+  };
 
   return (
     <Modal
@@ -166,11 +174,28 @@ const StatisticsModal = (props: Props) => {
 
         {isFinish && (
           <>
-            <section className="border-bottom pb-4">
+            <section
+              className={classNames("pb-4", {
+                "border-bottom": gameType === "NORMAL"
+              })}
+            >
               <div className="bottom">
-                <div className="border-right">
-                  <h2>다음 워들까지</h2>
-                  <div className="next-time">&nbsp;{nextTime}&nbsp;</div>
+                <div className="text-center border-right">
+                  {gameType === "NORMAL" && (
+                    <>
+                      <h2>다음 워들까지</h2>
+                      <div className="next-time">&nbsp;{nextTime}&nbsp;</div>
+                    </>
+                  )}
+                  {gameType === "INFINITE" && (
+                    <Button
+                      className="share-btn"
+                      size="lg"
+                      onClick={onClickNewInfiniteGame}
+                    >
+                      새 게임 시작
+                    </Button>
+                  )}
                 </div>
                 <div className="d-flex align-items-center justify-content-center">
                   <Button
@@ -184,17 +209,21 @@ const StatisticsModal = (props: Props) => {
               </div>
             </section>
 
-            {curResultSummary && (
-              <section>
-                <h2>이번 문제 통계 ({curResultSummary?.solution})</h2>
-                <ResultSummary resultSummary={curResultSummary} />
-              </section>
-            )}
+            {gameType === "NORMAL" && (
+              <>
+                {curResultSummary && (
+                  <section>
+                    <h2>이번 문제 통계 ({curResultSummary?.solution})</h2>
+                    <ResultSummary resultSummary={curResultSummary} />
+                  </section>
+                )}
 
-            <section>
-              <h2>이전 문제 통계 ({prevReslutSummary?.solution})</h2>
-              <ResultSummary resultSummary={prevReslutSummary} />
-            </section>
+                <section>
+                  <h2>이전 문제 통계 ({prevReslutSummary?.solution})</h2>
+                  <ResultSummary resultSummary={prevReslutSummary} />
+                </section>
+              </>
+            )}
           </>
         )}
       </Modal.Body>

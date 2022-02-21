@@ -1,7 +1,8 @@
+import Hangul from "hangul-js";
+import _ from "lodash";
+import { GameType } from "store/game";
 import { LETTER_COUNT, ROW_COUNT } from "utils/const";
 import { GameData } from "utils/GameData";
-import _ from "lodash";
-import Hangul from "hangul-js";
 
 export const Utils = {
   /**
@@ -74,19 +75,25 @@ export const Utils = {
     return "";
   },
   getCopyText: (
+    gameType: GameType,
     isHardmode: boolean,
     isContrastmode: boolean,
     isDarkmode: boolean,
     gameData: GameData
   ) => {
-    console.log(gameData);
-    let copyText = `워들 ${gameData.id} ${
+    const title = gameType === "NORMAL" ? "워들" : "무한워들";
+    const site =
+      gameType === "NORMAL"
+        ? "https://jhlov.github.io/wordle\n\n"
+        : "https://jhlov.github.io/wordle/#/infinite\n\n";
+
+    let copyText = `${title} ${gameData.id} ${
       gameData.evaluationList.some(evaluation => evaluation === "sssss")
         ? gameData.evaluationList.filter(evaluation => evaluation).length
         : "X"
     }/${ROW_COUNT}${isHardmode ? "*" : ""}\n`;
-    copyText += "https://jhlov.github.io/wordle\n\n";
 
+    copyText += site;
     copyText += gameData.evaluationList
       .filter(evaluation => evaluation !== "")
       .map(evaluation =>

@@ -59,6 +59,8 @@ interface Response {
 const Game = ({ match }: RouteComponentProps) => {
   const dispatch = useDispatch();
 
+  const gameType = useSelector((state: RootState) => state.game.gameType);
+
   const solution = useSelector((state: RootState) => state.game.solution);
   const curRow = useSelector((state: RootState) => state.game.curRow);
   const guessList = useSelector((state: RootState) => state.game.guessList);
@@ -83,15 +85,79 @@ const Game = ({ match }: RouteComponentProps) => {
   useEffect(() => {
     const gameType: string | undefined = (match.params as any).gameType;
     dispatch(setGameType(gameType));
-
-    init();
   }, []);
+
+  // init
+  useEffect(() => {
+    if (gameType !== "NONE") {
+      init();
+    }
+  }, [gameType]);
 
   const init = async () => {
     dispatch(setLoading(true));
 
+    if (gameType === "NORMAL" && (match.params as any).gameType === undefined) {
+      const r = await axios.get<Response>(
+        `https://hy374x63qa.execute-api.ap-northeast-2.amazonaws.com/default/wordle-v2?gameType=${gameType}`
+      );
+
+      if (r.status !== 200 || !r.data.id || !r.data.solution) {
+        dispatch(
+          addToast({
+            text: "시스템 오류 입니다!"
+          })
+        );
+
+        return;
+      }
+
+      dispatch(setId(r.data.id));
+      dispatch(setSolution(r.data.solution));
+
+      fetchResultSummary(r.data.id, false);
+      fetchResultSummary(r.data.id - 1, true);
+
+      const gameData = getGameDataFromLS(gameType);
+
+      // 최초 접속 시 헬프 모달
+      if (gameData.id === 0) {
+        dispatch(setShowHelpModal(true));
+      }
+
+      // 기존 진행하고 있는 게임 일 경우, 게임데이터 싱크
+      if (gameData.id === r.data.id) {
+        syncGameData(gameData);
+
+        if (gameData.state === "FINISH") {
+          setIsEnabledInput(false);
+          setTimeout(() => {
+            dispatch(setShowStatisticsModal(true));
+          }, 1000);
+        }
+      } else {
+        startNewGame(r.data.id);
+      }
+    } else if (
+      gameType === "INFINITE" &&
+      (match.params as any).gameType === "infinite"
+    ) {
+      const gameData = getGameDataFromLS(gameType);
+      if (gameData.id === 0 || gameData.state === "FINISH") {
+        // 게임이 종료 되었으면 새 게임 받아오기
+        startNewInfiniteGame();
+      } else {
+        // 진행중이면 계속 진행
+        syncGameData(gameData);
+      }
+    }
+
+    dispatch(setLoading(false));
+  };
+
+  const startNewInfiniteGame = async () => {
     const r = await axios.get<Response>(
-      "https://hy374x63qa.execute-api.ap-northeast-2.amazonaws.com/default/wordle-v2"
+      `https://hy374x63qa.execute-api.ap-northeast-2.amazonaws.com/default/wordle-v2?gameType=${gameType}`
     );
 
     if (r.status !== 200 || !r.data.id || !r.data.solution) {
@@ -107,33 +173,14 @@ const Game = ({ match }: RouteComponentProps) => {
     dispatch(setId(r.data.id));
     dispatch(setSolution(r.data.solution));
 
-    fetchResultSummary(r.data.id, false);
-    fetchResultSummary(r.data.id - 1, true);
-
-    const gameData = getGameDataFromLS();
-
-    // 최초 접속 시 헬프 모달
-    if (gameData.id === 0) {
-      dispatch(setShowHelpModal(true));
-    }
-
-    // 기존 진행하고 있는 게임 일 경우, 게임데이터 싱크
-    if (gameData.id === r.data.id) {
-      syncGameData(gameData);
-
-      if (gameData.state === "FINISH") {
-        setIsEnabledInput(false);
-        setTimeout(() => {
-          dispatch(setShowStatisticsModal(true));
-        }, 1000);
-      }
-    } else {
-      startNewGame(r.data.id);
-    }
-
-    dispatch(setLoading(false));
+    startNewGame(r.data.id, r.data.solution);
   };
 
+  /**
+   * 노말게임, 결과 요약 데이터 받아오기
+   * @param id
+   * @param isPrev
+   */
   const fetchResultSummary = async (id: number, isPrev: boolean) => {
     const url = `https://ff91bzwy7j.execute-api.ap-northeast-2.amazonaws.com/default/wordle-get-result-summary?id=${id}`;
     const r = await axios.get<ResultSummaryRes>(url);
@@ -146,14 +193,21 @@ const Game = ({ match }: RouteComponentProps) => {
     }
   };
 
-  const startNewGame = (id: number) => {
+  const startNewGame = (id: number, solution?: string) => {
     const gameData: GameData = _.cloneDeep(initGameData);
     gameData.id = id;
-    saveGameData(gameData);
+    if (solution) {
+      gameData.solution = solution;
+    }
+    saveGameData(gameType, gameData);
     syncGameData(gameData);
     setIsEnabledInput(true);
   };
 
+  /**
+   * 게임데이터를 스토어에 싱크
+   * @param gameData
+   */
   const syncGameData = (gameData: GameData) => {
     dispatch(syncFromGameData(gameData));
   };
@@ -225,19 +279,19 @@ const Game = ({ match }: RouteComponentProps) => {
       const evaluation = Utils.getEvaluation(curGuess, solution);
 
       // 게임 기록 업데이트
-      const gameData: GameData = getGameDataFromLS();
+      const gameData: GameData = getGameDataFromLS(gameType);
       gameData.curRow = curRow + 1;
       gameData.guessList[curRow] = curGuess;
       gameData.evaluationList[curRow] = evaluation;
       gameData.keyMap = _.cloneDeep(
         Utils.getNewKeyMap(curGuess, evaluation, keyMap)
       );
-      saveGameData(gameData);
+      saveGameData(gameType, gameData);
 
       // 통계 업데이트
       if (evaluation === "sssss") {
         // 성공
-        const statisticsData = getStatisticsData();
+        const statisticsData = getStatisticsData(gameType);
         statisticsData.currentStreak += 1;
         statisticsData.maxStreak = Math.max(
           statisticsData.maxStreak,
@@ -245,21 +299,21 @@ const Game = ({ match }: RouteComponentProps) => {
         );
         statisticsData.success[curRow] =
           (statisticsData.success[curRow] ?? 0) + 1;
-        saveStatisticsData(statisticsData);
+        saveStatisticsData(gameType, statisticsData);
 
         gameData.curRow = curRow;
         gameData.state = "FINISH";
-        saveGameData(gameData);
+        saveGameData(gameType, gameData);
       } else if (curRow === ROW_COUNT - 1) {
         // 실패
-        const statisticsData = getStatisticsData();
+        const statisticsData = getStatisticsData(gameType);
         statisticsData.currentStreak = 0;
         statisticsData.fail += 1;
-        saveStatisticsData(statisticsData);
+        saveStatisticsData(gameType, statisticsData);
 
         gameData.curRow = curRow;
         gameData.state = "FINISH";
-        saveGameData(gameData);
+        saveGameData(gameType, gameData);
       }
 
       // 애니메이션 주면서 타일 오픈 1.6초
@@ -293,21 +347,25 @@ const Game = ({ match }: RouteComponentProps) => {
             })
           );
 
-          axios.get(
-            `https://jnfj4yqnp0.execute-api.ap-northeast-2.amazonaws.com/default/wordle-result?id=${gameData.id}&row=${curRow}`
-          );
+          if (gameType === "NORMAL") {
+            axios.get(
+              `https://jnfj4yqnp0.execute-api.ap-northeast-2.amazonaws.com/default/wordle-result?id=${gameData.id}&row=${curRow}`
+            );
+          }
 
           // 통계 모달
           setTimeout(() => {
             dispatch(setShowStatisticsModal(true));
           }, 2000);
         } else if (curRow === ROW_COUNT - 1) {
-          dispatch(
-            addToast({
-              text: "다음에 다시 도전해보세요.",
-              delay: 2000
-            })
-          );
+          if (gameType === "NORMAL") {
+            dispatch(
+              addToast({
+                text: "다음에 다시 도전해보세요.",
+                delay: 2000
+              })
+            );
+          }
 
           dispatch(
             addToast({
@@ -316,9 +374,11 @@ const Game = ({ match }: RouteComponentProps) => {
             })
           );
 
-          axios.get(
-            `https://jnfj4yqnp0.execute-api.ap-northeast-2.amazonaws.com/default/wordle-result?id=${gameData.id}&row=-1`
-          );
+          if (gameType === "NORMAL") {
+            axios.get(
+              `https://jnfj4yqnp0.execute-api.ap-northeast-2.amazonaws.com/default/wordle-result?id=${gameData.id}&row=-1`
+            );
+          }
 
           // 통계 모달
           setTimeout(() => {
@@ -345,8 +405,9 @@ const Game = ({ match }: RouteComponentProps) => {
   };
 
   const onClickShare = () => {
-    const gameData = getGameDataFromLS();
+    const gameData = getGameDataFromLS(gameType);
     let copyText = Utils.getCopyText(
+      gameType,
       isHardmode,
       isContrastmode,
       isDarkmode,
@@ -386,7 +447,10 @@ const Game = ({ match }: RouteComponentProps) => {
           onClickBack={onClickBack}
         />
 
-        <StatisticsModal onClickShare={onClickShare} />
+        <StatisticsModal
+          onClickShare={onClickShare}
+          onClickNewInfiniteGame={startNewInfiniteGame}
+        />
         <HelpModal />
         <AddSolution />
       </div>
