@@ -1,5 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import classNames from "classnames";
 import moment from "moment";
@@ -13,6 +14,7 @@ import { getGameDataFromLS } from "utils/GameData";
 import {
   getStatisticsData,
   initStatisticsData,
+  saveStatisticsData,
   StatisticsData
 } from "utils/StatisticsData";
 import { ResultSummary } from "./ResultSummary";
@@ -140,6 +142,15 @@ const StatisticsModal = (props: Props) => {
     onClose();
   };
 
+  const onClickReset = () => {
+    if (gameType === "BATTLE") {
+      if (window.confirm("통계를 초기화 하시겠습니까?")) {
+        setStatisticsData(initStatisticsData);
+        saveStatisticsData(gameType, initStatisticsData);
+      }
+    }
+  };
+
   return (
     <Modal
       className="statistics-modal"
@@ -156,7 +167,14 @@ const StatisticsModal = (props: Props) => {
 
       <Modal.Body>
         <section>
-          <h2>통계</h2>
+          <h2 className="d-flex justify-content-center align-items-center">
+            통계
+            {gameType === "BATTLE" && (
+              <button className="reset-btn btn ms-1 p-0" onClick={onClickReset}>
+                <RestartAltIcon />
+              </button>
+            )}
+          </h2>
           <div className="summary">
             <div className="summary-item">
               <div className="value">{played}</div>
