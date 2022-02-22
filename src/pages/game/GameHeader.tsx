@@ -111,7 +111,7 @@ const GameHeader = () => {
               </a>
             )}
             {gameType === "BATTLE" ? (
-              <span className="px-2">워들vsAI</span>
+              <span className="px-2">워들 vs AI</span>
             ) : (
               <a
                 className="px-2"
@@ -121,7 +121,7 @@ const GameHeader = () => {
                   history.replace("/battle");
                 }}
               >
-                워들vsAI
+                워들 vs AI
               </a>
             )}
           </div>

@@ -140,6 +140,8 @@ const Game = ({ match }: RouteComponentProps) => {
           setTimeout(() => {
             dispatch(setShowStatisticsModal(true));
           }, 1000);
+        } else {
+          setIsEnabledInput(true);
         }
       } else {
         startNewGame(r.data.id);
@@ -155,6 +157,7 @@ const Game = ({ match }: RouteComponentProps) => {
       } else {
         // 진행중이면 계속 진행
         syncGameData(gameData);
+        setIsEnabledInput(true);
       }
     } else if (
       gameType === "BATTLE" &&
@@ -167,6 +170,7 @@ const Game = ({ match }: RouteComponentProps) => {
       } else {
         // 진행중이면 계속 진행
         syncGameData(gameData);
+        setIsEnabledInput(true);
       }
     }
 

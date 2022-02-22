@@ -277,7 +277,7 @@ const StatisticsModal = (props: Props) => {
 
         <section className="border-top pt-4 word-break-keep-all">
           <p>
-            <b>무한워들, 워들 vs AI</b> 모드가 추가 되었습니다. 왼쪽 상단의{" "}
+            <b>무한 워들, 워들 vs AI</b> 모드가 추가 되었습니다. 왼쪽 상단의{" "}
             <MenuIcon /> 메뉴버튼을 눌러 플레이 할 수 있습니다.
           </p>
 

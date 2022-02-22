@@ -81,17 +81,38 @@ export const Utils = {
     isDarkmode: boolean,
     gameData: GameData
   ) => {
-    const title = gameType === "NORMAL" ? "워들" : "무한워들";
+    const title =
+      gameType === "NORMAL"
+        ? "워들"
+        : gameType === "INFINITE"
+        ? "무한워들"
+        : "워들vsAI";
     const site =
       gameType === "NORMAL"
         ? "https://jhlov.github.io/wordle\n\n"
-        : "https://jhlov.github.io/wordle/#/infinite\n\n";
+        : gameType === "INFINITE"
+        ? "https://jhlov.github.io/wordle/#/infinite\n\n"
+        : "https://jhlov.github.io/wordle/#/battle\n\n";
 
-    let copyText = `${title} ${gameData.id} ${
-      gameData.evaluationList.some(evaluation => evaluation === "sssss")
-        ? gameData.evaluationList.filter(evaluation => evaluation).length
-        : "X"
-    }/${ROW_COUNT}${isHardmode ? "*" : ""}\n`;
+    let state = "";
+    if (gameType === "BATTLE") {
+      state = !gameData.evaluationList.some(
+        evaluation => evaluation === "sssss"
+      )
+        ? "무"
+        : gameData.curRow % 2 === 0
+        ? "패"
+        : "승";
+    } else {
+      state = `${
+        gameData.evaluationList.some(evaluation => evaluation === "sssss")
+          ? gameData.evaluationList
+              .filter(evaluation => evaluation)
+              .length.toString()
+          : "X"
+      }/${ROW_COUNT}`;
+    }
+    let copyText = `${title} ${gameData.id} ${state}${isHardmode ? "*" : ""}\n`;
 
     copyText += site;
     copyText += gameData.evaluationList
