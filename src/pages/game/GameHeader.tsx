@@ -88,6 +88,7 @@ const GameHeader = () => {
               <a
                 className="px-2 border-right"
                 onClick={() => {
+                  setActiveMenuKey("");
                   dispatch(syncFromGameData(initGameData));
                   history.replace("/");
                 }}
@@ -101,6 +102,7 @@ const GameHeader = () => {
               <a
                 className="px-2 border-right"
                 onClick={() => {
+                  setActiveMenuKey("");
                   dispatch(syncFromGameData(initGameData));
                   history.replace("/infinite");
                 }}
@@ -114,6 +116,7 @@ const GameHeader = () => {
               <a
                 className="px-2"
                 onClick={() => {
+                  setActiveMenuKey("");
                   dispatch(syncFromGameData(initGameData));
                   history.replace("/battle");
                 }}

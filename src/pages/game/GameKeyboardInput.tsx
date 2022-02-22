@@ -21,7 +21,7 @@ const GameKeyboardInput = (props: Props) => {
   const guessList = useSelector((state: RootState) => state.game.guessList);
 
   const curGuess = useMemo(() => {
-    return guessList[curRow];
+    return guessList[curRow] ?? "";
   }, [curRow, guessList]);
 
   useInterval(() => {

@@ -91,7 +91,7 @@ const Game = ({ match }: RouteComponentProps) => {
   useEffect(() => {
     const gameType: string | undefined = (match.params as any).gameType;
     dispatch(setGameType(gameType));
-  }, []);
+  }, [match]);
 
   // init
   useEffect(() => {
@@ -163,14 +163,10 @@ const Game = ({ match }: RouteComponentProps) => {
       const gameData = getGameDataFromLS(gameType);
       if (gameData.id === 0 || gameData.state === "FINISH") {
         // 게임이 종료 되었으면 새 게임 받아오기
-        await startNewInfiniteGame();
-        processAITurn();
+        await startNewBattleGame();
       } else {
         // 진행중이면 계속 진행
         syncGameData(gameData);
-        if (gameData.curRow % 2 == 0) {
-          processAITurn();
-        }
       }
     }
 
@@ -178,8 +174,9 @@ const Game = ({ match }: RouteComponentProps) => {
   };
 
   const processAITurn = async () => {
-    if (curRow % 2 === 0) {
-      dispatch(setIsAITurn(true));
+    dispatch(setIsAITurn(true));
+
+    setTimeout(async () => {
       const params = {
         curRow,
         guessList,
@@ -199,7 +196,7 @@ const Game = ({ match }: RouteComponentProps) => {
           dispatch(setGuessList(guessList_));
         }, i * 300);
       }
-    }
+    }, Math.floor(Math.random() * 1000) + 1000); // 랜덤하게 기다림
   };
 
   // AI 엔터 트리거
@@ -210,15 +207,14 @@ const Game = ({ match }: RouteComponentProps) => {
     }
 
     // 내가 입력 후 AI 처리
-    if (
-      gameType === "BATTLE" &&
-      0 < curRow &&
-      curRow % 2 === 0 &&
-      curGuess.length === 0
-    ) {
+    if (gameType === "BATTLE" && curRow % 2 === 0 && curGuess.length === 0) {
       processAITurn();
     }
   }, [gameType, curRow, curGuess]);
+
+  const startNewBattleGame = () => {
+    startNewInfiniteGame();
+  };
 
   const startNewInfiniteGame = async () => {
     const r = await axios.get<Response>(
@@ -261,6 +257,7 @@ const Game = ({ match }: RouteComponentProps) => {
   const startNewGame = (id: number, solution?: string) => {
     const gameData: GameData = _.cloneDeep(initGameData);
     gameData.id = id;
+    gameData.curRow = 0;
     if (solution) {
       gameData.solution = solution;
     }
@@ -367,6 +364,15 @@ const Game = ({ match }: RouteComponentProps) => {
         );
         statisticsData.success[curRow] =
           (statisticsData.success[curRow] ?? 0) + 1;
+
+        if (gameType === "BATTLE") {
+          if (curRow % 2 === 0) {
+            statisticsData.fail += 1;
+          } else {
+            statisticsData.win = (statisticsData.win ?? 0) + 1;
+          }
+        }
+
         saveStatisticsData(gameType, statisticsData);
 
         gameData.curRow = curRow;
@@ -376,7 +382,13 @@ const Game = ({ match }: RouteComponentProps) => {
         // 실패
         const statisticsData = getStatisticsData(gameType);
         statisticsData.currentStreak = 0;
-        statisticsData.fail += 1;
+
+        if (gameType === "BATTLE") {
+          statisticsData.draw = (statisticsData.draw ?? 0) + 1;
+        } else {
+          statisticsData.fail += 1;
+        }
+
         saveStatisticsData(gameType, statisticsData);
 
         gameData.curRow = curRow;
@@ -399,21 +411,30 @@ const Game = ({ match }: RouteComponentProps) => {
 
         // 종료 처리
         if (evaluation === "sssss") {
-          const answerString = [
-            "천재!!!",
-            "굉장해요!!!",
-            "정말 잘했어요!!",
-            "멋져요!",
-            "잘했어요!!",
-            "휴~ 겨우 맞췄네요!"
-          ];
+          if (gameType === "NORMAL" || gameType === "INFINITE") {
+            const answerString = [
+              "천재!!!",
+              "굉장해요!!!",
+              "정말 잘했어요!!",
+              "멋져요!",
+              "잘했어요!!",
+              "휴~ 겨우 맞췄네요!"
+            ];
 
-          dispatch(
-            addToast({
-              text: answerString[curRow],
-              delay: 2000
-            })
-          );
+            dispatch(
+              addToast({
+                text: answerString[curRow],
+                delay: 2000
+              })
+            );
+          } else if (gameType === "BATTLE") {
+            dispatch(
+              addToast({
+                text: curRow % 2 === 0 ? "AI 승" : "유저 승",
+                delay: 2000
+              })
+            );
+          }
 
           if (gameType === "NORMAL") {
             axios.get(
@@ -430,6 +451,13 @@ const Game = ({ match }: RouteComponentProps) => {
             dispatch(
               addToast({
                 text: "다음에 다시 도전해보세요.",
+                delay: 2000
+              })
+            );
+          } else if (gameType === "BATTLE") {
+            dispatch(
+              addToast({
+                text: "무승부",
                 delay: 2000
               })
             );
@@ -455,9 +483,10 @@ const Game = ({ match }: RouteComponentProps) => {
         } else {
           dispatch(setCurRow(curRow + 1));
           setIsEnabledInput(true);
-          if (gameType === "BATTLE" && isAITurn) {
-            dispatch(setIsAITurn(false));
-          }
+        }
+
+        if (gameType === "BATTLE" && isAITurn) {
+          dispatch(setIsAITurn(false));
         }
       }, 1600);
     }
@@ -513,6 +542,7 @@ const Game = ({ match }: RouteComponentProps) => {
         <StatisticsModal
           onClickShare={onClickShare}
           onClickNewInfiniteGame={startNewInfiniteGame}
+          onClickNewBattleGame={startNewBattleGame}
         />
         <HelpModal />
         {gameType === "NORMAL" && <AddSolution />}

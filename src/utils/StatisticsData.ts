@@ -6,6 +6,10 @@ export interface StatisticsData {
   maxStreak: number;
   success: { [key: string]: number };
   fail: number;
+
+  // 배틀모드에서 사용
+  win?: number;
+  draw?: number;
 }
 
 export const initStatisticsData: StatisticsData = {
@@ -17,7 +21,12 @@ export const initStatisticsData: StatisticsData = {
 
 export const getStatisticsData = (gameType: GameType): StatisticsData => {
   const key =
-    gameType === "NORMAL" ? "statisticsData" : "wordle-statisticsdata-infinite";
+    gameType === "INFINITE"
+      ? "wordle-statisticsdata-infinite"
+      : gameType === "BATTLE"
+      ? "wordle-statisticsdata-battle"
+      : "statisticsData";
+
   const str = localStorage.getItem(key);
   if (str) {
     return JSON.parse(str);
@@ -32,6 +41,11 @@ export const saveStatisticsData = (
   statisticsData: StatisticsData
 ) => {
   const key =
-    gameType === "NORMAL" ? "statisticsData" : "wordle-statisticsdata-infinite";
+    gameType === "INFINITE"
+      ? "wordle-statisticsdata-infinite"
+      : gameType === "BATTLE"
+      ? "wordle-statisticsdata-battle"
+      : "statisticsData";
+
   localStorage.setItem(key, JSON.stringify(statisticsData));
 };

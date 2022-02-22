@@ -15,7 +15,7 @@ export const initGameData: GameData = {
   guessList: ["", "", "", "", "", ""],
   evaluationList: ["", "", "", "", "", ""],
   keyMap: {},
-  curRow: 0,
+  curRow: -1,
   id: 0,
   state: "PLAYING"
 };

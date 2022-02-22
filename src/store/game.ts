@@ -23,7 +23,7 @@ const initialState: InitialState = {
   gameType: "NONE",
   id: -1,
   solution: "",
-  curRow: 0,
+  curRow: -1,
   guessList: ["", "", "", "", "", ""],
   evaluationList: ["", "", "", "", "", ""],
   keyMap: {},

@@ -21,6 +21,7 @@ import "./StatisticsModal.scss";
 interface Props {
   onClickShare: () => void;
   onClickNewInfiniteGame: () => void;
+  onClickNewBattleGame: () => void;
 }
 
 const StatisticsModal = (props: Props) => {
@@ -94,11 +95,27 @@ const StatisticsModal = (props: Props) => {
   }, [gameType, showStatisticsModal]);
 
   const winCount = useMemo(() => {
-    return Object.values(statisticsData.success).reduce((p, c) => p + c, 0);
+    if (gameType === "NORMAL" || gameType === "INFINITE") {
+      return Object.values(statisticsData.success).reduce((p, c) => p + c, 0);
+    } else if (gameType === "BATTLE") {
+      return statisticsData.win ?? 0;
+    }
+
+    return 0;
   }, [statisticsData]);
 
   const played = useMemo(() => {
-    return statisticsData.fail + winCount;
+    if (gameType === "NORMAL" || gameType === "INFINITE") {
+      return statisticsData.fail + winCount;
+    } else if (gameType === "BATTLE") {
+      return (
+        (statisticsData.win ?? 0) +
+        statisticsData.fail +
+        (statisticsData.draw ?? 0)
+      );
+    }
+
+    return 0;
   }, [statisticsData, winCount]);
 
   const winRate = useMemo(() => {
@@ -115,6 +132,11 @@ const StatisticsModal = (props: Props) => {
 
   const onClickNewInfiniteGame = () => {
     props.onClickNewInfiniteGame();
+    onClose();
+  };
+
+  const onClickNewBattleGame = () => {
+    props.onClickNewBattleGame();
     onClose();
   };
 
@@ -144,14 +166,34 @@ const StatisticsModal = (props: Props) => {
               <div className="value">{winRate}</div>
               <div className="title">승률(%)</div>
             </div>
-            <div className="summary-item">
-              <div className="value">{statisticsData.currentStreak}</div>
-              <div className="title">현재 연승</div>
-            </div>
-            <div className="summary-item">
-              <div className="value">{statisticsData.maxStreak}</div>
-              <div className="title">최고 연승</div>
-            </div>
+            {(gameType === "NORMAL" || gameType === "INFINITE") && (
+              <>
+                <div className="summary-item">
+                  <div className="value">{statisticsData.currentStreak}</div>
+                  <div className="title">현재 연승</div>
+                </div>
+                <div className="summary-item">
+                  <div className="value">{statisticsData.maxStreak}</div>
+                  <div className="title">최고 연승</div>
+                </div>
+              </>
+            )}
+            {gameType === "BATTLE" && (
+              <>
+                <div className="summary-item">
+                  <div className="value">{statisticsData.win ?? 0}</div>
+                  <div className="title mx-2">승</div>
+                </div>
+                <div className="summary-item">
+                  <div className="value">{statisticsData.draw ?? 0}</div>
+                  <div className="title mx-2">무</div>
+                </div>
+                <div className="summary-item">
+                  <div className="value">{statisticsData.fail}</div>
+                  <div className="title mx-2">패</div>
+                </div>
+              </>
+            )}
           </div>
         </section>
 
@@ -193,6 +235,15 @@ const StatisticsModal = (props: Props) => {
                       새 게임 시작
                     </Button>
                   )}
+                  {gameType === "BATTLE" && (
+                    <Button
+                      className="share-btn"
+                      size="lg"
+                      onClick={onClickNewBattleGame}
+                    >
+                      새 게임 시작
+                    </Button>
+                  )}
                 </div>
                 <div className="d-flex align-items-center justify-content-center">
                   <Button
@@ -225,8 +276,15 @@ const StatisticsModal = (props: Props) => {
         )}
 
         <section className="border-top pt-4 word-break-keep-all">
-          <b>무한워들</b> 모드가 추가 되었습니다. 왼쪽 상단의 <MenuIcon />{" "}
-          메뉴버튼을 눌러 플레이 할 수 있습니다.
+          <p>
+            <b>무한워들, 워들 vs AI</b> 모드가 추가 되었습니다. 왼쪽 상단의{" "}
+            <MenuIcon /> 메뉴버튼을 눌러 플레이 할 수 있습니다.
+          </p>
+
+          <p>
+            * 워들 vs AI 모드: AI와 번갈아 가면서 단어를 추측하여 먼저 맞추는
+            사람이 승리
+          </p>
         </section>
       </Modal.Body>
     </Modal>

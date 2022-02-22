@@ -23,7 +23,7 @@ const GameKeyboard = (props: Props) => {
   const row3 = ["ㅋ", "ㅌ", "ㅊ", "ㅍ", "ㅠ", "ㅜ", "ㅡ"];
 
   const curGuess = useMemo(() => {
-    return guessList[curRow];
+    return guessList[curRow] ?? "";
   }, [curRow, guessList]);
 
   return (
