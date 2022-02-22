@@ -283,7 +283,7 @@ const StatisticsModal = (props: Props) => {
 
           <p>
             * 워들 vs AI 모드: AI와 번갈아 가면서 단어를 추측하여 먼저 맞추는
-            사람이 승리
+            사람이 승리 <small>(참고로 AI는 선수에요..)</small>
           </p>
         </section>
       </Modal.Body>
