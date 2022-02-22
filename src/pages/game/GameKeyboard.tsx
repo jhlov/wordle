@@ -13,6 +13,7 @@ interface Props {
 }
 
 const GameKeyboard = (props: Props) => {
+  const isAITurn = useSelector((state: RootState) => state.game.isAITurn);
   const curRow = useSelector((state: RootState) => state.game.curRow);
   const guessList = useSelector((state: RootState) => state.game.guessList);
   const keyMap = useSelector((state: RootState) => state.game.keyMap);
@@ -98,6 +99,11 @@ const GameKeyboard = (props: Props) => {
           <BackspaceOutlinedIcon />
         </button>
       </div>
+      {isAITurn && (
+        <div className="ai">
+          <div>AI가 입력 중입니다.</div>
+        </div>
+      )}
     </div>
   );
 };

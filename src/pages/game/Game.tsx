@@ -4,7 +4,9 @@ import { HelpModal } from "components/modals/HelpModal";
 import { StatisticsModal } from "components/modals/StatisticsModal";
 import Hangul from "hangul-js";
 import _ from "lodash";
+import qs from "qs";
 import React, { useEffect, useMemo, useState } from "react";
+import AdSense from "react-adsense";
 import { isMobile } from "react-device-detect";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
@@ -17,6 +19,7 @@ import {
   setGameType,
   setGuessList,
   setId,
+  setIsAITurn,
   setKeyMap,
   setPrevResultSummary,
   setSolution,
@@ -37,7 +40,6 @@ import { GameBody } from "./GameBody";
 import { GameHeader } from "./GameHeader";
 import { GameKeyboard } from "./GameKeyboard";
 import { GameKeyboardInput } from "./GameKeyboardInput";
-import AdSense from "react-adsense";
 
 export interface ResultSummaryRes {
   id: number;
@@ -70,6 +72,8 @@ const Game = ({ match }: RouteComponentProps) => {
   );
   const keyMap = useSelector((state: RootState) => state.game.keyMap);
 
+  const isAITurn = useSelector((state: RootState) => state.game.isAITurn);
+
   const [shake, setShake] = useState<boolean>(false);
   const [isEnabledInput, setIsEnabledInput] = useState<boolean>(true);
 
@@ -83,6 +87,7 @@ const Game = ({ match }: RouteComponentProps) => {
     return guessList[curRow] ?? "";
   }, [curRow, guessList]);
 
+  // mounted
   useEffect(() => {
     const gameType: string | undefined = (match.params as any).gameType;
     dispatch(setGameType(gameType));
@@ -151,10 +156,69 @@ const Game = ({ match }: RouteComponentProps) => {
         // 진행중이면 계속 진행
         syncGameData(gameData);
       }
+    } else if (
+      gameType === "BATTLE" &&
+      (match.params as any).gameType === "battle"
+    ) {
+      const gameData = getGameDataFromLS(gameType);
+      if (gameData.id === 0 || gameData.state === "FINISH") {
+        // 게임이 종료 되었으면 새 게임 받아오기
+        await startNewInfiniteGame();
+        processAITurn();
+      } else {
+        // 진행중이면 계속 진행
+        syncGameData(gameData);
+        if (gameData.curRow % 2 == 0) {
+          processAITurn();
+        }
+      }
     }
 
     dispatch(setLoading(false));
   };
+
+  const processAITurn = async () => {
+    if (curRow % 2 === 0) {
+      dispatch(setIsAITurn(true));
+      const params = {
+        curRow,
+        guessList,
+        evaluationList
+      };
+
+      const r = await axios.get(
+        "https://a0hs1r7iil.execute-api.ap-northeast-2.amazonaws.com/default/wordle-ai-guess?" +
+          qs.stringify(params)
+      );
+
+      for (let i = 0; i < LETTER_COUNT; ++i) {
+        const letterList = Hangul.disassemble(r.data.guess);
+        setTimeout(() => {
+          const guessList_ = [...guessList];
+          guessList_[curRow] = letterList.slice(0, i + 1).join("");
+          dispatch(setGuessList(guessList_));
+        }, i * 300);
+      }
+    }
+  };
+
+  // AI 엔터 트리거
+  useEffect(() => {
+    // ai 입력 후 엔터 처리
+    if (gameType === "BATTLE" && isAITurn && curGuess.length === 5) {
+      onClickEnter(true);
+    }
+
+    // 내가 입력 후 AI 처리
+    if (
+      gameType === "BATTLE" &&
+      0 < curRow &&
+      curRow % 2 === 0 &&
+      curGuess.length === 0
+    ) {
+      processAITurn();
+    }
+  }, [gameType, curRow, curGuess]);
 
   const startNewInfiniteGame = async () => {
     const r = await axios.get<Response>(
@@ -214,7 +278,7 @@ const Game = ({ match }: RouteComponentProps) => {
   };
 
   const onClickKeyboard = (letter: string) => {
-    if (!isEnabledInput) {
+    if (isAITurn || !isEnabledInput) {
       return;
     }
 
@@ -232,8 +296,8 @@ const Game = ({ match }: RouteComponentProps) => {
     }, 200);
   };
 
-  const onClickEnter = async () => {
-    if (!isEnabledInput) {
+  const onClickEnter = async (force: boolean = false) => {
+    if (!force && (!isEnabledInput || isAITurn)) {
       return;
     }
 
@@ -252,7 +316,7 @@ const Game = ({ match }: RouteComponentProps) => {
       }
 
       // 하드 모드 체크
-      if (isHardmode) {
+      if (!isAITurn && isHardmode) {
         const error = Utils.checkHardmode(curRow, guessList, evaluationList);
         if (error) {
           dispatch(addToast({ text: error }));
@@ -264,16 +328,19 @@ const Game = ({ match }: RouteComponentProps) => {
       setIsEnabledInput(false);
 
       // 게임 평가 시작
-      const r = await axios.get<Response>(
-        `https://hy374x63qa.execute-api.ap-northeast-2.amazonaws.com/default/wordle-v2?guess=${guessWord}`
-      );
+      // 유효 단어 체크
+      if (!isAITurn) {
+        const r = await axios.get<Response>(
+          `https://hy374x63qa.execute-api.ap-northeast-2.amazonaws.com/default/wordle-v2?guess=${guessWord}`
+        );
 
-      // 에러 체크
-      if (r.data.error) {
-        dispatch(addToast({ text: r.data.error }));
-        shakeTiles();
-        setIsEnabledInput(true);
-        return;
+        // 에러 체크
+        if (r.data.error) {
+          dispatch(addToast({ text: r.data.error }));
+          shakeTiles();
+          setIsEnabledInput(true);
+          return;
+        }
       }
 
       // 평가
@@ -388,13 +455,16 @@ const Game = ({ match }: RouteComponentProps) => {
         } else {
           dispatch(setCurRow(curRow + 1));
           setIsEnabledInput(true);
+          if (gameType === "BATTLE" && isAITurn) {
+            dispatch(setIsAITurn(false));
+          }
         }
       }, 1600);
     }
   };
 
   const onClickBack = () => {
-    if (!isEnabledInput) {
+    if (isAITurn || !isEnabledInput) {
       return;
     }
 

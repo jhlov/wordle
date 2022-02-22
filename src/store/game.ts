@@ -4,7 +4,7 @@ import { ResultSummaryRes } from "pages/game/Game";
 import { ROW_COUNT } from "utils/const";
 import { GameData } from "utils/GameData";
 
-export type GameType = "NONE" | "NORMAL" | "INFINITE";
+export type GameType = "NONE" | "NORMAL" | "INFINITE" | "BATTLE";
 
 interface InitialState {
   gameType: GameType;
@@ -16,6 +16,7 @@ interface InitialState {
   keyMap: { [key: string]: string };
   curReslutSummary: ResultSummaryRes | null;
   prevReslutSummary: ResultSummaryRes | null;
+  isAITurn: boolean;
 }
 
 const initialState: InitialState = {
@@ -27,7 +28,8 @@ const initialState: InitialState = {
   evaluationList: ["", "", "", "", "", ""],
   keyMap: {},
   curReslutSummary: null,
-  prevReslutSummary: null
+  prevReslutSummary: null,
+  isAITurn: false
 };
 
 export const game = createSlice({
@@ -37,6 +39,8 @@ export const game = createSlice({
     setGameType: (state, action: { payload: string | undefined }) => {
       if (action.payload === "infinite") {
         state.gameType = "INFINITE";
+      } else if (action.payload === "battle") {
+        state.gameType = "BATTLE";
       } else {
         state.gameType = "NORMAL";
       }
@@ -74,6 +78,9 @@ export const game = createSlice({
     },
     setPrevResultSummary: (state, action: { payload: ResultSummaryRes }) => {
       state.prevReslutSummary = { ...action.payload };
+    },
+    setIsAITurn: (state, action: { payload: boolean }) => {
+      state.isAITurn = action.payload;
     }
   }
 });
@@ -89,7 +96,8 @@ export const {
   setKeyMap,
   syncFromGameData,
   setCurResultSummary,
-  setPrevResultSummary
+  setPrevResultSummary,
+  setIsAITurn
 } = game.actions;
 
 export default game.reducer;

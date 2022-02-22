@@ -29,6 +29,8 @@ const GameHeader = () => {
   const title = useMemo(() => {
     if (gameType === "INFINITE") {
       return "무한 워들";
+    } else if (gameType === "BATTLE") {
+      return "워들 vs AI";
     }
 
     return "워들";
@@ -81,10 +83,10 @@ const GameHeader = () => {
         <Accordion.Collapse eventKey="0">
           <div className="game-header-menu pt-1 pb-2">
             {gameType === "NORMAL" ? (
-              <span className="px-2">워들</span>
+              <span className="px-2 border-right">워들</span>
             ) : (
               <a
-                className="px-2"
+                className="px-2 border-right"
                 onClick={() => {
                   dispatch(syncFromGameData(initGameData));
                   history.replace("/");
@@ -94,16 +96,29 @@ const GameHeader = () => {
               </a>
             )}
             {gameType === "INFINITE" ? (
-              <span className="px-2">무한 워들</span>
+              <span className="px-2 border-right">무한 워들</span>
             ) : (
               <a
-                className="px-2"
+                className="px-2 border-right"
                 onClick={() => {
                   dispatch(syncFromGameData(initGameData));
                   history.replace("/infinite");
                 }}
               >
                 무한 워들
+              </a>
+            )}
+            {gameType === "BATTLE" ? (
+              <span className="px-2">워들vsAI</span>
+            ) : (
+              <a
+                className="px-2"
+                onClick={() => {
+                  dispatch(syncFromGameData(initGameData));
+                  history.replace("/battle");
+                }}
+              >
+                워들vsAI
               </a>
             )}
           </div>

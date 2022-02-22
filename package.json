@@ -27,6 +27,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "node-sass": "^6.0.0",
+    "qs": "^6.10.3",
     "react": "^17.0.2",
     "react-adsense": "^0.1.0",
     "react-bootstrap": "^2.1.1",
