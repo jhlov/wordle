@@ -12,36 +12,36 @@ export const Utils = {
    * @returns
    */
   getEvaluation: (guess: string, solution: string) => {
-    let evalution = ["o", "o", "o", "o", "o"];
+    let evaluation = ["o", "o", "o", "o", "o"];
     const solution_ = Hangul.disassemble(solution);
 
     // 스트라이크 체크
     for (let i = 0; i < LETTER_COUNT; ++i) {
       if (guess[i] === solution_[i]) {
-        evalution[i] = "s";
+        evaluation[i] = "s";
       }
     }
 
     // 볼 체크
     for (let i = 0; i < LETTER_COUNT; ++i) {
-      if (evalution[i] === "o") {
+      if (evaluation[i] === "o") {
         let countLetterInSolution = solution_.filter(
           l => l === guess[i]
         ).length;
         let countSB = 0;
         for (let j = 0; j < LETTER_COUNT; ++j) {
-          if (guess[i] === guess[j] && evalution[j] !== "o") {
+          if (guess[i] === guess[j] && evaluation[j] !== "o") {
             ++countSB;
           }
         }
 
         if (countSB < countLetterInSolution) {
-          evalution[i] = "b";
+          evaluation[i] = "b";
         }
       }
     }
 
-    return evalution.join("");
+    return evaluation.join("");
   },
   checkHardmode: (
     curRow: number,
