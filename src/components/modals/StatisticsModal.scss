@@ -103,6 +103,10 @@
 .darkmode {
   .statistics-modal {
     .modal-body {
+      .MuiSvgIcon-root {
+        color: white;
+      }
+
       .guess-distribution {
         .guess-distribution-item {
           .progress {
