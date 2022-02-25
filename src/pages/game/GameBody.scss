@@ -6,6 +6,14 @@
     display: flex;
     justify-content: center;
 
+    .dict {
+      position: absolute;
+      left: -14px;
+      top: 2px;
+      cursor: pointer;
+      color: #878a8c;
+    }
+
     .tile {
       width: 60px;
       height: 60px;
