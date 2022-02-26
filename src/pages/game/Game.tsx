@@ -546,6 +546,11 @@ const Game = ({ match }: RouteComponentProps) => {
         })
       );
     }
+
+    ReactGA.event({
+      category: "share",
+      action: "click"
+    });
   };
 
   return (
