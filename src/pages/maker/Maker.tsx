@@ -129,11 +129,13 @@ export const Maker = () => {
     return letters;
   }, [word]);
 
+  const wordleUrl = useMemo(() => {
+    return `${window.location.origin}${window.location.pathname}#/c/${key}`;
+  }, [window.location, key]);
+
   const onClickCopy = () => {
     if (navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(
-        `https://jhlov.github.io/wordle/#/c/${key}`
-      );
+      navigator.clipboard.writeText(wordleUrl);
       dispatch(
         addToast({
           text: "게임 주소를 클립보드에 복사했습니다.",
@@ -152,6 +154,12 @@ export const Maker = () => {
 
   const onClickPlayGame = () => {
     history.replace(`/c/${key}`);
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.code === "Enter" && isValid) {
+      createWordle();
+    }
   };
 
   return (
@@ -182,6 +190,7 @@ export const Maker = () => {
           onChange={e => setWord(e.target.value)}
           maxLength={2}
           placeholder="단어를 입력하세요."
+          onKeyDown={onKeyDown}
         />
         <p className="text-left">
           <small>* shift 가 필요한 글자는 제외됩니다.</small>
@@ -193,7 +202,7 @@ export const Maker = () => {
 
         {key && (
           <div className="py-5">
-            <div className="url p-2">{`https://jhlov.github.io/wordle/#/c/${key}`}</div>
+            <div className="url p-2">{wordleUrl}</div>
             <div className="pt-2">
               <Button variant="primary" className="me-2" onClick={onClickCopy}>
                 클립보드 복사 <ContentCopyIcon fontSize="small" />

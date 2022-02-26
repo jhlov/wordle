@@ -454,7 +454,11 @@ const Game = ({ match }: RouteComponentProps) => {
 
         // 종료 처리
         if (evaluation === "sssss") {
-          if (gameType === "NORMAL" || gameType === "INFINITE") {
+          if (
+            gameType === "NORMAL" ||
+            gameType === "INFINITE" ||
+            gameType === "CUSTOM"
+          ) {
             const answerString = [
               "천재!!!",
               "굉장해요!!!",
