@@ -1,5 +1,6 @@
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import classNames from "classnames";
@@ -294,15 +295,21 @@ const StatisticsModal = (props: Props) => {
         )}
 
         <section className="border-top pt-4 word-break-keep-all">
-          <p>
-            <b>무한 워들, 워들 vs AI</b> 모드가 추가 되었습니다. 왼쪽 상단의{" "}
-            <MenuIcon /> 메뉴버튼을 눌러 플레이 할 수 있습니다.
-          </p>
-
-          <p>
-            * 워들 vs AI 모드: AI와 번갈아 가면서 단어를 추측하여 먼저 맞추는
-            사람이 승리 <small>(참고로 AI는 선수에요..)</small>
-          </p>
+          <ul>
+            <li>
+              모르는 단어는 <MenuBookIcon /> 버튼을 눌러서 바로바로
+              확인해보세요.{" "}
+            </li>
+            <li>
+              <b>무한 워들, 워들 vs AI</b> 모드가 추가 되었습니다. 왼쪽 상단의{" "}
+              <MenuIcon /> 메뉴버튼을 눌러 플레이 할 수 있습니다. <br />
+              <small>
+                * 워들 vs AI 모드: AI와 번갈아 가면서 단어를 추측하여 먼저
+                맞추는 사람이 승리, 통계 리셋 가능
+                <RestartAltIcon /> <small>(참고로 AI는 선수에요..)</small>
+              </small>
+            </li>
+          </ul>
         </section>
       </Modal.Body>
     </Modal>
