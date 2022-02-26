@@ -8,7 +8,7 @@ import qs from "qs";
 import React, { useEffect, useMemo, useState } from "react";
 import AdSense from "react-adsense";
 import { isMobile } from "react-device-detect";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "store";
@@ -41,7 +41,7 @@ import { GameBody } from "./GameBody";
 import { GameHeader } from "./GameHeader";
 import { GameKeyboard } from "./GameKeyboard";
 import { GameKeyboardInput } from "./GameKeyboardInput";
-ReactGA.initialize("300457772");
+ReactGA.initialize("G-L07VJN65FL");
 
 export interface ResultSummaryRes {
   id: number;

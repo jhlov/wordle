@@ -4,14 +4,14 @@ import classNames from "classnames";
 import { DictModal } from "components/modals/DictModal";
 import Hangul from "hangul-js";
 import React, { useEffect, useState } from "react";
-import ReactGA from "react-ga";
+import ReactGA from "react-ga4";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { addToast } from "store/common";
 import { LETTER_COUNT, ROW_COUNT } from "utils/const";
 import "./GameBody.scss";
 import { GameTile } from "./GameTile";
-ReactGA.initialize("300457772");
+ReactGA.initialize("G-L07VJN65FL");
 
 interface Props {
   shake: boolean;
