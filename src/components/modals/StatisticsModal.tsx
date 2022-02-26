@@ -150,7 +150,7 @@ const StatisticsModal = (props: Props) => {
   const onClickPlayWordle = () => {
     onClose();
     dispatch(syncFromGameData(initGameData));
-    history.replace("/");
+    history.push("/");
   };
 
   const onClickReset = () => {

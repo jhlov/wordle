@@ -153,7 +153,7 @@ export const Maker = () => {
   };
 
   const onClickPlayGame = () => {
-    history.replace(`/c/${key}`);
+    history.push(`/c/${key}`);
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
