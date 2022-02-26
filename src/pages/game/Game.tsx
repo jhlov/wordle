@@ -8,6 +8,7 @@ import qs from "qs";
 import React, { useEffect, useMemo, useState } from "react";
 import AdSense from "react-adsense";
 import { isMobile } from "react-device-detect";
+import ReactGA from "react-ga";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router-dom";
 import { RootState } from "store";
@@ -40,6 +41,7 @@ import { GameBody } from "./GameBody";
 import { GameHeader } from "./GameHeader";
 import { GameKeyboard } from "./GameKeyboard";
 import { GameKeyboardInput } from "./GameKeyboardInput";
+ReactGA.initialize("300457772");
 
 export interface ResultSummaryRes {
   id: number;
@@ -450,6 +452,13 @@ const Game = ({ match }: RouteComponentProps) => {
           setTimeout(() => {
             dispatch(setShowStatisticsModal(true));
           }, 2000);
+
+          ReactGA.event({
+            category: gameType,
+            action: "gameplay",
+            label: "게임",
+            value: curRow
+          });
         } else if (curRow === ROW_COUNT - 1) {
           if (gameType === "NORMAL") {
             dispatch(
@@ -484,6 +493,13 @@ const Game = ({ match }: RouteComponentProps) => {
           setTimeout(() => {
             dispatch(setShowStatisticsModal(true));
           }, 2000);
+
+          ReactGA.event({
+            category: gameType,
+            action: "gameplay",
+            label: "게임",
+            value: -1
+          });
         } else {
           dispatch(setCurRow(curRow + 1));
           setIsEnabledInput(true);
