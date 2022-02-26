@@ -31,6 +31,10 @@ const GameHeader = () => {
       return "무한 워들";
     } else if (gameType === "BATTLE") {
       return "워들 vs AI";
+    } else if (gameType === "MAKER") {
+      return "워들 메이커";
+    } else if (gameType === "CUSTOM") {
+      return "워들 커스텀";
     }
 
     return "워들";
@@ -63,15 +67,20 @@ const GameHeader = () => {
           <button onClick={onClickMenu}>
             <MenuIcon />
           </button>
-          <button onClick={onClickHowTo}>
-            <HelpOutlineIcon />
-          </button>
+          {gameType !== "MAKER" && (
+            <button onClick={onClickHowTo}>
+              <HelpOutlineIcon />
+            </button>
+          )}
         </div>
         <h1 className="m-0 p-0">{title}</h1>
+
         <div>
-          <button onClick={onClickStatistics}>
-            <LeaderboardOutlinedIcon />
-          </button>
+          {gameType !== "MAKER" && (
+            <button onClick={onClickStatistics}>
+              <LeaderboardOutlinedIcon />
+            </button>
+          )}
           <button onClick={onClickSetting}>
             <SettingsIcon />
           </button>
@@ -111,10 +120,10 @@ const GameHeader = () => {
               </a>
             )}
             {gameType === "BATTLE" ? (
-              <span className="px-2">워들 vs AI</span>
+              <span className="px-2 border-right">워들 vs AI</span>
             ) : (
               <a
-                className="px-2"
+                className="px-2 border-right"
                 onClick={() => {
                   setActiveMenuKey("");
                   dispatch(syncFromGameData(initGameData));
@@ -122,6 +131,20 @@ const GameHeader = () => {
                 }}
               >
                 워들 vs AI
+              </a>
+            )}
+            {gameType === "MAKER" ? (
+              <span className="px-2">워들 메이커</span>
+            ) : (
+              <a
+                className="px-2"
+                onClick={() => {
+                  setActiveMenuKey("");
+                  dispatch(syncFromGameData(initGameData));
+                  history.replace("/maker");
+                }}
+              >
+                워들 메이커
               </a>
             )}
           </div>

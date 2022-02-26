@@ -26,6 +26,8 @@ export const getGameDataFromLS = (gameType: GameType): GameData => {
       ? "wordle-gamedata-infinite"
       : gameType === "BATTLE"
       ? "wordle-gamedata-battle"
+      : gameType === "CUSTOM"
+      ? "wordle-gamedata-custom"
       : "gameData";
   const str = localStorage.getItem(key);
   if (str) {
@@ -48,6 +50,8 @@ export const saveGameData = (gameType: GameType, gameData: GameData) => {
       ? "wordle-gamedata-infinite"
       : gameType === "BATTLE"
       ? "wordle-gamedata-battle"
+      : gameType === "CUSTOM"
+      ? "wordle-gamedata-custom"
       : "gameData";
   localStorage.setItem(key, JSON.stringify(gameData));
 };

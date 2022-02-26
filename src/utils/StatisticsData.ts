@@ -25,6 +25,8 @@ export const getStatisticsData = (gameType: GameType): StatisticsData => {
       ? "wordle-statisticsdata-infinite"
       : gameType === "BATTLE"
       ? "wordle-statisticsdata-battle"
+      : gameType === "CUSTOM"
+      ? "wordle-statisticsdata-custom"
       : "statisticsData";
 
   const str = localStorage.getItem(key);
@@ -45,6 +47,8 @@ export const saveStatisticsData = (
       ? "wordle-statisticsdata-infinite"
       : gameType === "BATTLE"
       ? "wordle-statisticsdata-battle"
+      : gameType === "CUSTOM"
+      ? "wordle-statisticsdata-custom"
       : "statisticsData";
 
   localStorage.setItem(key, JSON.stringify(statisticsData));

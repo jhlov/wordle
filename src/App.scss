@@ -30,6 +30,27 @@ body.darkmode {
 }
 
 // common
+.btn-primary,
+.btn-primary:active,
+.btn-primary:focus,
+.btn-primary:disabled,
+.btn-primary.disabled {
+  color: #fff;
+  background-color: $tile-green-color;
+  border-color: $tile-green-color;
+  font-weight: bold;
+}
+
+.btn-primary:hover {
+  background-color: $tile-green-color;
+  border-color: $tile-green-color;
+  opacity: 0.9;
+}
+
+.text-left {
+  text-align: left;
+}
+
 .word-break-keep-all {
   word-break: keep-all;
 }

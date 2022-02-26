@@ -74,6 +74,10 @@ const AddSolution = () => {
       return false;
     }
 
+    if (letters.some(letter => !validLetterList.includes(letter))) {
+      return false;
+    }
+
     return true;
   }, [word]);
 
@@ -99,8 +103,6 @@ const AddSolution = () => {
           "https://apn7ny4u9f.execute-api.ap-northeast-2.amazonaws.com/default/wordle-add-solution",
           { word: word }
         );
-
-        dispatch(setLoading(false));
 
         if (r.data.error) {
           dispatch(addToast({ text: r.data.error }));

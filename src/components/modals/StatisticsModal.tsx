@@ -8,10 +8,12 @@ import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import { Button, Modal, ProgressBar } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { RootState } from "store";
+import { syncFromGameData } from "store/game";
 import { setShowStatisticsModal } from "store/modal";
 import { ROW_COUNT } from "utils/const";
-import { getGameDataFromLS } from "utils/GameData";
+import { getGameDataFromLS, initGameData } from "utils/GameData";
 import {
   getStatisticsData,
   initStatisticsData,
@@ -29,6 +31,8 @@ interface Props {
 
 const StatisticsModal = (props: Props) => {
   const dispatch = useDispatch();
+
+  const history = useHistory();
 
   const gameType = useSelector((state: RootState) => state.game.gameType);
 
@@ -98,24 +102,24 @@ const StatisticsModal = (props: Props) => {
   }, [gameType, showStatisticsModal]);
 
   const winCount = useMemo(() => {
-    if (gameType === "NORMAL" || gameType === "INFINITE") {
-      return Object.values(statisticsData.success).reduce((p, c) => p + c, 0);
-    } else if (gameType === "BATTLE") {
+    if (gameType === "BATTLE") {
       return statisticsData.win ?? 0;
+    } else {
+      return Object.values(statisticsData.success).reduce((p, c) => p + c, 0);
     }
 
     return 0;
   }, [statisticsData]);
 
   const played = useMemo(() => {
-    if (gameType === "NORMAL" || gameType === "INFINITE") {
-      return statisticsData.fail + winCount;
-    } else if (gameType === "BATTLE") {
+    if (gameType === "BATTLE") {
       return (
         (statisticsData.win ?? 0) +
         statisticsData.fail +
         (statisticsData.draw ?? 0)
       );
+    } else {
+      return statisticsData.fail + winCount;
     }
 
     return 0;
@@ -141,6 +145,12 @@ const StatisticsModal = (props: Props) => {
   const onClickNewBattleGame = () => {
     props.onClickNewBattleGame();
     onClose();
+  };
+
+  const onClickPlayWordle = () => {
+    onClose();
+    dispatch(syncFromGameData(initGameData));
+    history.replace("/");
   };
 
   const onClickReset = () => {
@@ -185,7 +195,9 @@ const StatisticsModal = (props: Props) => {
               <div className="value">{winRate}</div>
               <div className="title">승률(%)</div>
             </div>
-            {(gameType === "NORMAL" || gameType === "INFINITE") && (
+            {(gameType === "NORMAL" ||
+              gameType === "INFINITE" ||
+              gameType === "CUSTOM") && (
               <>
                 <div className="summary-item">
                   <div className="value">{statisticsData.currentStreak}</div>
@@ -254,6 +266,15 @@ const StatisticsModal = (props: Props) => {
                       새 게임 시작
                     </Button>
                   )}
+                  {gameType === "CUSTOM" && (
+                    <Button
+                      className="share-btn"
+                      size="lg"
+                      onClick={onClickPlayWordle}
+                    >
+                      워들하러가기
+                    </Button>
+                  )}
                   {gameType === "BATTLE" && (
                     <Button
                       className="share-btn"
@@ -297,16 +318,25 @@ const StatisticsModal = (props: Props) => {
         <section className="border-top pt-4 word-break-keep-all">
           <ul>
             <li>
-              모르는 단어는 <MenuBookIcon /> 버튼을 눌러서 바로바로
-              확인해보세요.{" "}
+              직접 워들 문제를 만들어 친구들과 공유하고 즐겨보세요!{" "}
+              <small>
+                (왼쪽 상단 <MenuIcon fontSize="small" /> {`->`}{" "}
+                <b>워들 메이커</b>
+              </small>
+            </li>
+            <li>
+              모르는 단어는 <MenuBookIcon fontSize="small" /> 버튼을 눌러서
+              바로바로 확인해보세요.{" "}
             </li>
             <li>
               <b>무한 워들, 워들 vs AI</b> 모드가 추가 되었습니다. 왼쪽 상단의{" "}
-              <MenuIcon /> 메뉴버튼을 눌러 플레이 할 수 있습니다. <br />
+              <MenuIcon fontSize="small" /> 메뉴버튼을 눌러 플레이 할 수
+              있습니다. <br />
               <small>
                 * 워들 vs AI 모드: AI와 번갈아 가면서 단어를 추측하여 먼저
                 맞추는 사람이 승리, 통계 리셋 가능
-                <RestartAltIcon /> <small>(참고로 AI는 선수에요..)</small>
+                <RestartAltIcon fontSize="small" />{" "}
+                <small>(참고로 AI는 선수에요..)</small>
               </small>
             </li>
           </ul>

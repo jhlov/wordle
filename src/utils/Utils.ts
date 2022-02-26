@@ -79,19 +79,27 @@ export const Utils = {
     isHardmode: boolean,
     isContrastmode: boolean,
     isDarkmode: boolean,
-    gameData: GameData
+    gameData: GameData,
+    key?: string
   ) => {
     const title =
       gameType === "NORMAL"
         ? "워들"
         : gameType === "INFINITE"
         ? "무한워들"
+        : gameType === "CUSTOM"
+        ? "워들커스텀"
         : "워들vsAI";
+
+    const id = gameType === "CUSTOM" ? "" : `${gameData.id} `;
+
     const site =
       gameType === "NORMAL"
         ? "https://jhlov.github.io/wordle\n\n"
         : gameType === "INFINITE"
         ? "https://jhlov.github.io/wordle/#/infinite\n\n"
+        : gameType === "CUSTOM"
+        ? `https://jhlov.github.io/wordle/#/c/${key}\n\n`
         : "https://jhlov.github.io/wordle/#/battle\n\n";
 
     let state = "";
@@ -112,7 +120,7 @@ export const Utils = {
           : "X"
       }/${ROW_COUNT}`;
     }
-    let copyText = `${title} ${gameData.id} ${state}${isHardmode ? "*" : ""}\n`;
+    let copyText = `${title} ${id}${state}${isHardmode ? "*" : ""}\n`;
 
     copyText += site;
     copyText += gameData.evaluationList

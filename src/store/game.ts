@@ -4,7 +4,13 @@ import { ResultSummaryRes } from "pages/game/Game";
 import { ROW_COUNT } from "utils/const";
 import { GameData } from "utils/GameData";
 
-export type GameType = "NONE" | "NORMAL" | "INFINITE" | "BATTLE";
+export type GameType =
+  | "NONE"
+  | "NORMAL"
+  | "INFINITE"
+  | "BATTLE"
+  | "CUSTOM"
+  | "MAKER";
 
 interface InitialState {
   gameType: GameType;
@@ -41,6 +47,10 @@ export const game = createSlice({
         state.gameType = "INFINITE";
       } else if (action.payload === "battle") {
         state.gameType = "BATTLE";
+      } else if (action.payload === "maker") {
+        state.gameType = "MAKER";
+      } else if (action.payload === "custom") {
+        state.gameType = "CUSTOM";
       } else {
         state.gameType = "NORMAL";
       }

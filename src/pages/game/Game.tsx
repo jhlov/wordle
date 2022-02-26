@@ -61,6 +61,11 @@ interface Response {
   solution?: string;
 }
 
+interface CustomInfoResponse {
+  error?: string;
+  solution?: string;
+}
+
 const Game = ({ match }: RouteComponentProps) => {
   const dispatch = useDispatch();
 
@@ -91,8 +96,12 @@ const Game = ({ match }: RouteComponentProps) => {
 
   // mounted
   useEffect(() => {
-    const gameType: string | undefined = (match.params as any).gameType;
-    dispatch(setGameType(gameType));
+    if (match.path.startsWith("/c/")) {
+      dispatch(setGameType("custom"));
+    } else {
+      const gameType: string = match.path.substring(1);
+      dispatch(setGameType(gameType));
+    }
   }, [match]);
 
   // init
@@ -105,7 +114,7 @@ const Game = ({ match }: RouteComponentProps) => {
   const init = async () => {
     dispatch(setLoading(true));
 
-    if (gameType === "NORMAL" && (match.params as any).gameType === undefined) {
+    if (gameType === "NORMAL" && match.path === "/") {
       const r = await axios.get<Response>(
         `https://hy374x63qa.execute-api.ap-northeast-2.amazonaws.com/default/wordle-v2?gameType=${gameType}`
       );
@@ -148,10 +157,7 @@ const Game = ({ match }: RouteComponentProps) => {
       } else {
         startNewGame(r.data.id);
       }
-    } else if (
-      gameType === "INFINITE" &&
-      (match.params as any).gameType === "infinite"
-    ) {
+    } else if (gameType === "INFINITE" && match.path === "/infinite") {
       const gameData = getGameDataFromLS(gameType);
       if (gameData.id === 0 || gameData.state === "FINISH") {
         // 게임이 종료 되었으면 새 게임 받아오기
@@ -161,10 +167,7 @@ const Game = ({ match }: RouteComponentProps) => {
         syncGameData(gameData);
         setIsEnabledInput(true);
       }
-    } else if (
-      gameType === "BATTLE" &&
-      (match.params as any).gameType === "battle"
-    ) {
+    } else if (gameType === "BATTLE" && match.path === "/battle") {
       const gameData = getGameDataFromLS(gameType);
       if (gameData.id === 0 || gameData.state === "FINISH") {
         // 게임이 종료 되었으면 새 게임 받아오기
@@ -174,6 +177,8 @@ const Game = ({ match }: RouteComponentProps) => {
         syncGameData(gameData);
         setIsEnabledInput(true);
       }
+    } else if (gameType === "CUSTOM" && match.path.startsWith("/c/")) {
+      await startCustomGame();
     }
 
     dispatch(setLoading(false));
@@ -220,6 +225,38 @@ const Game = ({ match }: RouteComponentProps) => {
 
   const startNewBattleGame = () => {
     startNewInfiniteGame();
+  };
+
+  const startCustomGame = async () => {
+    const key = (match.params as any).key;
+    const r = await axios.get<CustomInfoResponse>(
+      `https://1fb9nrkdl1.execute-api.ap-northeast-2.amazonaws.com/default/wordle-custom-info?key=${key}`
+    );
+
+    if (r.data.error) {
+      dispatch(
+        addToast({
+          text: r.data.error
+        })
+      );
+
+      return;
+    }
+
+    if (r.status !== 200 || !r.data.solution) {
+      dispatch(
+        addToast({
+          text: "시스템 오류 입니다!"
+        })
+      );
+
+      return;
+    }
+
+    dispatch(setId(-1));
+    dispatch(setSolution(r.data.solution));
+
+    startNewGame(-1, r.data.solution);
   };
 
   const startNewInfiniteGame = async () => {
@@ -530,18 +567,26 @@ const Game = ({ match }: RouteComponentProps) => {
       isHardmode,
       isContrastmode,
       isDarkmode,
-      gameData
+      gameData,
+      (match.params as any).key
     );
 
     if (isMobile && navigator.share) {
       navigator.share({
         text: copyText
       });
-    } else {
+    } else if (navigator.clipboard.writeText) {
       navigator.clipboard.writeText(copyText);
       dispatch(
         addToast2({
           text: "게임 결과를 클립보드에 복사했습니다.",
+          delay: 2000
+        })
+      );
+    } else {
+      dispatch(
+        addToast2({
+          text: "클립보드 복사에 실패하였습니다. (크롬에서 시도해 보세요)",
           delay: 2000
         })
       );

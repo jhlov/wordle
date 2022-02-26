@@ -1,0 +1,53 @@
+.maker {
+  .tiles {
+    display: flex;
+    justify-content: center;
+
+    &.shake {
+      animation: shake 0.2s;
+    }
+
+    .tile {
+      border: 2px solid #878a8c;
+      width: 60px;
+      height: 60px;
+      margin: 3px;
+      font-weight: 900;
+      font-size: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &.invalid {
+        background-color: pink;
+      }
+    }
+  }
+
+  .url {
+    border: 1px solid lightgray;
+    display: inline-block;
+    font-size: 18px;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(-5px);
+  }
+  20% {
+    transform: translateX(5px);
+  }
+  40% {
+    transform: translateX(-5px);
+  }
+  60% {
+    transform: translateX(5px);
+  }
+  80% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
