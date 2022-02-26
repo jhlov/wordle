@@ -4,12 +4,14 @@ import classNames from "classnames";
 import { DictModal } from "components/modals/DictModal";
 import Hangul from "hangul-js";
 import React, { useEffect, useState } from "react";
+import ReactGA from "react-ga";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { addToast } from "store/common";
 import { LETTER_COUNT, ROW_COUNT } from "utils/const";
 import "./GameBody.scss";
 import { GameTile } from "./GameTile";
+ReactGA.initialize("300457772");
 
 interface Props {
   shake: boolean;
@@ -47,6 +49,11 @@ const GameBody = (props: Props) => {
   }, [evaluationList, curRow]);
 
   const onClickDict = async (letterList: string) => {
+    ReactGA.event({
+      category: "dict",
+      action: "click"
+    });
+
     const word = Hangul.assemble(letterList.split(""));
     const r = await axios.get<DictResponse>(
       "https://4rf9kpckfi.execute-api.ap-northeast-2.amazonaws.com/default/wordle-dict?word=" +

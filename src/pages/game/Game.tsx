@@ -456,7 +456,6 @@ const Game = ({ match }: RouteComponentProps) => {
           ReactGA.event({
             category: gameType,
             action: "gameplay",
-            label: "게임",
             value: curRow
           });
         } else if (curRow === ROW_COUNT - 1) {
