@@ -1,5 +1,6 @@
 import Hangul from "hangul-js";
 import _ from "lodash";
+import moment from "moment";
 import { GameType } from "store/game";
 import { LETTER_COUNT, ROW_COUNT } from "utils/const";
 import { GameData } from "utils/GameData";
@@ -120,7 +121,9 @@ export const Utils = {
           : "X"
       }/${ROW_COUNT}`;
     }
-    let copyText = `${title} ${id}${state}${isHardmode ? "*" : ""}\n`;
+
+    const flag = moment().month() === 2 && moment().date() === 1 ? "🇰🇷 " : "";
+    let copyText = `${flag}${title} ${id}${state}${isHardmode ? "*" : ""}\n`;
 
     copyText += site;
     copyText += gameData.evaluationList

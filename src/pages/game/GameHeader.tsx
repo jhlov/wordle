@@ -3,6 +3,7 @@ import LeaderboardOutlinedIcon from "@mui/icons-material/LeaderboardOutlined";
 import MenuIcon from "@mui/icons-material/Menu";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { SettingModal } from "components/modals/SettingModal";
+import moment from "moment";
 import React, { useMemo, useState } from "react";
 import { Accordion } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -73,7 +74,10 @@ const GameHeader = () => {
             </button>
           )}
         </div>
-        <h1 className="m-0 p-0">{title}</h1>
+        <h1 className="m-0 p-0">
+          {moment().month() === 2 && moment().date() === 1 && <span>🇰🇷 </span>}
+          {title}
+        </h1>
 
         <div>
           {gameType !== "MAKER" && (
