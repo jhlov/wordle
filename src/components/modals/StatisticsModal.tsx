@@ -321,7 +321,7 @@ const StatisticsModal = (props: Props) => {
               직접 워들 문제를 만들어 친구들과 공유하고 즐겨보세요!{" "}
               <small>
                 (왼쪽 상단 <MenuIcon fontSize="small" /> {`->`}{" "}
-                <b>워들 메이커</b>
+                <b>워들 메이커</b>)
               </small>
             </li>
             <li>
