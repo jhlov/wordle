@@ -7,10 +7,10 @@ import _ from "lodash";
 import qs from "qs";
 import React, { useEffect, useMemo, useState } from "react";
 import AdSense from "react-adsense";
-import { isMobile } from "react-device-detect";
+import { isBrowser, isMobile } from "react-device-detect";
 import ReactGA from "react-ga4";
 import { useDispatch, useSelector } from "react-redux";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useLocation } from "react-router-dom";
 import { RootState } from "store";
 import { addToast, addToast2, setLoading } from "store/common";
 import {
@@ -67,6 +67,7 @@ interface CustomInfoResponse {
 }
 
 const Game = ({ match }: RouteComponentProps) => {
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const gameType = useSelector((state: RootState) => state.game.gameType);
@@ -168,6 +169,10 @@ const Game = ({ match }: RouteComponentProps) => {
         setIsEnabledInput(true);
       }
     } else if (gameType === "BATTLE" && match.path === "/battle") {
+      if (location.search.includes("reset=true")) {
+        saveGameData(gameType, initGameData);
+      }
+
       const gameData = getGameDataFromLS(gameType);
       if (gameData.id === 0 || gameData.state === "FINISH") {
         // 게임이 종료 되었으면 새 게임 받아오기
@@ -606,11 +611,13 @@ const Game = ({ match }: RouteComponentProps) => {
     <div className="game">
       {/* other */}
       <div>
-        <GameKeyboardInput
-          onClickKeyboard={onClickKeyboard}
-          onClickEner={onClickEnter}
-          onClickBack={onClickBack}
-        />
+        {isBrowser && (
+          <GameKeyboardInput
+            onClickKeyboard={onClickKeyboard}
+            onClickEner={onClickEnter}
+            onClickBack={onClickBack}
+          />
+        )}
 
         <StatisticsModal
           onClickShare={onClickShare}
