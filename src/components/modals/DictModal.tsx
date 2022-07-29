@@ -1,3 +1,4 @@
+import AbcIcon from "@mui/icons-material/Abc";
 import CloseIcon from "@mui/icons-material/Close";
 import _ from "lodash";
 import React from "react";
@@ -29,7 +30,15 @@ const DictModal = (props: Props) => {
       </Modal.Header>
 
       <Modal.Body className="p-5">
-        <h3>{props.word}</h3>
+        <h3>
+          {props.word}{" "}
+          <a
+            href={`https://en.dict.naver.com/#/search?query=${props.word}`}
+            target="_blank"
+          >
+            <AbcIcon />
+          </a>
+        </h3>
         <ul>
           {props.value?.map(v => (
             <li>{v}</li>
