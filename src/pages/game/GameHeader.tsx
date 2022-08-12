@@ -61,6 +61,25 @@ const GameHeader = () => {
     dispatch(setShowSettingModal(true));
   };
 
+  const isShowKoreanFlag = () => {
+    // 국기 다는 날=3·1절, 제헌절, 광복절, 개천절 등 4개 국경일과 1월1일, 국군의 날, 한글날이다
+    const nationalDays = [
+      [3, 1],
+      [7, 17],
+      [8, 15],
+      [10, 3],
+      [1, 1],
+      [10, 1],
+      [10, 9]
+    ];
+
+    return nationalDays.some(
+      nationalDay =>
+        moment().month() + 1 === nationalDay[0] &&
+        moment().date() === nationalDay[1]
+    );
+  };
+
   return (
     <div>
       <div className="game-header align-items-center justify-content-between py-2 border-bottom">
@@ -75,7 +94,7 @@ const GameHeader = () => {
           )}
         </div>
         <h1 className="m-0 p-0">
-          {moment().month() === 2 && moment().date() === 1 && <span>🇰🇷 </span>}
+          {isShowKoreanFlag() && <span>🇰🇷 </span>}
           {title}
         </h1>
 
