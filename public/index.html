@@ -19,8 +19,34 @@
 
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <meta name="theme-color" content="#6aaa64" />
+    <script>
+      // 두 손가락 핀치 줌 방지
+      document.addEventListener(
+        "touchmove",
+        function (event) {
+          if (event.touches.length > 1) {
+            event.preventDefault();
+          }
+        },
+        { passive: false }
+      );
+
+      // iOS Safari 제스처 확대 방지
+      document.addEventListener("gesturestart", function (event) {
+        event.preventDefault();
+      });
+      document.addEventListener("gesturechange", function (event) {
+        event.preventDefault();
+      });
+      document.addEventListener("gestureend", function (event) {
+        event.preventDefault();
+      });
+    </script>
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
