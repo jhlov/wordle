@@ -16,8 +16,8 @@ function App() {
   const isMobile = true;
 
   useEffect(() => {
-    const harmode = localStorage.getItem("wordle-hardmode") === "true";
-    dispatch(setHardmode(harmode));
+    const hardmode = localStorage.getItem("wordle-hardmode") === "true";
+    dispatch(setHardmode(hardmode));
 
     const darkmode = localStorage.getItem("wordle-darkmode") === "true";
     dispatch(setDarkmode(darkmode));
@@ -32,7 +32,7 @@ function App() {
     if (contrastmode) {
       document.body.classList.add("contrast");
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="App">
